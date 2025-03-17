@@ -5,17 +5,21 @@ This project is a conceptual redesign of the Spotify application, focusing on en
 ## Tech Stack
 
 - **Next.js**: A React framework for building the frontend with server-side rendering and static site generation.
+- **TypeScript**: A superset of JavaScript that adds static typing, enhancing code reliability and developer experience in Next.js.
 - **Django**: A Python web framework used for the backend, handling logic, APIs, and database management.
 - **JWT (JSON Web Tokens)**: Used for secure user authentication and authorization.
 - **Libraries**:
   - **Zustand**: A lightweight state management library for React, providing a simple and scalable way to manage app state.
   - **shadcn/ui**: A collection of reusable, customizable UI components for building consistent and accessible interfaces in Next.js.
   - **Axios**: For making HTTP requests between the frontend and backend, simplifying API communication.
-  - **TypeScript**: A superset of JavaScript that adds static typing, enhancing code reliability and developer experience in Next.js.
   - **Django REST Framework**: A powerful toolkit for building RESTful APIs in Django, enabling rapid development and serialization.
   - **coresheaders**: A Django middleware library for managing Cross-Origin Resource Sharing (CORS), ensuring secure API access.
   - **simple jwt**: A Django library for implementing JWT-based authentication, providing straightforward token management.
   - **pillow**: A Python imaging library used for handling image processing tasks, such as resizing or formatting, in the Django backend.## Installation
+
+## Swagger ui
+
+**You can get swagger ui by this path http://127.0.0.1:8000/api/docs/**
 
 ## Installation
 
