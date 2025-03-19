@@ -1,7 +1,7 @@
 const App = () => {
-    return <section>
-        This is the SpotRem app.
-    </section>
+    return <div>
+        You are in.
+    </div>
 }
 
 export default App
