@@ -6,7 +6,7 @@ const Drawer = () => {
         <div className="
             h-screen px-2.5 py-1.5
             flex flex-col gap-2
-            w-[14dvw]
+            w-full w-max-[clamp(15.625rem, 13.216rem + 12.05vw, 22.25rem)]
         ">
             { DMenuList.map(({ text, iconId }, i) => {
                 return (
