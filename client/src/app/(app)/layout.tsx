@@ -8,10 +8,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     
     const authorized = true
     if (authorized) {
-        return <>
-            <Drawer />
-            { children }
-        </>
+        return (
+            <main className="flex inline-flex">
+                <Drawer />
+                { children }
+            </main>
+        )
     }
 
     router.replace('/auth')
