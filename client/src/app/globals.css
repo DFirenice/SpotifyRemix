@@ -3,6 +3,19 @@
 @theme {
     --color-dp-0: #060606;
     --color-dp-1: #131313;
+    --color-fg-primary: #E0E0E0;
+    --color-fg-secondary: #898989;
     --color-accent-default: #E0E0E0;
     --color-accent-gray: #333842;
+}
+
+@layer utilities {
+    .template-area-app {
+        grid:
+            "header header header" auto
+            "aside . ." 1fr
+            / minmax(250px, auto) 1fr 1fr;
+    }
+    .grid-area-header { grid-area: header; }
+    .grid-area-aside { grid-area: aside; }
 }

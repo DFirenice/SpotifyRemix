@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from "next/navigation"
+import Navigation from '@/components/Navigation'
 import Drawer from "@/components/Drawer"
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -9,9 +10,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     const authorized = true
     if (authorized) {
         return (
-            <main className="flex inline-flex">
-                <Drawer />
-                { children }
+            <main className='grid template-area-app gap-y-1 gap-x-2.5 h-dvh'
+            >
+                <Navigation className="grid-area-header" />
+                <Drawer className="grid-area-aside" />
+                <section className="overflow-y-auto">
+                    { children }
+                </section>
             </main>
         )
     }

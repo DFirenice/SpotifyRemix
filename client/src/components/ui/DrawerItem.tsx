@@ -15,13 +15,13 @@ const DrawerItem = (
             className="
                 flex flex-row gap-2.5 items-center
                 text-left no-underline cursor-pointer
-                w-full h-fit rounded-xl pr-3 hover:bg-dp-1
+                w-full h-fit rounded-md pr-3 hover:bg-dp-1
                 select-none
             "
             { ...(action && { onclick: action }) }
             { ...(link && { href: link || '' }) } // Add error toast
         >
-            <Icon id={icon} />
+            <Icon id={icon} size="large" />
             <div>{content}</div>
         </a>
     )
