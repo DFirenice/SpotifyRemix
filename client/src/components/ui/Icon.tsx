@@ -28,6 +28,7 @@ const Icon = (
                     alt={id}
                     height={sizeRation}
                     width={sizeRation}
+                    className="pointer-events-none"
                 />
             </div>
         )
