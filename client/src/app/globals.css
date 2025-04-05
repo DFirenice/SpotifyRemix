@@ -14,7 +14,7 @@
         grid:
             "header header header" auto
             "aside . ." 1fr
-            / minmax(250px, auto) 1fr 1fr;
+            / minmax(250px, auto) 1fr auto;
     }
     .grid-area-header { grid-area: header; }
     .grid-area-aside { grid-area: aside; }

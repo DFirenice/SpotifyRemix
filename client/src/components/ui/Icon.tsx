@@ -10,7 +10,7 @@ const Icon = (
     }
 ) => {
     const icon = icons[id] as Ticons || null
-    const sizeRation = {
+    const sizeRatio = {
         'small': 24,
         'default': 32,
         'large': 40
@@ -26,8 +26,8 @@ const Icon = (
                 <Image
                     src={icon}
                     alt={id}
-                    height={sizeRation}
-                    width={sizeRation}
+                    height={sizeRatio}
+                    width={sizeRatio}
                     className="pointer-events-none"
                 />
             </div>

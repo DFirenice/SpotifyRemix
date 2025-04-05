@@ -20,7 +20,7 @@ const NavItem = ({
   return (
       <div className={
             `${active || isActiveRoot ? 'bg-dp-1' : 'bg-dp-0'}
-            pr-3 rounded-md flex-1 min-w-[10dvw] hover:bg-dp-1`
+            pl-1.5 pr-6 rounded-xl flex-1 min-w-[10dvw] hover:bg-dp-1`
         }>
           <a
               href={link}

@@ -1,22 +1,13 @@
-'use client'
-
-import { useState } from 'react'
 import {
-    CommandDialog,
-    CommandEmpty,
-    CommandInput,
-    CommandList
+    Command,
+    CommandInput
 } from '@/components/ui/command'
 
 const Search = () => {
-    const [ open, setOpen ] = useState(false)
     return (
-        <CommandDialog open={open} onOpenChange={setOpen}>
-            <CommandInput placeholder="Search..." />
-            <CommandList>
-                <CommandEmpty>No results found...</CommandEmpty>
-            </CommandList>
-        </CommandDialog>
+        <Command className="outline-none border-none bg-transparent [&_div]:h-full **:border-none ">
+            <CommandInput placeholder="Search..." className="border-none" />
+        </Command>
     )
 }
 
