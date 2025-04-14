@@ -1,7 +1,20 @@
-import type { NextConfig } from "next";
+// import type { NextConfig } from "next"
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+// const nextConfig: NextConfig = {
+//   webpack(config) {
+//     config.module.rules.push({
+//       test: /\.svg$/,
+//       use: ["@svgr/webpack"],
+//       issuer: /\.[jt]sx?$/,
+//     })
 
-export default nextConfig;
+//     return config
+//   },
+//   images: {
+//     // Disable SVGs in next/image to avoid conflicts
+//     dangerouslyAllowSVG: true,
+//     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+//   },
+// }
+
+// export default nextConfig

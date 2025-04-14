@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation"
 import Navigation from '@/components/Navigation'
 import Drawer from "@/components/Drawer"
+import Aside from "@/components/Aside"
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter()
@@ -15,7 +16,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 py-1.5 px-2
             ">
                 <Navigation className="grid-area-header" />
-                <Drawer className="grid-area-aside" />
+                <Drawer className="grid-area-aside flex flex-col gap-y-1" />
                 {/* Content */}
                 <section className="
                     overflow-y-auto rounded-md
@@ -25,7 +26,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                     { children }
                 </section>
                 {/* Opening menus (on right) */}
-                {/* ... */}
+                <Aside />
             </main>
         )
     }

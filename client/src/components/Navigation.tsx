@@ -4,40 +4,56 @@ import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
 
 import Icon from "@/components/ui/Icon"
-import { Ticons } from "@/types/icons"
+import { streamItems } from '@/data/Navigation'
+import { useAsideStore } from "@/stores/useAside"
+import { useShallow } from 'zustand/shallow'
 
 const Navigation = ({ ...props }) => {
-    // Temporary data: until functionality
-    const streamItems: Ticons[] = [
-        "news", "private_icon", "friends",
-        "settings"
-    ]
+    const { toggleAsideMenu, currentAside } = useAsideStore(
+        useShallow(
+            (state) => ({
+                toggleAsideMenu: state.toggle,
+                currentAside: state.openAside
+            })
+        )
+    )
+
+    const openMenu = (component: React.ReactNode) => { toggleAsideMenu(component) }
+    
     return (
         <header { ...props }>
             <div className="grid grid-cols-[minmax(250px,auto)_auto_auto_auto_1fr] gap-1.5">
+
                 {/* Navigation */}
                 <NavItem link="/library" text="My Library" icon="library" root />
                 <NavItem link="/" text="Home" icon="home" root />
                 <NavItem link="/discover" text="Discover" icon="discover" root />
+
                 <Search />
-                {/* User panel */}
+
+                {/* User panel: settings, friends, feed */}
                 <div className="flex justify-end flex-1 items-center gap-1.5">
-                    { streamItems.map((item, idx) => (
+                    { streamItems.map(({ icon, role, droppingComponent }, idx) => (
                         <Button
-                            key={`${item}_${idx}`}
+                            { ...(role === 'button' && { onClick: () => openMenu(droppingComponent) }) }
+                            key={`${icon}_${idx}`}
                             className="h-full w-auto"
                             variant="ghost"
                             size="icon"
                             asChild
                         >
-                            <a><Icon size="large" id={item} /></a>
+                            <a { ...(Array.isArray(role) && { href: role[0] }) }>
+                                <Icon size="large" id={icon} active={currentAside === droppingComponent} />
+                            </a>
                         </Button>
                     )) }
+
                     <Avatar className="rounded-full overflow-hidden size-8">
-                        <AvatarImage src="https://github.com/shadcn.png" alt="You." />
-                        <AvatarFallback>{'Username'.split('')[0].toUpperCase()}</AvatarFallback>
+                        <AvatarImage src="https://github.com/DFirenice.png" alt="You." />
+                        <AvatarFallback>{[...'Username'][0].toUpperCase()}</AvatarFallback>
                     </Avatar>
                 </div>
+                
             </div>
         </header>
     )

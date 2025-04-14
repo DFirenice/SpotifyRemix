@@ -5,8 +5,11 @@ import {
 
 const Search = () => {
     return (
-        <Command className="outline-none border-none bg-transparent [&_div]:h-full **:border-none ">
-            <CommandInput placeholder="Search..." className="border-none" />
+        <Command className="
+            outline-none border-none bg-transparent
+            [&_div]:h-full **:border-none has-[input:focus]:bg-dp-1
+        ">
+            <CommandInput placeholder="Search..." className="border-none"/>
         </Command>
     )
 }

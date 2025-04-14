@@ -3,9 +3,10 @@ import { type Ticons } from "@/types/icons"
 import { icons } from "@/data/icons"
 
 const Icon = (
-    { size = 'default', id }:
+    { size = 'default', active = false, id }:
     {
         size?: 'small' | 'default' | 'large'
+        active?: boolean
         id: Ticons
     }
 ) => {
@@ -28,7 +29,7 @@ const Icon = (
                     alt={id}
                     height={sizeRatio}
                     width={sizeRatio}
-                    className="pointer-events-none"
+                    className='pointer-events-none'
                 />
             </div>
         )
@@ -38,3 +39,41 @@ const Icon = (
 }
 
 export default Icon
+
+// import Image from "next/image"
+// import { type Ticons } from "@/types/icons"
+// import { icons } from "@/data/icons"
+
+// const Icon = (
+//     { size = 'default', active = false, id }:
+//     {
+//         size?: 'small' | 'default' | 'large'
+//         active?: boolean
+//         id: Ticons
+//     }
+// ) => {
+//     const IconComponent = icons[id] as Ticons || null
+//     const sizeRatio = {
+//         'small': 24,
+//         'default': 32,
+//         'large': 40
+//     }[size] || 0
+
+//     if (IconComponent) {
+//         return (
+//             <div className="
+//                 flex justify-center items-center
+//                 relative pointer-events-none
+//                 w-fit h-fit
+//             ">
+//                 <IconComponent
+//                     height={sizeRatio}
+//                     width={sizeRatio}
+//                     className={`pointer-events-none ${active ? 'fill-blue-500' : ''}`}
+//                 />
+//             </div>
+//         )
+//     }
+// }
+
+// export default Icon
