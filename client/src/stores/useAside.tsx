@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-type TAside = React.ReactNode |  null
+export type TAside = React.ReactNode |  null
 
 interface AsideState {
     openAside: TAside

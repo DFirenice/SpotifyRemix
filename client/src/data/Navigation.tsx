@@ -1,4 +1,5 @@
 import { Ticons } from "@/types/icons"
+import FriendsMenu from "@app-comps/AsideMenus/Friends"
 
 export type TStreamItems = {
     icon: Ticons
@@ -19,7 +20,7 @@ export const streamItems: TStreamItems = [
     },
     {
         icon: 'friends',
-        droppingComponent: <div>Friends Component</div>,
+        droppingComponent: <FriendsMenu />,
         role: 'button'
     },
     {
