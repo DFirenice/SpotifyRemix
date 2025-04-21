@@ -1,20 +1,28 @@
-// import type { NextConfig } from "next"
+import type { NextConfig } from "next"
+import { RuleSetRule } from "webpack"
 
-// const nextConfig: NextConfig = {
-//   webpack(config) {
-//     config.module.rules.push({
-//       test: /\.svg$/,
-//       use: ["@svgr/webpack"],
-//       issuer: /\.[jt]sx?$/,
-//     })
+const nextConfig: NextConfig = {
+  webpack(config) {
+    // Remove the default SVG loader from Next.js (important!)
+    config.module.rules = config.module.rules.map((rule: RuleSetRule) => {
+      if (typeof rule === "object" && rule !== null && "test" in rule && rule.test instanceof RegExp && rule.test.test(".svg")) {
+        return {
+          ...rule,
+          exclude: /\.svg$/ // exclude svg from the default rule
+        }
+      }
+      return rule
+    })
 
-//     return config
-//   },
-//   images: {
-//     // Disable SVGs in next/image to avoid conflicts
-//     dangerouslyAllowSVG: true,
-//     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-//   },
-// }
+    // Add SVGR support
+    config.module.rules.push({
+      test: /\.svg$/,
+      issuer: /\.[jt]sx?$/,
+      use: ["@svgr/webpack"]
+    })
 
-// export default nextConfig
+    return config
+  }
+}
+
+export default nextConfig

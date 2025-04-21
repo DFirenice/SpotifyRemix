@@ -10,6 +10,7 @@ const FriendsMenu = () => {
 
     return (
         <div className="flex flex-col gap-4 min-w-[15dvw]">
+            {/* Panel */}
             <div className="flex flex-row items-center justify-between gap-1">
                 <Heading>Friends activity</Heading>
                 <div className="flex">
@@ -17,18 +18,37 @@ const FriendsMenu = () => {
                     <Button variant="ghost" size="icon" onClick={closeMenu}><Icon id="close"/></Button>
                 </div>
             </div>
-            {/* Users */}
-            <div className="flex flex-col">
-                <div className="flex flex-row gap-3">
+            {/* Friends list */}
+            <div className="grid gap-2.5">
+                <div className="flex flex-row gap-3 items-center justify-start">
+                    <Avatar className="rounded-full overflow-hidden size-8">
+                        <AvatarImage src="https://github.com/Fialex1212.png" alt="You." />
+                        <AvatarFallback>{[...'Friend 1'][0].toUpperCase()}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <small>FriendlyMusicListener</small>
+                        <div className="flex flex-row gap-1.5 **:text-ellipsis">
+                            <Icon className="text-secondary" id="playing" size="small" />
+                            <span>Goosebumps</span>
+                            <a className="text-fg-secondary">
+                                <small>&#9679;</small> Travis Scott
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div className="flex flex-row gap-3 items-center">
                     <Avatar className="rounded-full overflow-hidden size-8">
                         <AvatarImage src="https://github.com/shadcn.png" alt="You." />
                         <AvatarFallback>{[...'Friend 1'][0].toUpperCase()}</AvatarFallback>
                     </Avatar>
                     <div>
-                        <Heading>FriendlyMusicListener</Heading>
-                        <div className="flex flex-row">
-                            <Icon id="playing" size="small" /><span>Goosebumps</span>
-                            <a href="" className="text-accent-gray">&nbsp;&#9679; Author</a>
+                        <small>AverageMusicEnjoyer</small>
+                        <div className="flex flex-row gap-2.5 **:text-ellipsis">
+                            <span className="text-icon-default">1h</span>
+                            <span>would he</span>
+                            <a className="text-fg-secondary">
+                                <small>&#9679;</small> joji
+                            </a>
                         </div>
                     </div>
                 </div>

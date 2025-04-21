@@ -7,6 +7,8 @@
     --color-fg-secondary: #898989;
     --color-accent-default: #E0E0E0;
     --color-accent-gray: #333842;
+    --color-secondary: #1ED760;
+    --color-icon-default: #898989;
 }
 
 @layer utilities {
