@@ -25,7 +25,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 ">
                     { children }
                 </section>
-                {/* Opening menus (on right) */}
+                {/* Opening menus */}
                 <Aside />
             </main>
         )

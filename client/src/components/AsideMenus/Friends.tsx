@@ -28,8 +28,10 @@ const FriendsMenu = () => {
                     <div>
                         <small>FriendlyMusicListener</small>
                         <div className="flex flex-row gap-1.5 **:text-ellipsis">
-                            <Icon className="text-secondary" id="playing" size="small" />
-                            <span>Goosebumps</span>
+                            <div className="flex">
+                                <Icon className="text-secondary" id="playing" size="small" />
+                                <a className="px-1">Goosebumps</a>
+                            </div>
                             <a className="text-fg-secondary">
                                 <small>&#9679;</small> Travis Scott
                             </a>
@@ -44,8 +46,10 @@ const FriendsMenu = () => {
                     <div>
                         <small>AverageMusicEnjoyer</small>
                         <div className="flex flex-row gap-2.5 **:text-ellipsis">
-                            <span className="text-icon-default">1h</span>
-                            <span>would he</span>
+                            <div className="flex">
+                                <span className="text-icon-default w-[24px]">1h</span>
+                                <a className="px-1">would he</a>
+                            </div>
                             <a className="text-fg-secondary">
                                 <small>&#9679;</small> joji
                             </a>

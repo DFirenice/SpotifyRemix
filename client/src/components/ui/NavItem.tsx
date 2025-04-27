@@ -1,5 +1,6 @@
 import { type Ticons } from "@/types/icons"
 import Icon from "@/components/ui/Icon"
+import Link from "next/link"
 
 import classNames from 'classnames'
 import { useActiveLink } from '@/hooks/isActiveLink'
@@ -22,7 +23,7 @@ const NavItem = ({
             `${active || isActiveRoot ? 'bg-dp-1' : 'bg-dp-0'}
             pl-1.5 pr-6 rounded-xl flex-1 min-w-[10dvw] hover:bg-dp-1`
         }>
-          <a
+          <Link
               href={link}
               className={classNames(
                 'flex flex-row items-center truncate',
@@ -37,7 +38,7 @@ const NavItem = ({
               <span className="truncate">
                   { text }
               </span>
-          </a>
+          </Link>
       </div>
   )
 }
