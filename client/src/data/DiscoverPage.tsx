@@ -1,0 +1,1 @@
+export const discoverThemes: string[] = ["Music", "EDM", "Indie", "Pop", "Rock", "Alt Rock", "Country", "R&B", "Hip-Hop", "Podcast", "Audiobooks"]

@@ -27,7 +27,7 @@ const Navigation = ({ ...props }) => {
                 {/* Navigation */}
                 <NavItem link="/library" text="My Library" icon="library" />
                 <NavItem link="/" text="Home" icon="home" />
-                <NavItem link="/discover" text="Discover" icon="discover" />
+                <NavItem link="/discover" text="Discover" icon="discover" root />
 
                 <Search />
 
