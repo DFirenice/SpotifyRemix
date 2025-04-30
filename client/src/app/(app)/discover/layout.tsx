@@ -2,20 +2,17 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { isActiveLink } from "@/utils/isActiveLink"
 import { usePathname } from "next/navigation"
 import { discoverThemes } from "@/data/DiscoverPage"
+import { genSlug } from "@/utils/genSlug"
 
 const DiscorverPage = ({ children }: { children: React.ReactNode }) => {
     const absPath = usePathname()
 
-    const defineVariant = (path: string): "primary" | "default" => {
-        const isActive = isActiveLink(path, `${absPath}/`)
+    const defineVariant = (type: string): "primary" | "default" => {
+        const isActive = absPath.split('/').pop() === genSlug(type)
         return isActive ? "default" : "primary"
     }
-
-    // Rest of path based on 'discoverThemes' type
-    const genSlug = (path: string) => (`${path.toLowerCase().split(' ').join("_")}`)
 
     return (
         <section className="flex h-full flex-col">

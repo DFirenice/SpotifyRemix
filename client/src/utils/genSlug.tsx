@@ -1,0 +1,1 @@
+export const genSlug = (path: string) => (`${path.toLowerCase().split(' ').join("_")}`)

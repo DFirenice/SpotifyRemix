@@ -1,9 +1,13 @@
 import NavItem from "@/components/ui/NavItem"
 import Search from '@/components/ui/Search'
+import Icon from "@/components/ui/Icon"
+
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
 
-import Icon from "@/components/ui/Icon"
+import { discoverThemes } from "@/data/DiscoverPage"
+import { genSlug } from "@/utils/genSlug"
+
 import { streamItems } from '@/data/Navigation'
 import { useAsideStore } from "@/stores/useAside"
 import { useShallow } from 'zustand/shallow'
@@ -19,6 +23,7 @@ const Navigation = ({ ...props }) => {
     )
 
     const openMenu = (component: React.ReactNode) => { toggleAsideMenu(component) }
+    const initialTheme = genSlug(discoverThemes[0])
     
     return (
         <header { ...props }>
@@ -27,7 +32,7 @@ const Navigation = ({ ...props }) => {
                 {/* Navigation */}
                 <NavItem link="/library" text="My Library" icon="library" />
                 <NavItem link="/" text="Home" icon="home" />
-                <NavItem link="/discover" text="Discover" icon="discover" root />
+                <NavItem link={['/discover', initialTheme]} text="Discover" icon="discover" root />
 
                 <Search />
 

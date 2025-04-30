@@ -10,21 +10,22 @@ const NavItem = ({
     text, active = false,
     root = false
   }: {
-    link: string, icon?: Ticons,
+    link: string | string[], icon?: Ticons,
     text: string, active?: boolean,
     root?: boolean,
     classes?: string | React.CSSProperties
   }
 ) => {
   // Identifying link
-  const isActiveRoot = useActiveLink(link + (root ? '*' : ''))
+  const linksRoot = Array.isArray(link) ? link[0] : link
+  const isActiveRoot = useActiveLink(linksRoot + (root ? '*' : ''))
   return (
       <div className={
             `${active || isActiveRoot ? 'bg-dp-1' : 'bg-dp-0'}
             pl-1.5 pr-6 rounded-xl flex-1 min-w-[10dvw] hover:bg-dp-1`
         }>
           <Link
-              href={link}
+              href={Array.isArray(link) ? link.join('/') : link}
               className={classNames(
                 'flex flex-row items-center truncate',
                 {
