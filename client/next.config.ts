@@ -22,7 +22,15 @@ const nextConfig: NextConfig = {
     })
 
     return config
-  }
+  },
+  images: {
+    remotePatterns: [
+      { // Temporary
+        protocol: 'https',
+        hostname: 'i.pinimg.com'
+      }
+    ],
+  },
 }
 
 export default nextConfig

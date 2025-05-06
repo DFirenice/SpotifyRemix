@@ -20,7 +20,7 @@ const DiscorverPage = ({ children }: { children: React.ReactNode }) => {
             <div className="
                 w-full flex flex-nowrap
                 overflow-hidden align-center 
-                gap-x-2 py-3
+                gap-x-2 p-3
             ">
                 { discoverThemes.map((type, i) => (
                     <Button

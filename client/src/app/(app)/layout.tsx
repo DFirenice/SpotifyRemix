@@ -12,7 +12,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     if (authorized) {
         return (
             <main className="
-                grid template-area-app gap-y-2 gap-x-2.5 h-dvh
+                grid template-area-app gap-y-2 h-dvh
                 py-1.5 px-2
             ">
                 <Navigation className="grid-area-header" />
@@ -20,8 +20,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 {/* Content */}
                 <section className="
                     overflow-y-auto rounded-md
-                    border-2 border-dp-1
-                    px-5 pt-3
+                    border-2 border-dp-1 mr-2 bg-dp-1/30
                 ">
                     { children }
                 </section>
