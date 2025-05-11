@@ -33,10 +33,8 @@ const DiscorverPage = ({ children }: { children: React.ReactNode }) => {
                     </Button>
                 )) }
             </div>
-            {/* Corresponding body */}
-            <div className="h-full w-full flex">
-                { children }
-            </div>
+            {/* Tab's body */}
+            { children }
         </section>
     )
 }

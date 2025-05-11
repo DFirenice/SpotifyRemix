@@ -44,8 +44,8 @@
 
 /* Global Scrollbar */
 * {
-    scrollbar-width: thin;                  /* Firefox */
-    scrollbar-color: var(--color-fg-secondary) transparent; /* thumb track */
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--color-fg-secondary) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -58,8 +58,8 @@
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: var(--color-fg-secondary);    /* dark thumb */
-    border: 2px solid transparent;  /* adds padding around thumb */
+    background-color: var(--color-fg-secondary);
+    border: 2px solid transparent;
 }
 
 /* hide-scrollbar */
