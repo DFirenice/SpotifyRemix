@@ -11,6 +11,7 @@ const isPlaying = false
 const PlayBtn = ({ reference }: TPlay) => {
     return (
         <Button variant="none" size="icon">
+            {/* Replace hardcoded color with one from global styles */}
             <Icon color="#1ED760" size="large" id={isPlaying ? "pause" : "play"} />
         </Button>
     )

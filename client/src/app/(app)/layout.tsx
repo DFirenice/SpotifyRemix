@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import Navigation from '@/components/Navigation'
 import Drawer from "@/components/Drawer"
 import Aside from "@/components/Aside"
+import PlayingSongController from "@/components/PlayingSongCotroller"
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter()
@@ -16,13 +17,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 py-1.5 px-2
             ">
                 <Navigation className="grid-area-header" />
-                <Drawer className="grid-area-aside flex flex-col gap-y-1" />
+                <Drawer className="grid-area-aside flex flex-col gap-y-1 pr-1" />
                 {/* Content */}
-                <section className="
-                    overflow-y-auto rounded-md
-                    border-2 border-dp-1 mr-2 bg-dp-1/30
-                ">
+                <section className="flex flex-col gap-1">
                     { children }
+                    <PlayingSongController />
                 </section>
                 {/* Opening menus */}
                 <Aside />

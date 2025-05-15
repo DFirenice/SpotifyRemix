@@ -17,6 +17,7 @@ function Avatar({
         'select-none',
         className
       )}
+      style={{ display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center" }}
       {...props}
     />
   )

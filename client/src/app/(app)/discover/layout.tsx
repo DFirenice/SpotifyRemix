@@ -15,7 +15,7 @@ const DiscorverPage = ({ children }: { children: React.ReactNode }) => {
     }
 
     return (
-        <section className="flex h-full flex-col">
+        <section className="flex h-full flex-col rounded-xl border-2 border-dp-1 mr-2">
             {/* Panel */}
             <div className="
                 w-full flex flex-nowrap

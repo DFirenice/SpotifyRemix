@@ -23,8 +23,9 @@
       "@app-types/*": ["./src/types/*"],
       "@app-comps/*": ["./src/components/*"],
       "@app-ui/*": ["./src/components/ui/*"]
-    }
+    },
+    "typeRoots": ["./node_modules/@types", "./types"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }

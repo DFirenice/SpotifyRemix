@@ -14,13 +14,11 @@ const DiscoveryThemePage = () => {
                 center / cover no-repeat url(${imgUrl})
             ` }}
         >
-            <div
-                className="
+            <div className="
                     overflow-y-scroll w-full
                     snap-y snap-mandatory snap-always scroll-p-[10%]
                     *:first-of-type:mt-[10dvh] backdrop-blur-lg
-                "           
-            >
+            ">
                 {/* Temporary duplicating playlists */}
                 {[...Array(5)].map((_, i) => <PlaylistSection key={i} imgUrl={imgUrl} />)}
             </div>
