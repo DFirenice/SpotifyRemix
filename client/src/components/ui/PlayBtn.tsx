@@ -3,7 +3,7 @@ import Icon from "@/components/ui/Icon"
 
 type TPlay = {
     reference: unknown
-    className: string
+    className?: string
 }
 
 // If current track, playlist, or playlist that contains this track is playing

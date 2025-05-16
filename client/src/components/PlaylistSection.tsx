@@ -18,7 +18,7 @@ import PlayBtn from "./ui/PlayBtn"
 // (!) PlaylistSection should accept props of type Playlist
 const PlaylistSection = ({ imgUrl }: { imgUrl: string }) => {
     return (
-        <section className="relative h-[77%] w-full snap-start overflow-hidden rounded-lg">
+        <section className="relative h-[80%] w-full snap-start overflow-hidden rounded-lg">
             <div className="
                 absolute inset-0
                 flex justify-center items-center gap-[3rem]
