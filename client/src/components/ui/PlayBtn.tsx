@@ -3,14 +3,15 @@ import Icon from "@/components/ui/Icon"
 
 type TPlay = {
     reference: unknown
+    className: string
 }
 
 // If current track, playlist, or playlist that contains this track is playing
 const isPlaying = false
 
-const PlayBtn = ({ reference }: TPlay) => {
+const PlayBtn = ({ reference, className }: TPlay) => {
     return (
-        <Button variant="none" size="icon">
+        <Button variant="none" size="icon" className={className}>
             {/* Replace hardcoded color with one from global styles */}
             <Icon color="#1ED760" size="large" id={isPlaying ? "pause" : "play"} />
         </Button>
