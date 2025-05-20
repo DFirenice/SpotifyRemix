@@ -1,39 +1,12 @@
 'use client'
 
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { usePathname } from "next/navigation"
+import ThemesPanel from "@/components/ThemesPanel"
 import { discoverThemes } from "@/data/DiscoverPage"
-import { genSlug } from "@/utils/genSlug"
 
 const DiscorverPage = ({ children }: { children: React.ReactNode }) => {
-    const absPath = usePathname()
-
-    const defineVariant = (type: string): "primary" | "default" => {
-        const isActive = absPath.split('/').pop() === genSlug(type)
-        return isActive ? "default" : "primary"
-    }
-
     return (
-        <section className="flex h-full flex-col rounded-xl border-2 border-dp-1 mr-2">
-            {/* Panel */}
-            <div className="
-                w-full flex flex-nowrap
-                overflow-hidden align-center 
-                gap-x-2 p-3
-            ">
-                { discoverThemes.map((type, i) => (
-                    <Button
-                        key={`${type}_${i}`}
-                        asChild variant={defineVariant(type)}
-                    >
-                        <Link href={genSlug(type)}>
-                            {type}
-                        </Link>
-                    </Button>
-                )) }
-            </div>
-            {/* Tab's body */}
+        <section className="flex h-full flex-col bordered">
+            <ThemesPanel themes={discoverThemes} />            
             { children }
         </section>
     )

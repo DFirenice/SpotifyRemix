@@ -10,14 +10,16 @@ import { Slider } from "@/components/ui/slider"
 import IconButton from "./ui/IconButton"
 import { Separator } from "@/components/ui/separator"
 
+import usePlayingSongStore from "@/stores/PlayingSong"
+
 const PlayingSongController = () => {
     const playerRef = useRef<ReactHowler>(null)
+    const { isPlaying, setIsPlaying } = usePlayingSongStore()
     
     const [ duration, setDuration ] = useState<number>(0),
           [ seek, setSeek ] = useState<number>(0)
 
-    const [ isPlaying, setPlaying ] = useState(false),
-          [ isSeeking, setSeeking ] = useState(false)
+    const [ isSeeking, setSeeking ] = useState(false)
 
     // 300ms update
     useEffect(() => {
@@ -27,7 +29,7 @@ const PlayingSongController = () => {
           interval = window.setInterval(() => {
             const howl = playerRef.current?.howler
             if (howl) setSeek(howl.seek() as number)
-          }, 250)
+          }, 10)
         }
     
         return () => clearInterval(interval)
@@ -47,6 +49,9 @@ const PlayingSongController = () => {
         if (howl) howl.seek(v[0])
         setSeeking(false)
     }
+
+    // Switcher for PlayBtn
+    const handleSwitch = () => { setIsPlaying(!isPlaying) }
         
     return (
         <div className="
@@ -77,12 +82,15 @@ const PlayingSongController = () => {
                     onLoad={handleLoad}
                     src="https://goldfirestudios.com/proj/howlerjs/sound.ogg"
                     playing={isPlaying}
-                    loop={false}
+                    loop={false} /* Doesn't work! */
                     volume={0.15}
                 />
 
                 <IconButton icon="prev" />
-                <PlayBtn reference className="mx-2.5" />
+
+                {/* Play button */}
+                <PlayBtn state={{ state: isPlaying, set: setIsPlaying }} onClick={handleSwitch} className="mx-2.5" />
+
                 <IconButton icon="next" />
                 <IconButton icon="shuffle" />
                 <IconButton icon="loop" />
@@ -108,8 +116,8 @@ const PlayingSongController = () => {
                 <IconButton icon="like" />
                 <IconButton icon="add_to_playlist" />
                 <IconButton icon="lyrics" />
-                <IconButton icon="like" />
                 <IconButton icon="device" />
+                <IconButton icon="more" />
                 <Separator orientation="vertical" className="h-[50%] mx-2" />
                 <IconButton className="bg-blue-600/80 rounded-full" icon="info" color="#E0E0E0" /> {/* AI helper */}
                 <IconButton icon="queue" />

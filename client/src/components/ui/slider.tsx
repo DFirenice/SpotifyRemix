@@ -56,7 +56,8 @@ function Slider({
           key={index}
           className={cn(
             "border-primary bg-accent-default hidden ring-ring/38 size-3 shrink-0 rounded-full border shadow-sm transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50",
-            "last:group-hover:block"
+            "last:group-hover:block",
+            "pointer-events-none"
           )}
         />
       ))}

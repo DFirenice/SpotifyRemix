@@ -19,7 +19,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <Navigation className="grid-area-header" />
                 <Drawer className="grid-area-aside flex flex-col gap-y-1 pr-1" />
                 {/* Content */}
-                <section className="flex flex-col gap-1">
+                <section className="flex flex-col gap-1 mr-1.5">
                     { children }
                     <PlayingSongController />
                 </section>

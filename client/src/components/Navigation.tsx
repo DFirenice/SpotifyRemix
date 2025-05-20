@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
 
 import { discoverThemes } from "@/data/DiscoverPage"
+import { homeThemes } from "@/data/HomePage"
 import { genSlug } from "@/utils/genSlug"
 
 import { streamItems } from '@/data/Navigation'
@@ -23,7 +24,9 @@ const Navigation = ({ ...props }) => {
     )
 
     const openMenu = (component: React.ReactNode) => { toggleAsideMenu(component) }
-    const initialTheme = genSlug(discoverThemes[0])
+
+    const HomeInitialTheme = genSlug(homeThemes[0])
+    const DiscoverInitialTheme = genSlug(discoverThemes[0])
     
     return (
         <header { ...props }>
@@ -31,8 +34,8 @@ const Navigation = ({ ...props }) => {
 
                 {/* Navigation */}
                 <NavItem link="/library" text="My Library" icon="library" />
-                <NavItem link="/" text="Home" icon="home" />
-                <NavItem link={['/discover', initialTheme]} text="Discover" icon="discover" root />
+                <NavItem link={['/home', HomeInitialTheme]} text="Home" icon="home" root />
+                <NavItem link={['/discover', DiscoverInitialTheme]} text="Discover" icon="discover" root />
 
                 <Search />
 

@@ -2,8 +2,8 @@ import { type Ticons } from "@/types/icons"
 import Icon from "@/components/ui/Icon"
 import Link from "next/link"
 
-import classNames from 'classnames'
 import { useActiveLink } from '@/hooks/isActiveLink'
+import { cn } from "@/lib/utils"
 
 const NavItem = ({
     link, icon,
@@ -26,7 +26,7 @@ const NavItem = ({
         }>
           <Link
               href={Array.isArray(link) ? link.join('/') : link}
-              className={classNames(
+              className={cn(
                 'flex flex-row items-center truncate',
                 {
                     'text-fg-primary': active || isActiveRoot,
@@ -35,7 +35,13 @@ const NavItem = ({
               )}
           >
             {/* May have not _filled version, rework required! */}
-              { icon && <Icon size="large" id={(`${icon}${active || isActiveRoot ? '_filled': ''}`) as Ticons} /> }
+              { icon && (
+                  <Icon
+                    size="large"
+                    id={(`${icon}${active || isActiveRoot ? '_filled': ''}`) as Ticons}
+                    color={cn({ '#E0E0E0': active || isActiveRoot })}
+                  />
+              )}
               <span className="truncate">
                   { text }
               </span>

@@ -2,16 +2,24 @@ import { Button } from "@/components/ui/button"
 import Icon from "@/components/ui/Icon"
 
 type TPlay = {
-    reference: unknown
-    className?: string
-}
+    state: {
+        state: boolean
+        set: (newState: boolean) => void
+    }
+} & React.ButtonHTMLAttributes<HTMLButtonElement>
 
-// If current track, playlist, or playlist that contains this track is playing
-const isPlaying = false
+// Dev note: If current track, playlist, or playlist that contains this track is playing
 
-const PlayBtn = ({ reference, className }: TPlay) => {
+const PlayBtn = ({ state, ...rest }: TPlay) => {
+    const { state: isPlaying, set: setIsPlaying } = state || {}
     return (
-        <Button variant="none" size="icon" className={className}>
+        <Button
+            disabled={!state}
+            onClick={() => setIsPlaying(!isPlaying)}
+            variant="none"
+            size="icon"
+            { ...rest }
+        >
             {/* Replace hardcoded color with one from global styles */}
             <Icon color="#1ED760" size="large" id={isPlaying ? "pause" : "play"} />
         </Button>

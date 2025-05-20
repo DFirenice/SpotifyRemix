@@ -20,6 +20,8 @@
     }
     .grid-area-header { grid-area: header; }
     .grid-area-aside { grid-area: aside; }
+
+    .bordered { @apply rounded-xl border-2 border-dp-1; }
 }
 
 /* Fluid scaling using clamp */

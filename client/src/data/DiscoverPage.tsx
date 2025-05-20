@@ -1,1 +1,2 @@
-export const discoverThemes: string[] = ["Music", "EDM", "Indie", "Pop", "Rock", "Alt Rock", "Country", "R&B", "Hip-Hop", "Podcast", "Audiobooks"]
+import type { TThemesPanel } from "@/types/themesPanel"
+export const discoverThemes: TThemesPanel = ["Music", "EDM", "Indie", "Pop", "Rock", "Alt Rock", "Country", "R&B", "Hip-Hop", "Podcast", "Audiobooks"]
