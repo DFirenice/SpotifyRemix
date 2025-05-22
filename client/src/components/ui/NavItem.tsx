@@ -12,8 +12,7 @@ const NavItem = ({
   }: {
     link: string | string[], icon?: Ticons,
     text: string, active?: boolean,
-    root?: boolean,
-    classes?: string | React.CSSProperties
+    root?: boolean
   }
 ) => {
   // Identifying link
@@ -21,9 +20,9 @@ const NavItem = ({
   const isActiveRoot = useActiveLink(linksRoot + (root ? '*' : ''))
   return (
       <div className={
-            `${active || isActiveRoot ? 'bg-dp-1' : 'bg-dp-0'}
-            pl-1.5 pr-6 rounded-xl flex-1 min-w-[10dvw] hover:bg-dp-1`
-        }>
+        `${active || isActiveRoot ? 'bg-dp-1' : 'transparent'}
+        pl-1.5 pr-6 rounded-xl flex-1 min-w-[10dvw] hover:bg-dp-1`
+      }>
           <Link
               href={Array.isArray(link) ? link.join('/') : link}
               className={cn(

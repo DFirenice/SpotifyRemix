@@ -46,7 +46,7 @@ const PlaylistSection = ({ imgUrl }: { imgUrl: string }) => {
 
                         {/* Controls */}
                         <div className="inline-flex items-center gap-x-2">
-                            <PlayBtn reference />
+                            <PlayBtn />
                             <Button variant="ghost" className="p-0 gap-0">
                                 <Icon id="save" />
                                 <span className="pr-2 text-fg-secondary">622k</span>

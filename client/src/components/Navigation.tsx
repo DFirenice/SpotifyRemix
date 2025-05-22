@@ -30,10 +30,9 @@ const Navigation = ({ ...props }) => {
     
     return (
         <header { ...props }>
-            <div className="grid grid-cols-[minmax(250px,auto)_auto_auto_auto_1fr] gap-1.5">
+            <div className="grid grid-cols-[auto_auto_auto_1fr] gap-1.5">
 
                 {/* Navigation */}
-                <NavItem link="/library" text="My Library" icon="library" />
                 <NavItem link={['/home', HomeInitialTheme]} text="Home" icon="home" root />
                 <NavItem link={['/discover', DiscoverInitialTheme]} text="Discover" icon="discover" root />
 

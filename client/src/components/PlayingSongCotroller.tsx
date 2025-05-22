@@ -17,7 +17,8 @@ const PlayingSongController = () => {
     const { isPlaying, setIsPlaying } = usePlayingSongStore()
     
     const [ duration, setDuration ] = useState<number>(0),
-          [ seek, setSeek ] = useState<number>(0)
+          [ seek, setSeek ] = useState<number>(0),
+          [ isMuted, setIsMuted ] = useState(false)
 
     const [ isSeeking, setSeeking ] = useState(false)
 
@@ -52,6 +53,8 @@ const PlayingSongController = () => {
 
     // Switcher for PlayBtn
     const handleSwitch = () => { setIsPlaying(!isPlaying) }
+    
+    const handleMuteAudio = () => { setIsMuted(!isMuted) }
         
     return (
         <div className="
@@ -68,10 +71,10 @@ const PlayingSongController = () => {
                         className="rounded-lg"
                     />
                 </div>
-                <div className="ml-1.5 flex flex-col leading-5  ">
-                    <span>Get lucky</span>
-                    <span className="text-icon-default">Daft punk</span>
-                    <span className="text-icon-default">Random Access Memories</span>
+                <div className="ml-1.5 flex flex-col leading-5">
+                    <span className="overflow-ellipsis">Get lucky</span>
+                    <span className="text-icon-default text-nowrap">Daft punk</span>
+                    <span className="text-icon-default text-nowrap">Random Access Memories</span>
                 </div>
             </div>
             {/* Track controller */}
@@ -84,6 +87,7 @@ const PlayingSongController = () => {
                     playing={isPlaying}
                     loop={false} /* Doesn't work! */
                     volume={0.15}
+                    mute={isMuted}
                 />
 
                 <IconButton icon="prev" />
@@ -107,9 +111,12 @@ const PlayingSongController = () => {
                     />
                     <span className="text-icon-default mx-1">{ formatTime(duration) }</span>
                 </div>
-                <Button variant="ghost" size="icon">
-                    <Icon id="volume" />
-                </Button>
+                <div>
+                    <Button className="relative" variant="ghost" size="icon" onClick={handleMuteAudio}>
+                        <Icon id="volume" />
+                        { isMuted && <Icon size="small" id="close" className="absolute bottom-[-8%] right-[-12%]" /> }
+                    </Button>
+                </div>
             </div>
             {/* Other controls */}
             <div className="gap-1">

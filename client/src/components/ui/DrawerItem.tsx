@@ -15,8 +15,8 @@ const DrawerItem = (
             className="
                 flex flex-row gap-2.5 items-center
                 text-left no-underline cursor-pointer
-                w-full h-fit rounded-md pr-3 hover:bg-dp-1
-                select-none
+                w-full h-fit rounded-md pr-3 hover:bg-dp-2
+                select-none text-fg-secondary
             "
             { ...(action && { onclick: action }) }
             { ...(link && { href: link || '' }) } // Add error toast
