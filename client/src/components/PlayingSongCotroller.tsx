@@ -1,6 +1,4 @@
 import PlayBtn from "@/components/ui/PlayBtn"
-import { Button } from "@/components/ui/button"
-import Icon from "@/components/ui/Icon"
 import Image from "next/image"
 
 import { formatTime } from "@/utils/timeFortmatter"
@@ -9,6 +7,7 @@ import ReactHowler from 'react-howler'
 import { Slider } from "@/components/ui/slider"
 import IconButton from "./ui/IconButton"
 import { Separator } from "@/components/ui/separator"
+import VolumeController from "@/components/VolumeController"
 
 import usePlayingSongStore from "@/stores/PlayingSong"
 
@@ -18,7 +17,8 @@ const PlayingSongController = () => {
     
     const [ duration, setDuration ] = useState<number>(0),
           [ seek, setSeek ] = useState<number>(0),
-          [ isMuted, setIsMuted ] = useState(false)
+          [ isMuted, setIsMuted ] = useState(false),
+          [ volume, setVolume ] = useState(30) // Make the initial value from localstorage
 
     const [ isSeeking, setSeeking ] = useState(false)
 
@@ -53,7 +53,6 @@ const PlayingSongController = () => {
 
     // Switcher for PlayBtn
     const handleSwitch = () => { setIsPlaying(!isPlaying) }
-    
     const handleMuteAudio = () => { setIsMuted(!isMuted) }
         
     return (
@@ -86,7 +85,7 @@ const PlayingSongController = () => {
                     src="https://goldfirestudios.com/proj/howlerjs/sound.ogg"
                     playing={isPlaying}
                     loop={false} /* Doesn't work! */
-                    volume={0.15}
+                    volume={volume / 100}
                     mute={isMuted}
                 />
 
@@ -112,10 +111,11 @@ const PlayingSongController = () => {
                     <span className="text-icon-default mx-1">{ formatTime(duration) }</span>
                 </div>
                 <div>
-                    <Button className="relative" variant="ghost" size="icon" onClick={handleMuteAudio}>
-                        <Icon id="volume" />
-                        { isMuted && <Icon size="small" id="close" className="absolute bottom-[-8%] right-[-12%]" /> }
-                    </Button>
+                    <VolumeController
+                        volumeState={[ volume, setVolume ]}
+                        onMute={handleMuteAudio}
+                        isMuted={isMuted}
+                    />
                 </div>
             </div>
             {/* Other controls */}
