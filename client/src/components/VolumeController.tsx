@@ -15,11 +15,11 @@ import { cn } from "@/lib/utils"
 
 type TVolumeControllerProps = {
     volumeState: [number, (e: number) => void]
+    mutedState: [boolean, (e: boolean) => void]
     onMute: () => void
-    isMuted: boolean
 }
 
-const VolumeController = ({ onMute, isMuted, volumeState }: TVolumeControllerProps) => {
+const VolumeController = ({ onMute, mutedState, volumeState }: TVolumeControllerProps) => {
     const [ open, setOpen ] = useState<boolean>(false)
 
     // Disabling Shadcn's click behaviour and toggling mute
@@ -43,17 +43,21 @@ const VolumeController = ({ onMute, isMuted, volumeState }: TVolumeControllerPro
                         onClick={handleClick}
                     >
                         <Icon id="volume" />
-                        { isMuted && <Icon size="small" id="close" className="absolute bottom-[-3%] right-[-5%]" /> }
+                        { mutedState[0] && <Icon size="small" id="close" className="absolute bottom-[-3%] right-[-5%]" /> }
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className={cn(
                     "w-[10dvw] min-w-[100px] bg-dp-0/10 border-accent-default/10",
-                    { "brightness-50": isMuted }
+                    { "brightness-50": mutedState[0] },
+                    "rounded-full py-1.5"
                 )}>
                     <Slider
-                        disabled={isMuted} // Questionable
+                        className="py-2.5"
                         defaultValue={[volumeState[0]]}
-                        onValueChange={(e) => { volumeState[1](e[0]) }}
+                        onValueChange={(e) => {
+                            volumeState[1](e[0])
+                            mutedState[1](false)
+                        }}
                     />
                 </PopoverContent>
             </Popover>

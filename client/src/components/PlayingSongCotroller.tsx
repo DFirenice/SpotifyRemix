@@ -113,8 +113,8 @@ const PlayingSongController = () => {
                 <div>
                     <VolumeController
                         volumeState={[ volume, setVolume ]}
+                        mutedState={[ isMuted, setIsMuted ]}
                         onMute={handleMuteAudio}
-                        isMuted={isMuted}
                     />
                 </div>
             </div>
