@@ -11,6 +11,7 @@ import { Slider } from "@/components/ui/slider"
 import Icon from "@/components/ui/Icon"
 
 import { useState } from 'react'
+import { cn } from "@/lib/utils"
 
 type TVolumeControllerProps = {
     volumeState: [number, (e: number) => void]
@@ -45,10 +46,14 @@ const VolumeController = ({ onMute, isMuted, volumeState }: TVolumeControllerPro
                         { isMuted && <Icon size="small" id="close" className="absolute bottom-[-3%] right-[-5%]" /> }
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[10dvw] bg-dp-0/20 border-accent-default/10">
+                <PopoverContent className={cn(
+                    "w-[10dvw] min-w-[100px] bg-dp-0/10 border-accent-default/10",
+                    { "brightness-50": isMuted }
+                )}>
                     <Slider
+                        disabled={isMuted} // Questionable
                         defaultValue={[volumeState[0]]}
-                        onValueChange={(e) => volumeState[1](e[0])}
+                        onValueChange={(e) => { volumeState[1](e[0]) }}
                     />
                 </PopoverContent>
             </Popover>
