@@ -3,8 +3,10 @@ import type { SVGProps } from "react"
 import { icons } from "@/data/icons"
 import { cn } from "@/lib/utils"
 
+export type TIconSize = 'small' | 'default' | 'large'
+
 interface IIconProps extends SVGProps<SVGAElement> {
-  size?: 'small' | 'default' | 'large'
+  size?: TIconSize
   active?: boolean
   id: Ticons
 }
