@@ -17,7 +17,10 @@ export default function IconButton ({
 }: TIconButtonProps & React.ComponentProps<"button">) {
     return (
         <Button
-            className={cn({ "pl-1 text-fg-secondary hover:text-fg-secondary": !!text })}
+            className={cn(
+                { "pl-1 text-fg-secondary hover:text-fg-secondary": !!text },
+                props?.className
+            )}
             variant="ghost"
             size={text ? "default" : "icon"}
             {...props}

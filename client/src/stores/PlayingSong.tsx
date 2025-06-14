@@ -1,17 +1,5 @@
 import { create } from "zustand"
-
-// Redeclare as global type, in @app-types
-export type TPlaylist = string
-
-// Redeclare as global type, in @app-types
-type TUser = string // Should be SpotRem's user object
-
-// Redeclare as global type, in @app-types
-type TSong = {
-    name: string
-    author: TUser
-    belongsRef: TPlaylist
-}
+import type { TSong } from "@app-types/TracksAndPlaylists"
 
 interface IPlayingSongState {
     song: TSong | null

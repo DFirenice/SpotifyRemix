@@ -1,0 +1,1 @@
+export type TUser = string // Should be SpotRem's user object
