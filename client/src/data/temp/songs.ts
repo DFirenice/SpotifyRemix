@@ -1,4 +1,4 @@
-import type { TSong } from "@app-types/TracksAndPlaylists"
+import type { TSong } from "@app-types/tracksAndPlaylists"
 
 const mockSongs: TSong[] = [
     {

@@ -34,27 +34,33 @@ const LikedSongsPage = () => {
                 </div>
                 <Separator />
                 <div className="container mt-4">
-                    {/* For each song-block: flex-1 min-w-0 truncate cursor-pointer */}
                     {/* # | SongImg & Title | Album | Duration */}
-
-                    {/* TODO: Align text, fix fixed size, rewrite this sh*t */}
-                    
                     { mockSongs.map((song, i) => {
                         return (
-                            <div key={song.id} className="flex space-x-4 text-fg-secondary">
+                            <div key={song.id} className="
+                                flex space-x-4 text-fg-secondary h-[7.5dvh]
+                                *:inline-flex *:not-[span]:flex-1 *:items-center
+                            ">
                                 <span className="shrink-0 py-2 font-bold">{i + 1}</span>
-                                <div className="inline-flex flex-1 items-center gap-4 min-w-0 truncate py-2">
-                                    <Image
-                                        className="object-cover rounded-md max-w-[10dvh] aspect-square"
-                                        src={song.previewURL}
-                                        width={50}
-                                        height={50}
-                                        alt="Track Cover"
-                                    />
-                                    {song.name} {/* i.e. title */}
+                                <div className="gap-4 min-w-0 truncate py-2">
+                                    <div className="relative h-[85%] aspect-square">
+                                        <Image
+                                            className="object-cover rounded-lg"
+                                            fill src={song.previewURL}
+                                            alt="Track preview"
+                                        />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-accent-default font-bold tracking-wider">{song.name}</span>
+                                        <span>Author: {song.author?.name || 'Uknown'}</span>
+                                    </div>
                                 </div>
-                                <div className="flex-1 min-w-0 truncate py-2">{song.belongsRef}</div>
-                                <div className="flex-1 min-w-0 truncate py-2">{formatTime(song.duration)}</div>
+                                <div className="min-w-0 truncate py-2">{song.belongsRef}</div>
+                                {/* Rewrite how icon behaves */}
+                                <div className="min-w-0 truncate py-2 gap-x-2">
+                                    <span>{formatTime(song.duration)}</span>
+                                    <IconButton icon="like" className="**:fill-secondary **:stroke-secondary" />
+                                </div>
                             </div>
                         )
                     }) }

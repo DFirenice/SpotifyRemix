@@ -1,6 +1,8 @@
 import PlayBtn from "@/components/ui/PlayBtn"
 import Image from "next/image"
 
+import { Skeleton } from "@/components/ui/skeleton"
+
 import { formatTime } from "@/utils/timeFortmatter"
 import { useRef, useState, useEffect } from "react"
 import ReactHowler from 'react-howler'
@@ -13,7 +15,7 @@ import usePlayingSongStore from "@/stores/PlayingSong"
 
 const PlayingSongController = () => {
     const playerRef = useRef<ReactHowler>(null)
-    const { isPlaying, setIsPlaying } = usePlayingSongStore()
+    const { song, isPlaying, setIsPlaying } = usePlayingSongStore()
     
     const [ duration, setDuration ] = useState<number>(0),
           [ seek, setSeek ] = useState<number>(0),
@@ -64,16 +66,23 @@ const PlayingSongController = () => {
             {/* Track preview */}
             <div>
                 <div className="relative h-[85%] aspect-square">
-                    <Image
-                        src="https://i.pinimg.com/736x/f2/89/71/f2897106d15f970f0834581c78b48e61.jpg"
-                        alt="Track preview" fill
-                        className="rounded-lg"
-                    />
+                    { song?.previewURL ?
+                        <Image
+                            src={song?.previewURL}
+                            alt="Track preview" fill
+                            className="rounded-lg"
+                        />
+                    : <Skeleton className="h-full rounded-lg bg-neutral-700" /> }
                 </div>
                 <div className="ml-1.5 flex flex-col leading-5">
-                    <span className="overflow-ellipsis">Get lucky</span>
-                    <span className="text-icon-default text-nowrap">Daft punk</span>
-                    <span className="text-icon-default text-nowrap">Random Access Memories</span>
+                    { song ?  <> <span className="overflow-ellipsis">{song?.name}</span>
+                        <span className="text-icon-default text-nowrap">{song?.author}</span>
+                        <span className="text-icon-default text-nowrap">{song?.belongsRef}</span>
+                    </> : <>
+                        <Skeleton className="truncate w-[13ch] h-[1.5ch] bg-neutral-700" />
+                        <Skeleton className="truncate my-1 w-[18ch] h-[1.5ch] bg-neutral-700" />
+                        <Skeleton className="truncate w-[7ch] h-[1.5ch] bg-neutral-700" />
+                    </> }
                 </div>
             </div>
             {/* Track controller */}
