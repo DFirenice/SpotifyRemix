@@ -23,6 +23,7 @@
     .grid-area-aside { grid-area: aside; }
 
     .bordered { @apply rounded-xl border-2 border-dp-1; }
+    .page-container { @apply h-full rounded-md border-2 border-dp-1 py-3 px-2.5 space-y-6; }
 }
 
 /* Fluid scaling using clamp */

@@ -2,40 +2,64 @@
 
 import Image from "next/image"
 import IconButton from "@/components/ui/IconButton"
-import ViewSorter from "@/components/ViewSorter"
 import { Separator } from "@/components/ui/separator"
+import ViewControlPanel from "@/components/sorting/ViewControlPanel"
+
+import { useState, useRef } from "react"
+
 import { formatTime } from "@/utils/timeFortmatter"
+import { sortBy } from "@/utils/songsSorter"
+import { cn } from "@/lib/utils"
 
 import mockSongs from "@/data/temp/songs"
+import type { TSong } from "@/types/tracksAndPlaylists"
 
 const LikedSongsPage = () => {
+    // Add: Sort initally by remembered value
+    const [ sortedSongs, setSortedSongs ] = useState(sortBy(mockSongs, 'name', false))
+    const [ lastSort, setLastSort ] = useState<string | undefined>('name')
+    const isReverseRef = useRef(false)
+
+    // Sorts songs array by comparing property
+    const handleSort = (prop: keyof TSong) => {
+        if (lastSort == prop) {
+            isReverseRef.current = !isReverseRef.current
+            setSortedSongs(sortBy(sortedSongs, prop, isReverseRef.current))
+        } else {
+            isReverseRef.current = false
+            setSortedSongs(sortBy(sortedSongs, prop, false))
+        }
+        setLastSort(prop)
+    }
+
     return (
-        <div className="h-full rounded-md border-2 border-dp-1 py-3 px-2.5 space-y-6">
+        <div className="page-container">
             {/* Sort&Filter Panel */}
-            <div className="w-full flex items-center justify-between gap-1">
-                <IconButton icon="add_simple" />
-                <div className="space-x-1">
-                    <ViewSorter />
-                    <IconButton className="pl-1 gap-0.5" icon="sort" text="Sorted by" />
-                    <IconButton className="pl-1 gap-0.5" icon="filter" text="Filter: All" />
-                    <IconButton icon="search" />
-                </div>
-            </div>
+            <ViewControlPanel />
             <div className="w-full px-4">
                 {/* Sort bar */}
                 {/* # | Title | Album | Duration */}
                 <div className="container">
                     <div className="text-fg-secondary flex gap-4">
                         <span className="shrink-0 py-2">#</span>
-                        <a className="flex-1 min-w-0 truncate cursor-pointer py-2">Title</a>
-                        <a className="flex-1 min-w-0 truncate cursor-pointer py-2">Album</a>
-                        <a className="flex-1 min-w-0 truncate cursor-pointer py-2">Duration</a>
+                        {/* Sort-by controls */}
+                        {  ['name', 'author', 'duration'].map((sortingCriteria) => (
+                            <a className={
+                                cn(
+                                    "select-none capitalize flex-1 min-w-0 truncate cursor-pointer py-2",
+                                    { 'text-accent-default font-bold': sortingCriteria == lastSort }
+                                )}
+                                onClick={() => handleSort(sortingCriteria as keyof TSong )}
+                            >
+                                { sortingCriteria }
+                            </a>
+                        )) }
                     </div>
                 </div>
                 <Separator />
                 <div className="container mt-4">
                     {/* # | SongImg & Title | Album | Duration */}
-                    { mockSongs.map((song, i) => {
+                    { sortedSongs.map((song, i) => {
                         return (
                             <div key={song.id} className="
                                 flex space-x-4 text-fg-secondary h-[7.5dvh]
@@ -52,7 +76,7 @@ const LikedSongsPage = () => {
                                     </div>
                                     <div className="flex flex-col">
                                         <span className="text-accent-default font-bold tracking-wider">{song.name}</span>
-                                        <span>Author: {song.author?.name || 'Uknown'}</span>
+                                        <span className="truncate w-[30ch]">Author: {song.author || 'Uknown'}</span>
                                     </div>
                                 </div>
                                 <div className="min-w-0 truncate py-2">{song.belongsRef}</div>

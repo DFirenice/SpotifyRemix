@@ -23,7 +23,7 @@ const PlaylistSection = ({ imgUrl }: { imgUrl: string }) => {
                 absolute inset-0
                 flex justify-center items-center gap-[3rem]
             ">
-                <div className="relative w-[16dvw] aspect-[1/2]">
+                <div className="relative w-[16dvw] aspect-[1/2] h-[90%]">
                     <Image src={imgUrl} fill className="object-cover rounded-2xl" alt="Discover" />
                 </div>
                 <div className="flex flex-row gap-4">

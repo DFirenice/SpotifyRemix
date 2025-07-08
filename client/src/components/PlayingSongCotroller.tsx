@@ -59,7 +59,7 @@ const PlayingSongController = () => {
         
     return (
         <div className="
-            bg-gradient-to-br from-fg-secondary/20 to-accent-gray/80 h-[8dvh] w-full px-4 py-2 flex flex-row gap-6
+            bg-gradient-to-br from-fg-secondary/20 to-accent-gray/80 min-h-[8dvh] w-full px-4 py-2 flex flex-row gap-6
             overflow-y-auto rounded-xl border-2 border-dp-1 justify-between
             *:flex *:flex-row *:items-center
         ">
