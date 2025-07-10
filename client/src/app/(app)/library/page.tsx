@@ -1,31 +1,26 @@
+'use client'
+
 import ViewControlPanel from "@/components/sorting/ViewControlPanel"
 
+import { createViewModeStore } from "@/stores/createViewModeStore"
+import { useRef } from "react"
+
 import mockSongs from "@/data/temp/songs" // Note: should be randomly generated playlists for the feed
-import Image from "next/image"
+import mockPlaylists from "@/data/temp/playlists"
+import ViewContainer from "@/components/sorting/ViewContainer"
 
 const LibraryPage = () => {
+    const storeRef = useRef<ReturnType<typeof createViewModeStore>>(null)    
+    if (!storeRef.current) storeRef.current = createViewModeStore("library") // pageKey
+
+    const useStore = storeRef.current,
+          viewMode = useStore((s) => s.viewMode),
+          setViewMode = useStore((s) => s.setViewMode)
+
     return (
-        // page-container
         <section className="page-container flex flex-col overflow-hidden">
-            <ViewControlPanel schema="view_filters" />
-            {/* Main container */}
-            <div className="gap-x-2 gap-y-4 overflow-y-scroll flex flex-wrap h-full">
-                {/* Playlists or Authors */}
-                {mockSongs.map(playlist => (
-                    <div className="w-56 h-72">
-                        <div className=" bg-amber-800 rounded-lg w-full h-56 relative overflow-hidden">
-                            <Image src={playlist.previewURL} fill objectFit="cover" alt={playlist.previewURL} />
-                        </div>
-                        <div className="flex justify-between mt-1">
-                            <span className="w-full truncate text-accent-default">{ playlist.naming || 'Playlist is unavailable...' }</span>
-                            <span className="font-mono text-fg-secondary font-light">50</span> {/* Playlist size */}
-                        </div>
-                        { true ?( // playlist?.authors: if more than three, and 'and more'
-                            <p className="text-sm text-fg-secondary my-1">{ playlist.authors }, and more</p>
-                        ) : null }
-                    </div>
-                ))}
-            </div>
+            <ViewControlPanel viewMode={viewMode} setViewMode={setViewMode} schema="view_filters" />
+            <ViewContainer data={[mockPlaylists[0], ...mockSongs, mockPlaylists[1]]} viewMode={viewMode} /> {/* Ｎｏｔｅ：　Crushes the app */}
         </section>
     )
 }

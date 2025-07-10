@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import type { TSong } from "@app-types/TracksAndPlaylists"
+import type { TSong } from "@/types/mediaEntities.types.ts"
 
 interface IPlayingSongState {
     song: TSong | null

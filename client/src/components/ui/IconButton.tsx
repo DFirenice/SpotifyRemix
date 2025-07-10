@@ -8,11 +8,13 @@ type TIconButtonProps = {
     color?: string
     size?: TIconSize
     text?: string
+    variant?: React.ComponentProps<typeof Button>["variant"]
 }
 
 export default function IconButton ({
     icon, color = "",
     size = "default", text,
+    variant = "ghost",
     ...props
 }: TIconButtonProps & React.ComponentProps<"button">) {
     return (
@@ -21,7 +23,7 @@ export default function IconButton ({
                 { "pl-1 text-fg-secondary hover:text-fg-secondary": !!text },
                 props?.className
             )}
-            variant="ghost"
+            variant={variant}
             size={text ? "default" : "icon"}
             {...props}
         >

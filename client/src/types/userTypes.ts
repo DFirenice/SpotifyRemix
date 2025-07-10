@@ -1,1 +1,4 @@
-export type TUser = string // Should be SpotRem's user object
+import { z } from 'zod'
+import { UserSchema } from '@/schemas/mediaEntities'
+
+export type TUser = z.infer<typeof UserSchema>

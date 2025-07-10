@@ -1,13 +1,21 @@
-import { TSong } from "@/types/tracksAndPlaylists"
+import { TSong } from "@/types/mediaEntities.types.ts"
 
-// Utility that sorts songs[] by a specific property
-// Ascending order: asc = true
-export const sortBy = (sortable: TSong[], prop: keyof TSong, asc?: boolean): TSong[] => {
-    const sorted = sortable.toSorted((a, b) => {
-        if (asc && a[prop] < b[prop]) return -1
-        else if (!asc && a[prop] > b[prop]) return -1
-        return 0
+// Helper: safely accessing nested value from object using a path like "author.username"
+const getNestedValue = (obj: any, path: string): any => {
+    return path.split('.').reduce((acc, key) => acc?.[key], obj)
+}
+
+export const sortBy = (
+    sortable: TSong[],
+    prop: string, // no longer restricted to keyof TSong
+    asc: boolean = false
+): TSong[] => {
+    return sortable.toSorted((a, b) => {
+        const aVal = getNestedValue(a, prop)
+        const bVal = getNestedValue(b, prop)
+
+        if (aVal === bVal) return 0
+        if (asc) return aVal > bVal ? 1 : -1
+        else return aVal < bVal ? 1 : -1
     })
-
-    return sorted
 }
