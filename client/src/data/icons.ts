@@ -94,6 +94,7 @@ import user from '@/assets/icons/user.svg'
 import user_filled from '@/assets/icons/user_filled.svg'
 import video from '@/assets/icons/video.svg'
 import volume from '@/assets/icons/volume.svg'
+import note_head from '@/assets/icons/note_head.svg'
 
 export const icons = {
   add,
@@ -192,4 +193,5 @@ export const icons = {
   user_filled,
   video,
   volume,
+  note_head,
 }

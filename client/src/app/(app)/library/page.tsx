@@ -20,7 +20,7 @@ const LibraryPage = () => {
     return (
         <section className="page-container flex flex-col overflow-hidden">
             <ViewControlPanel viewMode={viewMode} setViewMode={setViewMode} schema="view_filters" />
-            <ViewContainer data={[mockPlaylists[0], ...mockSongs, mockPlaylists[1]]} viewMode={viewMode} /> {/* Ｎｏｔｅ：　Crushes the app */}
+            <ViewContainer includeFavorite data={[mockPlaylists[0], ...mockSongs, mockPlaylists[1]]} viewMode={viewMode} />
         </section>
     )
 }

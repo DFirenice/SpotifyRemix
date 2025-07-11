@@ -22,7 +22,8 @@
       "@/*": ["./src/*"],
       "@app-types/*": ["./src/types/*"],
       "@app-comps/*": ["./src/components/*"],
-      "@app-ui/*": ["./src/components/ui/*"]
+      "@app-ui/*": ["./src/components/ui/*"],
+      "@app-utils/*": ["./src/utils/*"]
     },
     "typeRoots": ["./node_modules/@types", "./types"]
   },

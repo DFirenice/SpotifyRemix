@@ -31,5 +31,6 @@ export const PlaylistSchema = z.object({
 export const FolderSchema = z.object({
   id: z.string(),
   name: z.string(),
-  playlists: z.array(z.string())
+  playlists: z.array(PlaylistSchema),
+  size: z.number()
 })

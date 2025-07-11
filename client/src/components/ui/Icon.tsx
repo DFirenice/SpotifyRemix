@@ -3,7 +3,7 @@ import type { SVGProps } from "react"
 import { icons } from "@/data/icons"
 import { cn } from "@/lib/utils"
 
-export type TIconSize = 'small' | 'default' | 'large'
+export type TIconSize = 'small' | 'default' | 'large' | 'fill'
 
 interface IIconProps extends SVGProps<SVGAElement> {
   size?: TIconSize
@@ -24,6 +24,7 @@ const Icon = (
     small: '1.5rem', // 24px
     default: '2rem', // 32px
     large: '2.5rem', // 40px
+    fill: ['100%', 'auto']
   }[size]
 
   if (!IconComponent) return null
@@ -36,8 +37,8 @@ const Icon = (
       )}
     >
       <IconComponent
-        style={{ width: sizePx, height: sizePx }}
-        className={`pointer-events-none ${active ? 'fill-icon-default' : ''}`}
+        style={Array.isArray(sizePx) ? { width: sizePx[0], height: sizePx[1] } : { width: sizePx, height: sizePx }}
+        className={`pointer-events-none aspect-square ${active ? 'fill-icon-default' : ''}`}
         {...rest}
       />
     </div>
