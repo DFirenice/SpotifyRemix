@@ -32,8 +32,13 @@ const Tile = ({ tile }: { tile: unknown }) => {
         const playlist = tile as TPlaylist
         return (
             <Link href={''} className="w-56 h-72">
-                <div className=" bg-dp-1 rounded-xl w-full h-56 relative overflow-hidden grid place-items-center">
-                    <Icon id="note_head" size="fill" className="w-1/3" />
+                <div className="w-full h-56 overflow-hidden flex flex-col">
+                    <div className="tile-folder-effect h-[0.6rem]">
+                        <div className="bg-dp-1" /><div className="bg-dp-2" />
+                    </div>
+                    <div className="bg-dp-1 rounded-xl flex-1 grid place-items-center">
+                        <Icon id="note_head" size="fill" className="w-1/3 **:bg-dp-1" />
+                    </div>
                 </div>
                 <div className="flex justify-between mt-1">
                     <span className="w-full truncate text-accent-default">{ playlist.name || 'Playlist is unavailable...' }</span>

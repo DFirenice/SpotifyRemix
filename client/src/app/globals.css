@@ -79,6 +79,21 @@
     scrollbar-width: none; /* Firefox */
 }
 
+/* Creates layering effect */
+.tile-folder-effect {
+    --_offset: .3rem;
+    width: 100%;
+
+    & > div {
+        @apply rounded-t-xl;
+        margin-inline: auto;
+        height: var(--_offset);
+    }
+    
+    & > div:nth-child(1) { width: 80%; }
+    & > div:nth-child(2) { width: 90%; }
+}
+
 /* Global: Images */
 img {
     user-select: none;

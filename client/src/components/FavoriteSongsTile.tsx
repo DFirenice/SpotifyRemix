@@ -8,8 +8,13 @@ const FavoriteSongsTile = () => {
     const collection = useUserStore(state => state.favoriteSongs)
     return (
         <Link href={''} className="w-56 h-72">
-            <div className=" bg-green-950 rounded-xl w-full h-56 relative overflow-hidden grid place-items-center">
-                <Icon id="like" size="fill" className="w-1/2 **:stroke-secondary" />
+            <div className="w-full h-56 overflow-hidden flex flex-col">
+                <div className="tile-folder-effect h-[0.6rem]">
+                    <div className="bg-green-900" /><div className="bg-green-700" />
+                </div>
+                <div className="bg-green-950 rounded-xl flex-1 grid place-items-center">
+                    <Icon id="like" size="fill" className="w-1/2 **:stroke-secondary" />
+                </div>
             </div>
             <div className="flex justify-between mt-1">
                 <span className="w-full truncate text-accent-default">Liked Songs</span>
