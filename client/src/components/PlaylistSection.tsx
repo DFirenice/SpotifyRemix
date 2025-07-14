@@ -15,10 +15,30 @@ import {
 } from "@radix-ui/react-dropdown-menu"
 import PlayBtn from "./ui/PlayBtn"
 
-// (!) PlaylistSection should accept props of type Playlist
-const PlaylistSection = ({ imgUrl }: { imgUrl: string }) => {
+import type { TPlaylist } from "@/types/mediaEntities.types.ts"
+import { accumulateAndFormatTime } from "@/utils/entityFormatter"
+import { getYear } from "@/utils/dateFormatter"
+import { useEffect } from "react"
+import { useInView } from "react-intersection-observer"
+
+type TPlaylistSectionProps = {
+    imgUrl: string
+    playlist: TPlaylist
+    onInView: (id: string) => void
+}
+
+const PlaylistSection = ({ imgUrl, playlist, onInView }: TPlaylistSectionProps) => {
+    const { ref, inView } = useInView({
+        threshold: 0.5,
+        rootMargin: '0px'
+    })
+
+    useEffect(() => {
+        if (inView) onInView(playlist.id)
+    }, [inView])
+
     return (
-        <section className="relative h-[80%] w-full snap-start overflow-hidden rounded-lg">
+        <section ref={ref} className="relative h-[80%] w-full snap-start overflow-hidden rounded-lg">
             <div className="
                 absolute inset-0
                 flex justify-center items-center gap-[3rem]
@@ -28,20 +48,22 @@ const PlaylistSection = ({ imgUrl }: { imgUrl: string }) => {
                 </div>
                 <div className="flex flex-row gap-4">
                     {/* Belonging album image */}
-                    <div className="w-[10dvw] aspect-square bg-pink-200 rounded-xl"></div>
+                    <div className="w-[10dvw] aspect-square relative">
+                        <Image src={playlist.previewURL} objectFit="cover" fill className="rounded-xl" alt="Playlist cover preview" />
+                    </div>
 
                     <div className="space-y-4">
-                        <Heading level={2} size="large">Linkin Park Mix</Heading>
+                        <Heading level={2} size="large">{playlist.name}</Heading>
 
                         {/* Playlist data */}
                         <div className="
                             flex items-center text-sm text-muted-foreground
                             [&>*:not(:first-child)]:before:content-['•'] [&>*:not(:first-child)]:before:mx-2
                         ">
-                            <span>By <a className="text-accent-default underline">Spotify</a></span>
-                            <span>Playlist year</span>
-                            <span>22 songs</span>
-                            <span>Total duration</span>
+                            <span>By <a className="text-accent-default underline">Creator</a></span>
+                            <span>{getYear(playlist.createdAt)}</span>
+                            <span>{playlist.size} songs</span>
+                            <span>{accumulateAndFormatTime(playlist.songs, false)}</span>
                         </div>
 
                         {/* Controls */}

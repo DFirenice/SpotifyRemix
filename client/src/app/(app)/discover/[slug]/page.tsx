@@ -1,11 +1,20 @@
 'use client'
 
 import PlaylistSection from "@/components/PlaylistSection"
+import mockPlaylists from "@/data/temp/playlists"
+
+import { useState } from 'react'
 
 const DiscoveryThemePage = () => {
-    // Temporarly: Plastlist preview
-    const imgUrl = "https://i.pinimg.com/736x/fe/18/17/fe1817a80dfd28078d1d107b45a67c6d.jpg"
+    const discoverPlaylists = mockPlaylists
+    // Temporarly: Playlist preview
+    const [ imgUrl, setImgUrl ] = useState(discoverPlaylists[0].previewURL)
 
+    const handleInView = (id: string) => {
+        const cPlaylist = discoverPlaylists.find(pl => pl.id === id)
+        if (cPlaylist) setImgUrl(cPlaylist.previewURL)
+    }
+    
     return (
         <div
             className="h-full w-full flex"
@@ -19,8 +28,15 @@ const DiscoveryThemePage = () => {
                     snap-y snap-mandatory snap-always scroll-p-[10%]
                     *:first-of-type:mt-[10dvh] backdrop-blur-lg
             ">
-                {/* Temporary duplicating playlists */}
-                {[...Array(5)].map((_, i) => <PlaylistSection key={i} imgUrl={imgUrl} />)}
+                {/* Ｎｏｔｅ： array of newly suggested playlists */}
+                { discoverPlaylists.map((playlist, i) =>
+                    <PlaylistSection
+                        key={playlist.id}
+                        playlist={playlist}
+                        imgUrl={playlist.previewURL}
+                        onInView={handleInView}
+                    />
+                ) }
             </div>
         </div>
     )

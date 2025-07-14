@@ -1,9 +1,10 @@
 import { TPlaylist, TSong } from "@app-types/mediaEntities.types.ts"
 import { formatTime } from "@/utils/timeFortmatter"
 
-export const accumulateAndFormatTime = (songs: TSong[]) => {
+export const accumulateAndFormatTime = (songs: TSong[], compact: boolean = true) => {
     return formatTime(
-        songs.reduce((acc, i) => acc + i.duration, 0)
+        songs.reduce((acc, i) => acc + i.duration, 0),
+        compact
     )
 }
 
