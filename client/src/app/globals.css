@@ -99,3 +99,15 @@ img {
     user-select: none;
     -webkit-user-drag: none;
 }
+
+/* Swiper Pagination Bullets */
+.swiper-pagination-bullet {
+    background: var(--color-dp-2) !important;
+    transition: all ease-in-out 200ms !important;
+    width: 2dvw !important;
+    border-radius: var(--radius-lg) !important;
+}
+
+.swiper-pagination-bullet-active {
+    background: var(--color-secondary) !important;
+}

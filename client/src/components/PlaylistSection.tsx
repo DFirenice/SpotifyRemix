@@ -21,6 +21,9 @@ import { getYear } from "@/utils/dateFormatter"
 import { useEffect } from "react"
 import { useInView } from "react-intersection-observer"
 
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Autoplay, Pagination, Navigation } from 'swiper/modules'
+
 type TPlaylistSectionProps = {
     imgUrl: string
     playlist: TPlaylist
@@ -43,11 +46,27 @@ const PlaylistSection = ({ imgUrl, playlist, onInView }: TPlaylistSectionProps) 
                 absolute inset-0
                 flex justify-center items-center gap-[3rem]
             ">
-                <div className="relative w-[16dvw] aspect-[1/2] h-[90%]">
-                    <Image src={imgUrl} fill className="object-cover rounded-2xl" alt="Discover" />
+                {/* Track images swiper */}
+                <div className="relative w-[16dvw] aspect-[4/6]">
+                    <Swiper
+                        spaceBetween={30}
+                        centeredSlides={true}
+                        autoplay={inView ? { /* Rather complete using Ref */
+                            delay: 3000,
+                            disableOnInteraction: false,
+                        } : false}
+                        pagination={{ clickable: true }}
+                        modules={[Autoplay, Pagination, Navigation]}
+                        className="h-full cursor-grab"
+                    >
+                        { playlist.songs.map(song => (
+                            <SwiperSlide key={song.id}>
+                                <Image src={song.previewURL} fill className="object-cover rounded-2xl" alt="Discover" />
+                            </SwiperSlide>
+                        )) }
+                    </Swiper>
                 </div>
                 <div className="flex flex-row gap-4">
-                    {/* Belonging album image */}
                     <div className="w-[10dvw] aspect-square relative">
                         <Image src={playlist.previewURL} objectFit="cover" fill className="rounded-xl" alt="Playlist cover preview" />
                     </div>
@@ -77,7 +96,7 @@ const PlaylistSection = ({ imgUrl, playlist, onInView }: TPlaylistSectionProps) 
                             <Button variant="ghost" size="icon"> <Icon id="add_to_playlist" /> </Button>
                             <Button variant="ghost" size="icon"> <Icon id="add_to_queue" /> </Button>
                             <Button variant="ghost" size="icon"> <Icon id="share" /> </Button>
-                            
+
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <Button variant="ghost" size="icon"> <Icon id="more" /> </Button>
@@ -108,7 +127,7 @@ const PlaylistSection = ({ imgUrl, playlist, onInView }: TPlaylistSectionProps) 
                             <Tag text="Rock" secondary />
                             <Tag text="Alt Rock" secondary />
                         </div>
-                        
+
                     </div>
                 </div>
             </div>

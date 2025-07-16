@@ -5,6 +5,10 @@ import '@/../public/styles/satoshi.css'
 import "./shadcnGlobals.css"
 import './globals.css'
 
+import 'swiper/css'
+import 'swiper/css/pagination'
+import 'swiper/css/navigation'
+
 export const metadata: Metadata = {
 title: "SpotRem",
 description: "Special music platform",
