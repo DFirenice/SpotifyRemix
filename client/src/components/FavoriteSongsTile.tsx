@@ -7,7 +7,7 @@ import { useUserStore } from "@/stores/useUserStore"
 const FavoriteSongsTile = () => {
     const collection = useUserStore(state => state.favoriteSongs)
     return (
-        <Link href={''} className="w-56 h-72">
+        <Link href="/liked" className="w-56 h-72">
             <div className="w-full h-56 overflow-hidden flex flex-col">
                 <div className="tile-folder-effect h-[0.6rem]">
                     <div className="bg-green-900" /><div className="bg-green-700" />

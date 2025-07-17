@@ -32,5 +32,7 @@ export const FolderSchema = z.object({
   id: z.string(),
   name: z.string(),
   playlists: z.array(PlaylistSchema),
-  size: z.number()
+  size: z.number(),
+  createdAt: z.string(),
+  updatedAt: z.string()
 })

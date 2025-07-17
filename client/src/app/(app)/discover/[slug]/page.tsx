@@ -33,10 +33,11 @@ const DiscoveryThemePage = () => {
                     <PlaylistSection
                         key={playlist.id}
                         playlist={playlist}
-                        imgUrl={playlist.previewURL}
                         onInView={handleInView}
                     />
                 ) }
+                {/* Padding on last element */}
+                <div className="h-[10%]"/>
             </div>
         </div>
     )
