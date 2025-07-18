@@ -1,6 +1,8 @@
 'use client'
 
 import { useRouter } from "next/navigation"
+import { useUser } from '@auth0/nextjs-auth0'
+
 import Navigation from '@/components/Navigation'
 import Drawer from "@/components/Drawer"
 import Aside from "@/components/Aside"
@@ -8,9 +10,11 @@ import PlayingSongController from "@/components/PlayingSongCotroller"
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter()
+    const { isLoading, user } = useUser()
     
-    const authorized = true
-    if (authorized) {
+    if (isLoading) return <>Loading...</>
+    
+    if (user) {
         return (
             <main className="
                 grid template-area-app gap-y-2 gap-x-1.5
@@ -29,7 +33,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         )
     }
 
-    router.replace('/auth')
+    router.replace('/auth/login')
     return null
 }
 

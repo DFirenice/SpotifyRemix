@@ -105,7 +105,7 @@ const mockPlaylists: TPlaylist[] = [
                     username: 'Solstice Flow'
                 },
                 belongsRef: 'playlist-003',
-                previewURL: 'https://i.pinimg.com/736x/70/e4/34/70e4346a5dcaee130e80f1e66ddf36db.jpg',
+                previewURL: 'https://i.pinimg.com/1200x/89/c9/b5/89c9b5934fedb7abe26a18743501ab6a.jpg',
                 sourceURL: 'https://example.com/audio/golden-hour.mp3',
                 uploadedAt: '2025-06-18T19:00:00.000Z',
                 updatedAt: '2025-06-18T19:00:00.000Z',
@@ -119,7 +119,7 @@ const mockPlaylists: TPlaylist[] = [
                     username: 'Desert Mirage'
                 },
                 belongsRef: 'playlist-003',
-                previewURL: 'https://i.pinimg.com/736x/68/15/7d/68157dd46936f7a50a5c670622ff92d5.jpg',
+                previewURL: 'https://i.pinimg.com/1200x/45/33/da/4533dae56e1c7f78ec33bded182eeb33.jpg',
                 sourceURL: 'https://example.com/audio/mirage-run.mp3',
                 uploadedAt: '2025-06-18T19:10:00.000Z',
                 updatedAt: '2025-06-18T19:10:00.000Z',
@@ -143,7 +143,7 @@ const mockPlaylists: TPlaylist[] = [
                     username: 'Robotica'
                 },
                 belongsRef: 'playlist-004',
-                previewURL: 'https://i.pinimg.com/736x/ab/cd/ef/abcdef1234567890abcdef1234567890.jpg',
+                previewURL: 'https://i.pinimg.com/736x/ca/3d/47/ca3d47913cd3aed5f5cae988ae5d4f47.jpg',
                 sourceURL: 'https://example.com/audio/synthetic-love.mp3',
                 uploadedAt: '2025-06-20T21:00:00.000Z',
                 updatedAt: '2025-06-20T21:00:00.000Z',
@@ -167,7 +167,7 @@ const mockPlaylists: TPlaylist[] = [
                     username: 'Galaxian'
                 },
                 belongsRef: 'playlist-005',
-                previewURL: 'https://i.pinimg.com/736x/21/43/65/214365c7fe3e8ff4b8ffbcf6e24f5a98.jpg',
+                previewURL: 'https://i.pinimg.com/736x/71/7a/38/717a3823ce697eaa9e882a715ab5725b.jpg',
                 sourceURL: 'https://example.com/audio/orbiting-thoughts.mp3',
                 uploadedAt: '2025-06-25T11:00:00.000Z',
                 updatedAt: '2025-06-25T11:00:00.000Z',
@@ -181,7 +181,7 @@ const mockPlaylists: TPlaylist[] = [
                     username: 'Void Whisperer'
                 },
                 belongsRef: 'playlist-005',
-                previewURL: 'https://i.pinimg.com/736x/3e/5f/7a/3e5f7a31c74b21f1f5b9a71287e0cfb9.jpg',
+                previewURL: 'https://i.pinimg.com/1200x/fa/7e/95/fa7e951811b4f63cf1a3307b24f6c9f8.jpg',
                 sourceURL: 'https://example.com/audio/deep-space-lullaby.mp3',
                 uploadedAt: '2025-06-25T11:10:00.000Z',
                 updatedAt: '2025-06-25T11:10:00.000Z',

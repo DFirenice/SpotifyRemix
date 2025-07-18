@@ -14,6 +14,8 @@ title: "SpotRem",
 description: "Special music platform",
 }
 
+import { Auth0Provider } from '@auth0/nextjs-auth0'
+
 export default function RootLayout(
     { children, }: Readonly<{ children: React.ReactNode }>
 ) {
@@ -23,9 +25,11 @@ export default function RootLayout(
                 {/* Temporary solution for fonts */}
                 <link rel="stylesheet" href="/fonts/fonts.css" />
             </Head>
-            <body className="bg-dp-0">
-                {children}
-            </body>
+            <Auth0Provider>
+                <body className="bg-dp-0">
+                    {children}
+                </body>
+            </Auth0Provider>
         </html>
     )
 }
