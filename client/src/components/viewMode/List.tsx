@@ -4,6 +4,7 @@ import Image from "next/image"
 import IconButton from "@/components/ui/IconButton"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/Icon"
+import Link from "next/link"
 
 import { useState, useRef } from "react"
 
@@ -14,6 +15,7 @@ import { cn } from "@/lib/utils"
 
 import type { TPlaylist, TSong } from "@/types/mediaEntities.types.ts"
 import { detectMediaEntityType } from "@/utils/typeGuards"
+import { accumulateAndFormatTime } from "@/utils/entityFormatter"
 
 const List = ({ data }: { data: unknown[] }) => {
     // Add: Sort initally by remembered value
@@ -33,20 +35,13 @@ const List = ({ data }: { data: unknown[] }) => {
         setLastSort(prop)
     }
 
-    // Sum total time of all tracks within and return formatted time
-    const accumulateAndFormatTime = (songs: TSong[]) => {
-        return formatTime(
-            songs.reduce((acc, i) => acc + i.duration, 0)
-        )
-    }
-
     const renderList = (data: unknown[]) => {
         return sortedSongs.map((obj: unknown, i) => {
             if (detectMediaEntityType(obj) === 'song') {
                 const song = obj as TSong
                 return (
                     <div key={song.id} className="
-                        flex space-x-4 text-fg-secondary h-[7.5dvh]
+                        flex space-x-4 text-fg-secondary min-h-[7.5dvh]
                         *:inline-flex *:not-[span]:flex-1 *:items-center
                     ">
                         <span className="shrink-0 py-2 font-bold">{i + 1}</span>
@@ -66,7 +61,7 @@ const List = ({ data }: { data: unknown[] }) => {
                         <div className="min-w-0 truncate py-2">{song.author.username}</div>
                         {/* Rewrite how icon behaves */}
                         <div className="min-w-0 truncate py-2 gap-x-2">
-                            <span>{formatTime(song.duration)}</span>
+                            <span>{ formatTime(song.duration) }</span>
                             <IconButton icon="like" className="**:fill-secondary **:stroke-secondary" />
                         </div>
                     </div>
@@ -74,8 +69,8 @@ const List = ({ data }: { data: unknown[] }) => {
             } else if (detectMediaEntityType(obj) === 'playlist') {
                 const playlist = obj as TPlaylist
                 return (
-                    <div key={playlist.id} className="
-                        flex space-x-4 text-fg-secondary h-[7.5dvh]
+                    <Link href={`playlists/${playlist.id}`} key={playlist.id} className="
+                        flex space-x-4 text-fg-secondary min-h-[7.5dvh]
                         *:inline-flex *:not-[span]:flex-1 *:items-center
                     ">
                         <span className="shrink-0 py-2 font-bold">{i + 1}</span>
@@ -90,9 +85,9 @@ const List = ({ data }: { data: unknown[] }) => {
                         </div>
                         <div className="min-w-0 truncate py-2">{ accumulateAndFormatAuthors(playlist.songs, 2) }</div>
                         <div className="min-w-0 truncate py-2 gap-x-2">
-                            <span>:: {accumulateAndFormatTime(playlist.songs)} ::</span>
+                            <span>{ accumulateAndFormatTime(playlist.songs, false) }</span>
                         </div>
-                    </div>
+                    </Link>
                 )
             }
 
@@ -108,7 +103,7 @@ const List = ({ data }: { data: unknown[] }) => {
                 <div className="text-fg-secondary flex gap-4">
                     <span className="shrink-0 py-2">#</span>
                     {/* Sort-by controls */}
-                    {  [['name', 'name'], ['author', 'author.username'], ['duration', 'duration']].map((sortingCriteria) => (
+                    {  [['name', 'name'], ['author(s)', 'author.username'], ['duration', 'duration']].map((sortingCriteria) => (
                         <a key={`list_sorting_criteria_${sortingCriteria[0]}`} className={
                             cn(
                                 "select-none capitalize flex-1 min-w-0 truncate cursor-pointer py-2",
@@ -123,7 +118,7 @@ const List = ({ data }: { data: unknown[] }) => {
             </div>
             <Separator />
             <div className="container mt-4">
-                {/* # | SongImg & Title | Album | Duration */}
+                {/* # | SongImg & Title | Album (Playlist) | Duration */}
                 { renderList(sortedSongs) }
             </div>
         </div>

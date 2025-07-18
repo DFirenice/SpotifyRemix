@@ -19,6 +19,11 @@ export const accumulateAndFormatAuthors = (songs: TSong[], reducer: number) => {
     return final.join(", ")
 }
 
+export const accumulateAuthors = (songs: TSong[]): { username: string, id: string }[] => {
+    const authors = songs.map(song => song.author)
+    return authors
+}
+
 export const accumulateAndFormatPlaylists = (playlists: TPlaylist[], reducer: number) => {
     const s = playlists.length
     let final = []

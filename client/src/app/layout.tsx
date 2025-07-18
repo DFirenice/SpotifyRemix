@@ -20,16 +20,16 @@ export default function RootLayout(
     { children, }: Readonly<{ children: React.ReactNode }>
 ) {
     return (
-        <html lang="en" className="dark">
-            <Head>
-                {/* Temporary solution for fonts */}
-                <link rel="stylesheet" href="/fonts/fonts.css" />
-            </Head>
-            <Auth0Provider>
-                <body className="bg-dp-0">
-                    {children}
-                </body>
-            </Auth0Provider>
-        </html>
+        <Auth0Provider>
+            <html lang="en" className="dark">
+                <Head>
+                    {/* Temporary solution for fonts */}
+                    <link rel="stylesheet" href="/fonts/fonts.css" />
+                </Head>
+                    <body className="bg-dp-0">
+                        {children}
+                    </body>
+            </html>
+        </Auth0Provider>
     )
 }

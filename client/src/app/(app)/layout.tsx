@@ -12,13 +12,18 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter()
     const { isLoading, user } = useUser()
     
-    if (isLoading) return <>Loading...</>
+    // Ｎｏｔｅ： Make custom loading
+    if (isLoading) return (
+        <section className="h-full w-full grid place-items-center">
+            <p>Loading...</p>
+        </section>
+    )
     
     if (user) {
         return (
             <main className="
                 grid template-area-app gap-y-2 gap-x-1.5
-                h-dvh py-2 px-1.5
+                h-screen py-2 px-1.5
             ">
                 <Navigation className="grid-area-header" />
                 <Drawer className="grid-area-aside flex flex-col gap-y-1" />

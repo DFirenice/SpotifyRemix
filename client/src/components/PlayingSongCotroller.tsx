@@ -76,7 +76,7 @@ const PlayingSongController = () => {
                 </div>
                 <div className="ml-1.5 flex flex-col leading-5">
                     { song ?  <> <span className="overflow-ellipsis">{song?.name}</span>
-                        <span className="text-icon-default text-nowrap">{song?.author}</span>
+                        <span className="text-icon-default text-nowrap">{song?.author.username}</span>
                         <span className="text-icon-default text-nowrap">{song?.belongsRef}</span>
                     </> : <>
                         <Skeleton className="truncate w-[13ch] h-[1.5ch] bg-neutral-700" />

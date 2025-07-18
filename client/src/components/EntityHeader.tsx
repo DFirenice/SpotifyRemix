@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from "@app-ui/button"
 import PlayBtn from "@app-ui/PlayBtn"
 import Icon from "@app-ui/Icon"
@@ -41,7 +43,7 @@ const SongInfo = ({ song }: { song: TSong }) => {
     )
 }
 
-const EntityHeader = ({ entity }: { entity: TSong | TPlaylist | TFolder } ) => {
+const EntityHeader = ({ entity, excludeTags = false }: { entity: TSong | TPlaylist | TFolder, excludeTags?: boolean } ) => {
     const type = detectMediaEntityType(entity)
 
     const entityInfoMap = {
@@ -100,10 +102,12 @@ const EntityHeader = ({ entity }: { entity: TSong | TPlaylist | TFolder } ) => {
                 </DropdownMenu>
             </div>
             {/* Tags */}
-            <div className="space-x-2">
-                <Tag text="Rock" secondary />
-                <Tag text="Alt Rock" secondary />
-            </div>
+            { !excludeTags && (
+                <div className="space-x-2">
+                    <Tag text="Rock" secondary />
+                    <Tag text="Alt Rock" secondary />
+                </div>
+            ) }
         </div>
     )
 }

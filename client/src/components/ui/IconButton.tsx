@@ -7,7 +7,7 @@ type TIconButtonProps = {
     icon: Ticons
     color?: string
     size?: TIconSize
-    text?: string
+    text?: string | React.ReactElement
     variant?: React.ComponentProps<typeof Button>["variant"]
 }
 

@@ -15,7 +15,8 @@ export const SongSchema = z.object({
   previewURL: z.string(),
   sourceURL: z.string(),
   uploadedAt: z.string(),
-  updatedAt: z.string()
+  updatedAt: z.string(),
+  tags: z.string().array()
 })
 
 export const PlaylistSchema = z.object({
@@ -25,7 +26,8 @@ export const PlaylistSchema = z.object({
   size: z.number(),
   songs: SongSchema.array(),
   createdAt: z.string(),
-  updatedAt: z.string()
+  updatedAt: z.string(),
+  tags: z.string().array()
 })
 
 export const FolderSchema = z.object({

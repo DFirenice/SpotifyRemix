@@ -12,7 +12,7 @@ const SearchOpenable = () => {
         <IconButton icon="search" onClick={() => setActive(prev => !prev)} />
     )
     
-    return <Search autoFocus ref={searchRef} />
+    return <Search className="w-fit h-auto" autoFocus ref={searchRef} />
 }
 
 export default SearchOpenable

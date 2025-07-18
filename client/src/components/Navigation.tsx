@@ -4,14 +4,20 @@ import Icon from "@/components/ui/Icon"
 
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
+import { Skeleton } from "@app-ui/skeleton"
 
 import { discoverThemes } from "@/data/DiscoverPage"
 import { homeThemes } from "@/data/HomePage"
-import { genSlug } from "@/utils/genSlug"
-
 import { streamItems } from '@/data/Navigation'
+
+import { genSlug } from "@/utils/genSlug"
 import { useAsideStore } from "@/stores/useAside"
 import { useShallow } from 'zustand/shallow'
+import { useUser } from "@auth0/nextjs-auth0"
+import ContextMenu from "./ui/ContextMenu"
+
+// Dev
+import type { Ticons } from "@/types/icons"
 
 const Navigation = ({ ...props }) => {
     const { toggleAsideMenu, currentAside } = useAsideStore(
@@ -27,6 +33,32 @@ const Navigation = ({ ...props }) => {
 
     const HomeInitialTheme = genSlug(homeThemes[0])
     const DiscoverInitialTheme = genSlug(discoverThemes[0])
+    
+    const { user, isLoading } = useUser()
+    
+    // Dropping down context menu on Avatar clicking
+    const UserAvatarComponent = (
+        <Avatar className="rounded-full overflow-hidden size-8">
+            <AvatarImage src={user?.picture} alt="You." />
+            <AvatarFallback>{[...String(user?.nickname)][0].toUpperCase()}</AvatarFallback>
+        </Avatar>
+    )
+
+    const avatarContextMenu = {
+        menuLabel: "Your Profile",
+        items: [
+            {
+                label: "Profile",
+                action: () => console.log(user),
+                icon: "private_icon" as Ticons
+            },
+            {
+                label: "Logout",
+                link: "/auth/logout",
+                icon: "off" as Ticons
+            }
+        ]
+    }
     
     return (
         <header { ...props }>
@@ -55,10 +87,9 @@ const Navigation = ({ ...props }) => {
                         </Button>
                     )) }
 
-                    <Avatar className="rounded-full overflow-hidden size-8">
-                        <AvatarImage src="https://github.com/DFirenice.png" alt="You." />
-                        <AvatarFallback>{[...'Username'][0].toUpperCase()}</AvatarFallback>
-                    </Avatar>
+                    { !isLoading && user ? (
+                        <ContextMenu content={avatarContextMenu} triggerElement={UserAvatarComponent} />
+                    ) : <Skeleton className="rounded-full overflow-hidden size-8" />}
                 </div>
                 
             </div>

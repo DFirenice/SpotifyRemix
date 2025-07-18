@@ -4,12 +4,14 @@ const mockPlaylists: TPlaylist[] = [
     {
         id: 'playlist-001',
         name: 'Night Chillwave',
+        tags: ['chill', 'night', 'synthwave'],
         previewURL: 'https://i.pinimg.com/736x/5b/f0/78/5bf0780314175503b9b4a1c7a350cc34.jpg',
         size: 3,
         songs: [
             {
                 id: 'song-003',
                 name: 'Neon Dreams',
+                tags: ['retro', 'dreamy'],
                 author: {
                     id: 'user-123e4567-e89b-12d3-a456-426614174002',
                     username: 'Dream Architect'
@@ -24,6 +26,7 @@ const mockPlaylists: TPlaylist[] = [
             {
                 id: 'song-006',
                 name: 'Starlight Parade',
+                tags: ['ambient', 'starlight'],
                 author: {
                     id: 'user-123e4567-e89b-12d3-a456-426614174004',
                     username: 'Stellar Beats'
@@ -38,6 +41,7 @@ const mockPlaylists: TPlaylist[] = [
             {
                 id: 'song-002',
                 name: 'Crimson Sky',
+                tags: ['emotional', 'sky'],
                 author: {
                     id: 'user-123e4567-e89b-12d3-a456-426614174001',
                     username: 'Crimson Nova'
@@ -56,12 +60,14 @@ const mockPlaylists: TPlaylist[] = [
     {
         id: 'playlist-002',
         name: 'Future Echoes',
+        tags: ['futuristic', 'echo', 'ambient', 'calming'],
         previewURL: 'https://i.pinimg.com/1200x/72/91/73/729173dbe29f0370200e1025fc52b130.jpg',
         size: 2,
         songs: [
             {
                 id: 'song-001',
                 name: 'Midnight Echo',
+                tags: ['midnight', 'soft'],
                 author: {
                     id: 'user-123e4567-e89b-12d3-a456-426614174000',
                     username: 'Aurora Pulse'
@@ -76,6 +82,7 @@ const mockPlaylists: TPlaylist[] = [
             {
                 id: 'song-005',
                 name: 'Echoes of Tomorrow',
+                tags: ['sci-fi', 'echo'],
                 author: {
                     id: 'user-123e4567-e89b-12d3-a456-426614174003',
                     username: 'Future Fade'
@@ -94,12 +101,14 @@ const mockPlaylists: TPlaylist[] = [
     {
         id: 'playlist-003',
         name: 'Sunset Mirage',
+        tags: ['sunset', 'desert', 'mirage'],
         previewURL: 'https://i.pinimg.com/736x/25/72/5e/25725e340e3ad7d162f1e07111c7874d.jpg',
         size: 2,
         songs: [
             {
                 id: 'song-010',
                 name: 'Golden Hour',
+                tags: ['golden', 'warm'],
                 author: {
                     id: 'user-abc4567e89b12d3a456426614174008',
                     username: 'Solstice Flow'
@@ -114,6 +123,7 @@ const mockPlaylists: TPlaylist[] = [
             {
                 id: 'song-011',
                 name: 'Mirage Run',
+                tags: ['fast', 'mirage'],
                 author: {
                     id: 'user-abc4567e89b12d3a456426614174009',
                     username: 'Desert Mirage'
@@ -132,12 +142,14 @@ const mockPlaylists: TPlaylist[] = [
     {
         id: 'playlist-004',
         name: 'Electric Heartbeats',
+        tags: ['electronic', 'romance', 'beats'],
         previewURL: 'https://i.pinimg.com/1200x/c9/b6/2d/c9b62df9ccdf9eaab3d0ca5923600dd5.jpg',
         size: 1,
         songs: [
             {
                 id: 'song-012',
                 name: 'Synthetic Love',
+                tags: ['robotic', 'love'],
                 author: {
                     id: 'user-xyz4567e89b12d3a456426614174010',
                     username: 'Robotica'
@@ -156,12 +168,14 @@ const mockPlaylists: TPlaylist[] = [
     {
         id: 'playlist-005',
         name: 'Cosmic Drift',
+        tags: ['space', 'cosmic', 'drift'],
         previewURL: 'https://i.pinimg.com/736x/05/fa/73/05fa734ad6cc84d27ce940ca78a660e7.jpg',
         size: 2,
         songs: [
             {
                 id: 'song-013',
                 name: 'Orbiting Thoughts',
+                tags: ['spacey', 'meditative'],
                 author: {
                     id: 'user-789e4567-e89b-12d3-a456-426614174011',
                     username: 'Galaxian'
@@ -176,6 +190,7 @@ const mockPlaylists: TPlaylist[] = [
             {
                 id: 'song-014',
                 name: 'Deep Space Lullaby',
+                tags: ['lullaby', 'deep'],
                 author: {
                     id: 'user-789e4567-e89b-12d3-a456-426614174012',
                     username: 'Void Whisperer'
