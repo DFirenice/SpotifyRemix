@@ -43,7 +43,7 @@ const SongInfo = ({ song }: { song: TSong }) => {
     )
 }
 
-const EntityHeader = ({ entity, excludeTags = false }: { entity: TSong | TPlaylist | TFolder, excludeTags?: boolean } ) => {
+const EntityHeader = ({ entity, excludeTags = false }: { entity: TSong | TPlaylist, excludeTags?: boolean } ) => {
     const type = detectMediaEntityType(entity)
 
     const entityInfoMap = {
@@ -104,8 +104,7 @@ const EntityHeader = ({ entity, excludeTags = false }: { entity: TSong | TPlayli
             {/* Tags */}
             { !excludeTags && (
                 <div className="space-x-2">
-                    <Tag text="Rock" secondary />
-                    <Tag text="Alt Rock" secondary />
+                    { [...entity.tags.map(tag => <Tag text={tag} secondary />)].slice(0, 3) }
                 </div>
             ) }
         </div>

@@ -28,10 +28,7 @@ const Playlist = async ({ params }: { params: Promise<{ slug: string }> }) => {
             ">
                 <div className="*:space-y-4 w-full">
                     <div className="flex flex-row items-end justify-between w-full">
-                        <div>
-                            <i>Playlist</i>
-                            <EntityHeader entity={playlist} excludeTags />
-                        </div>
+                        <EntityHeader entity={playlist} excludeTags />
                         <SearchOpenable />
                     </div>
                     <List data={playlist.songs} />
@@ -49,7 +46,7 @@ const Playlist = async ({ params }: { params: Promise<{ slug: string }> }) => {
                         />
                     </div>
                     {/* Tags */}
-                    <div className="flex flex-row justify-between flex-wrap gap-2">
+                    <div className="flex flex-row flex-wrap gap-2.5">
                         { playlist.tags.map((tag, _) => <Tag key={`${tag}_${_}`} text={tag} secondary /> )}
                     </div>
                     {/* Authors */}
