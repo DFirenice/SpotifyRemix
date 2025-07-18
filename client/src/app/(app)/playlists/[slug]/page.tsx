@@ -23,7 +23,7 @@ const Playlist = async ({ params }: { params: Promise<{ slug: string }> }) => {
         return (
             // Ｎｏｔｅ： Change gradient color to a color of the playlist
             <div className="
-                bordered rounded-lg pt-12 px-12 h-full flex flex-row gap-8
+                bordered rounded-lg pt-12 px-12 h-full flex flex-row gap-12
                 bg-gradient bg-gradient-to-b from-blue-950 to-transparent
             ">
                 <div className="*:space-y-4 w-full">
@@ -53,7 +53,7 @@ const Playlist = async ({ params }: { params: Promise<{ slug: string }> }) => {
                     <div className="flex flex-col gap-4 h-full overflow-y-auto">
                         {/* Ｎｏｔｅ： Fix to have authors' avatars and working profile links */}
                         { accumulateAuthors(playlist.songs).map(author => (
-                            <Link href="" className="flex flex-row items-center gap-4">
+                            <Link href="" className="flex flex-row items-center gap-4" key={author.id}>
                                 <Avatar className="rounded-full overflow-hidden size-14">
                                     <AvatarImage src="" alt={author.username} />
                                     <AvatarFallback><Skeleton className="rounded-full overflow-hidden size-8" /></AvatarFallback>
