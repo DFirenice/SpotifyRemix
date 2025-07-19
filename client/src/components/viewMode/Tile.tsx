@@ -1,22 +1,27 @@
 import Image from "next/image"
 import Link from "next/link"
 import Icon from "@/components/ui/Icon"
+import Thumbtack from "@app-ui/Thumbtack"
 
 import { detectMediaEntityType } from "@/utils/typeGuards"
-import type { TPlaylist, TSong, TFolder } from "@/types/mediaEntities.types.ts"
+import type { TPlaylist, TSong, TFolder, TMediaEntity } from "@/types/mediaEntities.types.ts"
 import { accumulateAndFormatAuthors, accumulateAndFormatPlaylists } from "@/utils/entityFormatter"
+import { useUserStore } from "@/stores/useUserStore"
 
 // Types of tiles:
 //  Liked songs (a collection of liked songs)
 //  Playlist (a collection of added songs OR generated based on use preferences)
 //  Folder (a collection of playlists)
 
-const Tile = ({ tile }: { tile: unknown }) => {
+const Tile = ({ tile }: { tile: TMediaEntity }) => {
+    const isPinned = useUserStore(state => state.pinned.has(tile.id))
+    
     // Song tile
     if (detectMediaEntityType(tile) === "song") {
         const song = tile as TSong
         return (
             <Link href={''} className="w-56 h-72">
+                { isPinned && <Thumbtack /> }
                 <div className=" rounded-lg w-full h-56 relative">
                     <Image src={song.previewURL} fill objectFit="cover" className="rounded-full" alt="Track cover" />
                 </div>
@@ -31,7 +36,8 @@ const Tile = ({ tile }: { tile: unknown }) => {
     else if (detectMediaEntityType(tile) === "playlist") {
         const playlist = tile as TPlaylist
         return (
-            <Link href={''} className="w-56 h-72">
+            <Link href={`/playlists/${playlist.id}`} className="w-56 h-72 relative">
+                { isPinned && <Thumbtack /> }
                 <div className="w-full h-56 overflow-hidden flex flex-col">
                     <div className="tile-folder-effect h-[0.6rem]">
                         <div className="bg-dp-1" /><div className="bg-dp-2" />
@@ -52,7 +58,8 @@ const Tile = ({ tile }: { tile: unknown }) => {
     else if (detectMediaEntityType(tile) === "folder") {
         const folder = tile as TFolder
         return (
-            <Link href={''} className="w-56 h-72">
+            <Link href={''} className="w-56 h-72 relative">
+                { isPinned && <Thumbtack /> }
                 <div className=" bg-dp-1 rounded-lg w-full h-56 relative overflow-hidden grid place-items-center">
                     <Icon id="folder" size="large" className="icon-active-outline"/>
                 </div>

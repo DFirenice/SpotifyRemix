@@ -14,13 +14,14 @@ const Drawer = ({ ...props }) => {
             <div className="mb-1.5">
                 <NavItem link="/library" text="My Library" icon="library" root />
             </div>
-            { DMenuList.map(({ text, iconId, link }, i) => {
+            { DMenuList.map(({ text, iconId, link, root }, i) => {
                 return (
                     <DrawerItem
-                        link={link || undefined}
+                        link={link || ''}
                         key={`${i}_${text}`}
                         content={text}
                         icon={iconId}
+                        root={root}
                     />
                 )
             }) }

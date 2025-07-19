@@ -6,15 +6,16 @@ import { useActiveLink } from "@/hooks/isActiveLink"
 import { cn } from "@/lib/utils"
 
 const DrawerItem = (
-    { content, action, link, icon }:
+    { content, action, link, icon, root = false }:
     {
         content: string | React.ReactNode
         action?: () => void
         link?: string
         icon: Ticons
+        root?: boolean
     }
 ) => {
-    const isActive = useActiveLink(link)
+    const isActive = useActiveLink(root ? link + "/*" : link)
     return (
         <Link
             className={cn(

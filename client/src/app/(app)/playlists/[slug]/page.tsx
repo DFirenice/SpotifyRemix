@@ -4,6 +4,7 @@ import type { TPlaylist } from "@/types/mediaEntities.types.ts"
 import EntityHeader from "@/components/EntityHeader"
 import List from "@/components/viewMode/List"
 import SearchOpenable from "@/components/ui/SearchOpenable"
+import ReturnLink from "@app-ui/ReturnLink"
 
 import Image from "next/image"
 import Tag from "@/components/ui/Tag"
@@ -28,7 +29,10 @@ const Playlist = async ({ params }: { params: Promise<{ slug: string }> }) => {
             ">
                 <div className="*:space-y-4 w-full">
                     <div className="flex flex-row items-end justify-between w-full">
-                        <EntityHeader entity={playlist} excludeTags />
+                        <div>
+                            <ReturnLink to="/playlists" />
+                            <EntityHeader entity={playlist} excludeTags />
+                        </div>
                         <SearchOpenable />
                     </div>
                     <List data={playlist.songs} />

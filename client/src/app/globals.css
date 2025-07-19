@@ -27,6 +27,9 @@
 
     .icon-active-outline  { @apply **:stroke-accent-default }
     .icon-active-full  { @apply **:stroke-accent-default **:fill-accent-default }
+    
+    .icon-secondary-outline  { @apply **:stroke-secondary }
+    .icon-secondary-full  { @apply **:stroke-secondary **:fill-secondary }
 }
 
 /* Fluid scaling using clamp */

@@ -4,6 +4,7 @@ type TMenuList = {
      text: string
      iconId: Ticons
      link: string
+     root?: boolean
 }[]
 
 export const menuList: TMenuList = [
@@ -15,7 +16,8 @@ export const menuList: TMenuList = [
     {
       text: 'Playlists',
       iconId: 'playlist',
-      link: '/playlists'
+      link: '/playlists',
+      root: true
     },
     {
       text: 'Liked songs',
