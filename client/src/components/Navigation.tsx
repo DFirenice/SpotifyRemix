@@ -13,7 +13,6 @@ import { streamItems } from '@/data/Navigation'
 import { genSlug } from "@/utils/genSlug"
 import { useAsideStore } from "@/stores/useAside"
 import { useShallow } from 'zustand/shallow'
-import { useUser } from "@auth0/nextjs-auth0"
 import ContextMenu from "./ui/ContextMenu"
 
 // Dev
@@ -34,13 +33,11 @@ const Navigation = ({ ...props }) => {
     const HomeInitialTheme = genSlug(homeThemes[0])
     const DiscoverInitialTheme = genSlug(discoverThemes[0])
     
-    const { user, isLoading } = useUser()
-    
     // Dropping down context menu on Avatar clicking
     const UserAvatarComponent = (
         <Avatar className="rounded-full overflow-hidden size-8">
-            <AvatarImage src={user?.picture} alt="You." />
-            <AvatarFallback>{[...String(user?.nickname)][0].toUpperCase()}</AvatarFallback>
+            <AvatarImage src={undefined} alt="You." />
+            <AvatarFallback>{[...String('[username]')][0].toUpperCase()}</AvatarFallback>
         </Avatar>
     )
 
@@ -49,7 +46,7 @@ const Navigation = ({ ...props }) => {
         items: [
             {
                 label: "Profile",
-                action: () => console.log(user),
+                action: () => console.log('[username]'),
                 icon: "private_icon" as Ticons
             },
             {
@@ -87,9 +84,7 @@ const Navigation = ({ ...props }) => {
                         </Button>
                     )) }
 
-                    { !isLoading && user ? (
-                        <ContextMenu content={avatarContextMenu} triggerElement={UserAvatarComponent} />
-                    ) : <Skeleton className="rounded-full overflow-hidden size-8" />}
+                    <ContextMenu content={avatarContextMenu} triggerElement={UserAvatarComponent} />
                 </div>
                 
             </div>

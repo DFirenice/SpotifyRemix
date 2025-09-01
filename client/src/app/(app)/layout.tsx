@@ -1,7 +1,6 @@
 'use client'
 
 import { useRouter } from "next/navigation"
-import { useUser } from '@auth0/nextjs-auth0'
 
 import Navigation from '@/components/Navigation'
 import Drawer from "@/components/Drawer"
@@ -10,16 +9,9 @@ import PlayingSongController from "@/components/PlayingSongCotroller"
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter()
-    const { isLoading, user } = useUser()
     
-    // Ｎｏｔｅ： Make custom loading
-    if (isLoading) return (
-        <section className="h-full w-full grid place-items-center">
-            <p>Loading...</p>
-        </section>
-    )
-    
-    if (user) {
+    // Ｎｏｔｅ： If user
+    if (true) {
         return (
             <main className="
                 grid template-area-app gap-y-2 gap-x-1.5
