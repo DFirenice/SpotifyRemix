@@ -95,6 +95,7 @@ import user_filled from '@/assets/icons/user_filled.svg'
 import video from '@/assets/icons/video.svg'
 import volume from '@/assets/icons/volume.svg'
 import note_head from '@/assets/icons/note_head.svg'
+import google from '@/assets/icons/google.svg'
 
 export const icons = {
   add,
@@ -130,6 +131,7 @@ export const icons = {
   friends,
   friends_filled,
   full_screen,
+  google,
   grid,
   hide,
   history,

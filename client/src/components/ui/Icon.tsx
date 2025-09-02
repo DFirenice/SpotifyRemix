@@ -1,3 +1,5 @@
+'use client'
+
 import type { Ticons } from "@/types/icons"
 import type { SVGProps } from "react"
 import { icons } from "@/data/icons"

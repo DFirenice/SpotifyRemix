@@ -12,8 +12,8 @@ export const UserObject = z.object({
 
     _private: z.object({
         password: z.string()
-            .min(6, { error: 'Password must be at least 6 characters long' })
-            .max(50, { error: 'Password must not exceed 50 characters' }),
+            .min(8, { error: 'Password must be at least 8 characters long' })
+            .max(30, { error: 'Password must not exceed 30 characters' }),
     }),
 
     avatarUrl: z.url({ error: 'Invalid image url' }).optional()
