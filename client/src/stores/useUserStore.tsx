@@ -1,21 +1,20 @@
-import { TSong } from '@/types/mediaEntities.types.ts'
+import type { TSong } from '@/types/mediaEntities.types.ts'
+import type { TUser } from '@/types/userTypes'
 import { create } from 'zustand'
 
 import mockSongs from '@/data/temp/songs'
+import { ProtectedApi } from '@/lib/axios'
 
 interface IUser {
-    username: string
-    email: string
-    avatarUrl: string
-    
+    user: TUser | null
     favoriteSongs: TSong[]
     pinned: Set<string>
+    initialized: boolean
+    init: () => void
 }
 
 export const useUserStore = create<IUser>((set, get) => ({
-    username: '',
-    email: '',
-    avatarUrl: '',
+    user: null,
     favoriteSongs: mockSongs.toSpliced(2, 3),
     pinned: new Set(['fav', 'playlist-001', 'playlist-002']), // Playlists id
     togglePin: (id: string) => set((state) => {
@@ -23,5 +22,19 @@ export const useUserStore = create<IUser>((set, get) => ({
         if (newPinned.has(id)) newPinned.delete(id)
         else newPinned.add(id)
         return { pinned: newPinned }
-    })
+    }),
+    // User (App) initialization
+    initialized: false,
+    init: async () => {
+        if (useUserStore.getState().initialized) return
+
+        try {
+            const res = await ProtectedApi.get('/profile')
+            if (res.status !== 200) throw new Error('Invalid or expired authentication token')
+            set({ user: res.data, initialized: true })
+            console.log(res)
+        } catch (err) {
+            set({ user: null, initialized: true })
+        }
+    }
 }))

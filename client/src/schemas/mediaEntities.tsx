@@ -1,8 +1,11 @@
 import { z } from 'zod'
 
+// Same as on the backend
 export const UserSchema = z.object({
-  id: z.string(),
-  username: z.string()
+  _id: z.string().optional(),
+  username: z.string(),
+  email: z.string(),
+  avatarUrl: z.string(),
 })
 
 // Ref to: mediaEntities.types

@@ -9,6 +9,7 @@ import { Button } from "@app-ui/button";
 import { Formik, Form, ErrorMessage, FormikHelpers } from 'formik'
 import Link from "next/link";
 import axios, { AxiosResponse } from 'axios'
+import { useUserStore } from "@/stores/useUserStore";
 
 const FieldLabel = ({ name }: { name: string }) => {
     return <span className="text-sm text-fg-secondary my-1.5">
@@ -17,6 +18,8 @@ const FieldLabel = ({ name }: { name: string }) => {
 }
 
 export default function AuthPage() {    
+    const { init } = useUserStore()
+    
     const handleSubmit = async (
             values: TAuthSchema,
             actions: FormikHelpers<TAuthSchema>,
@@ -29,8 +32,8 @@ export default function AuthPage() {
                 }) as AxiosResponse
 
             if (res.status === 201 || res.status === 200) {
-                const token = res.data
-                // Remember the JWT
+                localStorage.setItem('jwt', res.data)
+                init()
             }
 
             actions.setSubmitting(false)
@@ -40,7 +43,7 @@ export default function AuthPage() {
         <section className="w-full h-screen grid place-items-center">
             <div className="w-96 min-h-96 bg-dp-2 border border-accent-gray m-auto flex rounded-md flex-col items-center gap-4 px-6 py-10">
                 <Heading size="large">SpotRem</Heading>
-                <Button variant="outline">
+                <Button variant="outline" disabled >
                     <Icon id="google" size="small" />
                     <span>Continue with Google</span>
                 </Button>
