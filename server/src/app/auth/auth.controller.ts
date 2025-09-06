@@ -16,8 +16,8 @@ export class AuthController {
             httpOnly: true,
             sameSite: true,
             expires: expirationDate,
-            maxAge: 1000 * 60 * 60
-            // secure: true // Https only
+            maxAge: 1000 * 60 * 60,
+            secure: process.env.BUILD === 'production'
         })
 
         if (!token) throw new BadRequestException()
@@ -35,8 +35,8 @@ export class AuthController {
             httpOnly: true,
             sameSite: true,
             expires: expirationDate,
-            maxAge: 1000 * 60 * 60
-            // secure: true // Https only
+            maxAge: 1000 * 60 * 60,
+            secure: process.env.BUILD === 'production'
         })
         
         return res.status(200).send({ success: true })

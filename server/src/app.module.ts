@@ -6,6 +6,7 @@ import { APP_PIPE } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ProfileModule } from './app/profile/profile.module';
 import { ZodValidationPipe } from 'nestjs-zod';
+import { ValidateTokenModule } from './app/validate-token/validate-token.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { ZodValidationPipe } from 'nestjs-zod';
       global: true
     }),
     AuthModule,
-    ProfileModule
+    ProfileModule,
+    ValidateTokenModule
   ],
   controllers: [],
   providers: [

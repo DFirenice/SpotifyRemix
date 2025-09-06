@@ -1,8 +1,10 @@
 import type { TSong } from '@/types/mediaEntities.types.ts'
 import type { TUser } from '@/types/userTypes'
 import { create } from 'zustand'
+import axios from 'axios'
 
 import mockSongs from '@/data/temp/songs'
+import { useProtectedApi } from '@/lib/axios'
 
 interface IUser {
     user: TUser | null
@@ -25,15 +27,15 @@ export const useUserStore = create<IUser>((set, get) => ({
     // User (App) initialization
     initialized: false,
     init: async () => {
-        // if (useUserStore.getState().initialized) return
+        if (useUserStore.getState().initialized) return
 
-        // try {
-        //     const res = await axios.get('/profile')
-        //     if (res.status !== 200) throw new Error('Invalid or expired authentication token')
-        //     set({ user: res.data, initialized: true })
-        //     console.log(res)
-        // } catch (err) {
-        //     set({ user: null, initialized: true })
-        // }
+        try {
+            const res = await useProtectedApi.get('/profile')
+            if (res.status !== 200) throw new Error('Invalid or expired authentication token')
+            set({ user: res.data, initialized: true })
+        } catch (err) {
+            set({ user: null, initialized: true })
+            throw new Error('Invalid or expired authentication token')
+        }
     }
 }))

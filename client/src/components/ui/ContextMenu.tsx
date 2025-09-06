@@ -11,7 +11,6 @@ import {
 } from "@radix-ui/react-dropdown-menu"
 
 import Link from "next/link"
-import Icon from "@app-ui/Icon"
 import type { Ticons } from "@/types/icons"
 import IconButton from "./IconButton"
 

@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/schemas/user.schema';
 import { JwtStrategy } from 'src/strategies/jwt.strategy';
 import { JwtUtils } from 'src/utils/jwt.utils';
+import { LogoutModule } from './logout/logout.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { JwtUtils } from 'src/utils/jwt.utils';
         schema: UserSchema
       }
     ]),
+    LogoutModule,
   ],
   controllers: [AuthController],
   providers: [

@@ -4,7 +4,6 @@ import Icon from "@/components/ui/Icon"
 
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
-import { Skeleton } from "@app-ui/skeleton"
 
 import { discoverThemes } from "@/data/DiscoverPage"
 import { homeThemes } from "@/data/HomePage"
@@ -14,11 +13,14 @@ import { genSlug } from "@/utils/genSlug"
 import { useAsideStore } from "@/stores/useAside"
 import { useShallow } from 'zustand/shallow'
 import ContextMenu from "./ui/ContextMenu"
+import { useUserStore } from "@/stores/useUserStore"
 
 // Dev
 import type { Ticons } from "@/types/icons"
+import { logout } from "@/lib/auth"
 
 const Navigation = ({ ...props }) => {
+    const { user } = useUserStore()
     const { toggleAsideMenu, currentAside } = useAsideStore(
         useShallow(
             (state) => ({
@@ -36,8 +38,8 @@ const Navigation = ({ ...props }) => {
     // Dropping down context menu on Avatar clicking
     const UserAvatarComponent = (
         <Avatar className="rounded-full overflow-hidden size-8">
-            <AvatarImage src={undefined} alt="You." />
-            <AvatarFallback>{[...String('[username]')][0].toUpperCase()}</AvatarFallback>
+            <AvatarImage src={user?.avatarUrl} alt="You." />
+            <AvatarFallback>{[...String(String(user?.username))][0].toUpperCase()}</AvatarFallback>
         </Avatar>
     )
 
@@ -46,12 +48,12 @@ const Navigation = ({ ...props }) => {
         items: [
             {
                 label: "Profile",
-                action: () => console.log('[username]'),
+                action: () => { console.log(user?.username) },
                 icon: "private_icon" as Ticons
             },
             {
                 label: "Logout",
-                link: "/auth/logout",
+                action: () => { logout() },
                 icon: "off" as Ticons
             }
         ]
