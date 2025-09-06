@@ -2,7 +2,7 @@ import { createZodDto } from "nestjs-zod"
 import { z } from "zod"
 
 export const UserObject = z.object({
-    _id: z.string().optional(),
+    _id: z.string(),
 
     email: z.email({ error: "Invalid email format" }),
 

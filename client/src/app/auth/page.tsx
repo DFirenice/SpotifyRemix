@@ -9,7 +9,8 @@ import { Button } from "@app-ui/button";
 import { Formik, Form, ErrorMessage, FormikHelpers } from 'formik'
 import Link from "next/link";
 import axios, { AxiosResponse } from 'axios'
-import { useUserStore } from "@/stores/useUserStore";
+// import { useUserStore } from "@/stores/useUserStore";
+import { useRouter } from "next/navigation";
 
 const FieldLabel = ({ name }: { name: string }) => {
     return <span className="text-sm text-fg-secondary my-1.5">
@@ -18,7 +19,8 @@ const FieldLabel = ({ name }: { name: string }) => {
 }
 
 export default function AuthPage() {    
-    const { init } = useUserStore()
+    // const { init } = useUserStore()
+    const router = useRouter()
     
     const handleSubmit = async (
             values: TAuthSchema,
@@ -26,14 +28,19 @@ export default function AuthPage() {
             authMethod: 'singup' | 'login'
         ) => {
             actions.setSubmitting(true)
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/auth/${authMethod}`, values)
+            const res = await axios.post(
+                `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/auth/${authMethod}`,
+                values, { withCredentials: true }
+            )
                 .catch(err => {
                     console.error(err)
                 }) as AxiosResponse
 
-            if (res.status === 201 || res.status === 200) {
-                localStorage.setItem('jwt', res.data)
-                init()
+            console.log(res)
+
+            if (res.status === 200 || res.status === 201) {
+                // init()
+                router.push('/')
             }
 
             actions.setSubmitting(false)

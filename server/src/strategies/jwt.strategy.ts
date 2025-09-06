@@ -15,7 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     // Decoded JWT
     async validate(payload: any) {
-        if (!payload.user) throw new UnauthorizedException()
+        if (!payload?.user) throw new UnauthorizedException()
         return {
             userId: payload.user._id,
             email: payload.user.email
