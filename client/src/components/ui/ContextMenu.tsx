@@ -45,7 +45,7 @@ const ContextMenu = ({ triggerElement, content }: TContextMenuProps) => {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="cursor-pointer" asChild>
+            <DropdownMenuTrigger className="cursor-pointer grid place-items-center text-sm bg-dp-2" asChild>
                 { renderTrigger() }
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="
@@ -58,7 +58,7 @@ const ContextMenu = ({ triggerElement, content }: TContextMenuProps) => {
                     <>
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
-                            <DropdownMenuItem className="cursor-pointer rounded-md">
+                            <DropdownMenuItem className="cursor-pointer rounded-md gridzzZZZ">
                                 {/* Film: Spaghetti code. Produced and developed by me... */}
                                 { 'link' in item ?
                                     <DropdownMenuLabel>

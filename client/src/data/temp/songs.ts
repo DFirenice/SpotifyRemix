@@ -6,7 +6,7 @@ const mockSongs: TSong[] = [
     name: 'Midnight Echo',
     tags: ['ambient', 'midnight', 'chill'],
     author: {
-      id: 'user-123e4567-e89b-12d3-a456-426614174000',
+      _id: 'user-123e4567-e89b-12d3-a456-426614174000',
       username: 'Aurora Pulse'
     },
     belongsRef: null,
@@ -21,7 +21,7 @@ const mockSongs: TSong[] = [
     name: 'Crimson Sky',
     tags: ['emotional', 'sky', 'synthwave'],
     author: {
-      id: 'user-123e4567-e89b-12d3-a456-426614174001',
+      _id: 'user-123e4567-e89b-12d3-a456-426614174001',
       username: 'Crimson Nova'
     },
     belongsRef: 'playlist-002',
@@ -36,7 +36,7 @@ const mockSongs: TSong[] = [
     name: 'Neon Dreams',
     tags: ['dreamy', 'retro', 'night'],
     author: {
-      id: 'user-123e4567-e89b-12d3-a456-426614174002',
+      _id: 'user-123e4567-e89b-12d3-a456-426614174002',
       username: 'Dream Architect'
     },
     belongsRef: 'playlist-001',
@@ -51,7 +51,7 @@ const mockSongs: TSong[] = [
     name: 'Silver Horizon',
     tags: ['epic', 'horizon', 'future'],
     author: {
-      id: 'user-123e4567-e89b-12d3-a456-426614174000',
+      _id: 'user-123e4567-e89b-12d3-a456-426614174000',
       username: 'Aurora Pulse'
     },
     belongsRef: null,
@@ -66,7 +66,7 @@ const mockSongs: TSong[] = [
     name: 'Echoes of Tomorrow',
     tags: ['sci-fi', 'echo', 'futuristic'],
     author: {
-      id: 'user-123e4567-e89b-12d3-a456-426614174003',
+      _id: 'user-123e4567-e89b-12d3-a456-426614174003',
       username: 'Future Fade'
     },
     belongsRef: null,
@@ -81,7 +81,7 @@ const mockSongs: TSong[] = [
     name: 'Starlight Parade',
     tags: ['starlight', 'lofi', 'parade'],
     author: {
-      id: 'user-123e4567-e89b-12d3-a456-426614174004',
+      _id: 'user-123e4567-e89b-12d3-a456-426614174004',
       username: 'Stellar Beats'
     },
     belongsRef: 'playlist-001',

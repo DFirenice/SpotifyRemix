@@ -8,10 +8,12 @@ import type { TPlaylist, TSong, TFolder, TMediaEntity } from "@/types/mediaEntit
 import { accumulateAndFormatAuthors, accumulateAndFormatPlaylists } from "@/utils/entityFormatter"
 import { useUserStore } from "@/stores/useUserStore"
 
-// Types of tiles:
-//  Liked songs (a collection of liked songs)
-//  Playlist (a collection of added songs OR generated based on use preferences)
-//  Folder (a collection of playlists)
+/**
+*   Types of tiles:
+*    @description Liked songs (a collection of liked songs)
+*    @description Playlist (a collection of added songs OR generated based on use preferences)
+*    @description Folder (a collection of playlists)
+* */
 
 const Tile = ({ tile }: { tile: TMediaEntity }) => {
     const isPinned = useUserStore(state => state.pinned.has(tile.id))
@@ -20,7 +22,7 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
     if (detectMediaEntityType(tile) === "song") {
         const song = tile as TSong
         return (
-            <Link href={''} className="w-56 h-72">
+            <Link href={''} className="w-56 h-72 aspect-square">
                 { isPinned && <Thumbtack /> }
                 <div className=" rounded-lg w-full h-56 relative">
                     <Image src={song.previewURL} fill objectFit="cover" className="rounded-full" alt="Track cover" />

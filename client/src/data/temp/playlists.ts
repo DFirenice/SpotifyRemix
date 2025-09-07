@@ -13,7 +13,7 @@ const mockPlaylists: TPlaylist[] = [
                 name: 'Neon Dreams',
                 tags: ['retro', 'dreamy'],
                 author: {
-                    id: 'user-123e4567-e89b-12d3-a456-426614174002',
+                    _id: 'user-123e4567-e89b-12d3-a456-426614174002',
                     username: 'Dream Architect'
                 },
                 belongsRef: 'playlist-001',
@@ -28,7 +28,7 @@ const mockPlaylists: TPlaylist[] = [
                 name: 'Starlight Parade',
                 tags: ['ambient', 'starlight'],
                 author: {
-                    id: 'user-123e4567-e89b-12d3-a456-426614174004',
+                    _id: 'user-123e4567-e89b-12d3-a456-426614174004',
                     username: 'Stellar Beats'
                 },
                 belongsRef: 'playlist-001',
@@ -43,7 +43,7 @@ const mockPlaylists: TPlaylist[] = [
                 name: 'Crimson Sky',
                 tags: ['emotional', 'sky'],
                 author: {
-                    id: 'user-123e4567-e89b-12d3-a456-426614174001',
+                    _id: 'user-123e4567-e89b-12d3-a456-426614174001',
                     username: 'Crimson Nova'
                 },
                 belongsRef: 'playlist-001',
@@ -69,7 +69,7 @@ const mockPlaylists: TPlaylist[] = [
                 name: 'Midnight Echo',
                 tags: ['midnight', 'soft'],
                 author: {
-                    id: 'user-123e4567-e89b-12d3-a456-426614174000',
+                    _id: 'user-123e4567-e89b-12d3-a456-426614174000',
                     username: 'Aurora Pulse'
                 },
                 belongsRef: null,
@@ -84,7 +84,7 @@ const mockPlaylists: TPlaylist[] = [
                 name: 'Echoes of Tomorrow',
                 tags: ['sci-fi', 'echo'],
                 author: {
-                    id: 'user-123e4567-e89b-12d3-a456-426614174003',
+                    _id: 'user-123e4567-e89b-12d3-a456-426614174003',
                     username: 'Future Fade'
                 },
                 belongsRef: null,
@@ -110,7 +110,7 @@ const mockPlaylists: TPlaylist[] = [
                 name: 'Golden Hour',
                 tags: ['golden', 'warm'],
                 author: {
-                    id: 'user-abc4567e89b12d3a456426614174008',
+                    _id: 'user-abc4567e89b12d3a456426614174008',
                     username: 'Solstice Flow'
                 },
                 belongsRef: 'playlist-003',
@@ -125,7 +125,7 @@ const mockPlaylists: TPlaylist[] = [
                 name: 'Mirage Run',
                 tags: ['fast', 'mirage'],
                 author: {
-                    id: 'user-abc4567e89b12d3a456426614174009',
+                    _id: 'user-abc4567e89b12d3a456426614174009',
                     username: 'Desert Mirage'
                 },
                 belongsRef: 'playlist-003',
@@ -151,7 +151,7 @@ const mockPlaylists: TPlaylist[] = [
                 name: 'Synthetic Love',
                 tags: ['robotic', 'love'],
                 author: {
-                    id: 'user-xyz4567e89b12d3a456426614174010',
+                    _id: 'user-xyz4567e89b12d3a456426614174010',
                     username: 'Robotica'
                 },
                 belongsRef: 'playlist-004',
@@ -177,7 +177,7 @@ const mockPlaylists: TPlaylist[] = [
                 name: 'Orbiting Thoughts',
                 tags: ['spacey', 'meditative'],
                 author: {
-                    id: 'user-789e4567-e89b-12d3-a456-426614174011',
+                    _id: 'user-789e4567-e89b-12d3-a456-426614174011',
                     username: 'Galaxian'
                 },
                 belongsRef: 'playlist-005',
@@ -192,7 +192,7 @@ const mockPlaylists: TPlaylist[] = [
                 name: 'Deep Space Lullaby',
                 tags: ['lullaby', 'deep'],
                 author: {
-                    id: 'user-789e4567-e89b-12d3-a456-426614174012',
+                    _id: 'user-789e4567-e89b-12d3-a456-426614174012',
                     username: 'Void Whisperer'
                 },
                 belongsRef: 'playlist-005',

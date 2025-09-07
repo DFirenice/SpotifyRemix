@@ -12,7 +12,10 @@ export const UserSchema = z.object({
 export const SongSchema = z.object({
   id: z.string(),
   name: z.string(),
-  author: UserSchema,
+  author: UserSchema.pick({
+    _id: true,
+    username: true
+  }),
   belongsRef: z.string().nullable(),
   duration: z.number(),
   previewURL: z.string(),

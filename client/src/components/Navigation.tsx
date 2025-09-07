@@ -48,7 +48,7 @@ const Navigation = ({ ...props }) => {
         items: [
             {
                 label: "Profile",
-                action: () => { console.log(user?.username) },
+                link: '/profile',
                 icon: "private_icon" as Ticons
             },
             {
