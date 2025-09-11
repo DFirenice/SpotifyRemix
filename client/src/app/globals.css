@@ -24,6 +24,7 @@
 
     .bordered { @apply rounded-xl border-2 border-dp-1; }
     .page-container { @apply h-full rounded-md border-2 border-dp-1 py-3 px-2.5 space-y-6; }
+    .page-gaps { @apply py-3 px-2.5; }
 
     .icon-active-outline  { @apply **:stroke-accent-default }
     .icon-active-full  { @apply **:stroke-accent-default **:fill-accent-default }

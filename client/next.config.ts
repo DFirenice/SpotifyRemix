@@ -28,7 +28,12 @@ const nextConfig: NextConfig = {
       { // Temporary
         protocol: 'https',
         hostname: 'i.pinimg.com'
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: process.env.SUPABASE_PROJECT_BASE_URL!,
+        pathname: '/storage/v1/object/**',
+      },
     ],
   },
 }

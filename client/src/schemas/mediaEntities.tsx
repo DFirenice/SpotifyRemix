@@ -10,21 +10,19 @@ export const UserSchema = z.object({
 
 // Ref to: mediaEntities.types
 export const SongSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  author: UserSchema.pick({
-    _id: true,
-    username: true
-  }),
-  belongsRef: z.string().nullable(),
+  created_at: z.string(),
+  updated_at: z.string(),
+  title: z.string(),
+  artist: z.string(),
+  album: z.string().or(z.null()),
   duration: z.number(),
-  previewURL: z.string(),
-  sourceURL: z.string(),
-  uploadedAt: z.string(),
-  updatedAt: z.string(),
-  tags: z.string().array()
+  cover_path: z.string().or(z.null()),    // Reference
+  file_path: z.string(),                  // Reference
+  tags: z.array(z.string()).or(z.null()), // string[]
+  id: z.string()
 })
 
+// Ｎｏｔｅ： Unsynced
 export const PlaylistSchema = z.object({
   id: z.string(), // Used as reference to where song belongs
   name: z.string(),
@@ -36,6 +34,7 @@ export const PlaylistSchema = z.object({
   tags: z.string().array()
 })
 
+// Ｎｏｔｅ： Unsynced
 export const FolderSchema = z.object({
   id: z.string(),
   name: z.string(),

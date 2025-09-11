@@ -91,12 +91,16 @@ const List = ({ data }: { data: unknown[] }) => {
                 )
             }
 
-            return <div>Unable to load a track...</div>
+            return (
+                <div className="h-full w-full px-4 grid place-items-center">
+                    <span className="text-fg-secondary">Unable to load the track...</span>
+                </div>
+            )
         })
     }
     
     return (
-        <div className="w-full px-4">
+        <div className="w-full px-4 h-full">
             {/* Sort bar */}
             {/* # | Title | Album | Duration */}
             <div className="container">
@@ -117,7 +121,7 @@ const List = ({ data }: { data: unknown[] }) => {
                 </div>
             </div>
             <Separator />
-            <div className="container mt-4">
+            <div className="container mt-4 h-full">
                 {/* # | SongImg & Title | Album (Playlist) | Duration */}
                 { renderList(sortedSongs) }
             </div>

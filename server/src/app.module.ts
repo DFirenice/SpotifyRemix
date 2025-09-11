@@ -7,6 +7,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ProfileModule } from './app/profile/profile.module';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { ValidateTokenModule } from './app/validate-token/validate-token.module';
+import { SongsModule } from './app/songs/songs.module';
+import { SupabaseModule } from './supabase/supabase.module';
+import { GetMediaModule } from './app/get-media/get-media.module';
 
 @Module({
   imports: [
@@ -19,7 +22,10 @@ import { ValidateTokenModule } from './app/validate-token/validate-token.module'
     }),
     AuthModule,
     ProfileModule,
-    ValidateTokenModule
+    ValidateTokenModule,
+    SongsModule,
+    SupabaseModule,
+    GetMediaModule
   ],
   controllers: [],
   providers: [

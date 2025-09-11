@@ -1,4 +1,3 @@
-import Image from "next/image"
 import Link from "next/link"
 import Icon from "@/components/ui/Icon"
 import Thumbtack from "@app-ui/Thumbtack"
@@ -7,6 +6,9 @@ import { detectMediaEntityType } from "@/utils/typeGuards"
 import type { TPlaylist, TSong, TFolder, TMediaEntity } from "@/types/mediaEntities.types.ts"
 import { accumulateAndFormatAuthors, accumulateAndFormatPlaylists } from "@/utils/entityFormatter"
 import { useUserStore } from "@/stores/useUserStore"
+import ImageWithFallback from "../ui/ImageWithFallback"
+import { getSignedCover } from "@/utils/getTokenizedUrl"
+import { useEffect, useState } from "react"
 
 /**
 *   Types of tiles:
@@ -21,15 +23,31 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
     // Song tile
     if (detectMediaEntityType(tile) === "song") {
         const song = tile as TSong
+        const [coverSrc, setCoverSrc] = useState<string>('/')
+
+        useEffect(() => {
+            let isMounted = true
+            getSignedCover(song.cover_path).then(url => {
+                if (isMounted && url) setCoverSrc(url)
+            })
+            return () => { isMounted = false }
+        }, [song.cover_path])
+
         return (
             <Link href={''} className="w-56 h-72 aspect-square">
                 { isPinned && <Thumbtack /> }
                 <div className=" rounded-lg w-full h-56 relative">
-                    <Image src={song.previewURL} fill objectFit="cover" className="rounded-full" alt="Track cover" />
+                    <ImageWithFallback
+                        fallback="/public/noImage.webp" // Ｎｏｔｅ： Isn't working
+                        src={coverSrc}
+                        className="object-cover rounded-4xl bg-dp-1"
+                        alt="Track cover"
+                        fill
+                    />
                 </div>
                 <div className="text-center mt-1">
-                    <span className="w-full truncate text-accent-default">{ song.name || 'Song is unavailable...' }</span>
-                    <p className="text-sm text-fg-secondary my-1">{ song.author.username }</p>
+                    <span className="w-full truncate text-accent-default">{ song.title || 'Song is unavailable...' }</span>
+                    <p className="text-sm text-fg-secondary my-1">{ song.artist }</p>
                 </div>
             </Link>
         )

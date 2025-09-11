@@ -21,13 +21,13 @@ const ProfilePage = () => {
     }
 
     return (
-        <section className="w-full h-full overflow-y-scroll">
+        <section className="page-container overflow-y-scroll">
             {/* Header */}
             <div className="relative">
                 {/* Banner */}
                 <div className="relative h-72 flex">
                     <div className="absolute bg-gradient-to-br from-dp-2 to-dp-1 rounded-md w-full h-9/12" />
-                    <div className="relative mt-auto flex flex-row items-center gap-4">
+                    <div className="relative mt-auto flex flex-row items-end gap-4">
                         <div className="relative mx-4 w-48 h-48 rounded-2xl overflow-hidden">
                             <Image
                                 className="object-cover"
