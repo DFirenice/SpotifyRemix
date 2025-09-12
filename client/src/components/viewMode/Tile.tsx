@@ -47,7 +47,7 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
                 </div>
                 <div className="text-center mt-1">
                     <span className="w-full truncate text-accent-default">{ song.title || 'Song is unavailable...' }</span>
-                    <p className="text-sm text-fg-secondary my-1">{ song.artist }</p>
+                    <p className="text-sm text-fg-secondary my-1">{ song.artist.username }</p>
                 </div>
             </Link>
         )
