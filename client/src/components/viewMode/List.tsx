@@ -93,7 +93,7 @@ const List = ({ data }: { data: unknown[] }) => {
 
             return (
                 <div className="h-full w-full px-4 grid place-items-center">
-                    <span className="text-fg-secondary">Unable to load the track...</span>
+                    <span className="text-fg-secondary">Unable to load the content.</span>
                 </div>
             )
         })

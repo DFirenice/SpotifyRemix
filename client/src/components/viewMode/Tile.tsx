@@ -92,7 +92,7 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
         )
     }
 
-    return 'Unable to load the tile...'
+    return null
 }
 
 export default Tile

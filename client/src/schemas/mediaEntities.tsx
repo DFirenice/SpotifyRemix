@@ -13,7 +13,11 @@ export const SongSchema = z.object({
   created_at: z.string(),
   updated_at: z.string(),
   title: z.string(),
-  artist: z.string(),
+  artist: UserSchema.pick({
+    _id: true,
+    username: true,
+    avatarUrl: true
+  }),
   album: z.string().or(z.null()),
   duration: z.number(),
   cover_path: z.string().or(z.null()),    // Reference

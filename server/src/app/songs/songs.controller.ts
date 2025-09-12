@@ -1,6 +1,7 @@
-import { Controller, Get, NotFoundException, UseGuards } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param, Query, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { SongsService } from './songs.service';
+import { SongsQueryDto } from './dtos/query.dto';
 
 @Controller('songs')
 export class SongsController {
@@ -8,8 +9,8 @@ export class SongsController {
     
     @Get()
     @UseGuards(JwtAuthGuard)
-    async parseSongs () {
-        const songs = await this.SongsService.getSongs()
+    async parseSongs (@Query() query: SongsQueryDto) {
+        const songs = await this.SongsService.getSongs(query)
         if (!songs) throw new NotFoundException()
         return { songs }
     }
