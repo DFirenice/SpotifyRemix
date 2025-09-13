@@ -12,10 +12,17 @@ import { Separator } from "@/components/ui/separator"
 import VolumeController from "@/components/VolumeController"
 
 import usePlayingSongStore from "@/stores/PlayingSong"
+import { useProtectedApi } from "@/lib/axios"
+
+export type TSignedSongData = {
+    coverUrl: string | null
+    songUrl: string | null
+}
 
 const PlayingSongController = () => {
     const playerRef = useRef<ReactHowler>(null)
     const { song, isPlaying, setIsPlaying } = usePlayingSongStore()
+    const [ signedData, setSignedData ] = useState<TSignedSongData | null>() // For Signed urls
     
     const [ duration, setDuration ] = useState<number>(0),
           [ seek, setSeek ] = useState<number>(0),
@@ -23,6 +30,26 @@ const PlayingSongController = () => {
           [ volume, setVolume ] = useState(30) // Make the initial value from localstorage
 
     const [ isSeeking, setSeeking ] = useState(false)
+
+    // Requesting signed cover and song
+    useEffect(() => {
+        const requestData = async () => {
+            try {
+                const { data } = await useProtectedApi.post(
+                    '/get-media/full-song',
+                    { cover_path: song?.cover_path, file_path: song?.file_path }
+                )
+
+                if (data?.coverUrl) {
+                    setSignedData({
+                        coverUrl: data.coverUrl.signedUrl,
+                        songUrl: data.songUrl.signedUrl
+                    })
+                }
+            } catch (err) { console.error(err) }
+        }
+        requestData()
+    }, [song])
 
     // 300ms update
     useEffect(() => {
@@ -66,17 +93,17 @@ const PlayingSongController = () => {
             {/* Track preview */}
             <div>
                 <div className="relative h-[85%] aspect-square">
-                    { song?.previewURL ?
+                    { signedData?.coverUrl ?
                         <Image
-                            src={song?.previewURL}
+                            src={signedData.coverUrl}
                             alt="Track preview" fill
-                            className="rounded-lg"
+                            className="rounded-lg object-cover"
                         />
                     : <Skeleton className="h-full rounded-lg bg-neutral-700" /> }
                 </div>
                 <div className="ml-1.5 flex flex-col leading-5">
-                    { song ?  <> <span className="overflow-ellipsis">{song?.name}</span>
-                        <span className="text-icon-default text-nowrap">{song?.author.username}</span>
+                    { song ?  <> <span className="overflow-ellipsis">{song.title}</span>
+                        <span className="text-icon-default text-nowrap">{song.artist.username}</span>
                         <span className="text-icon-default text-nowrap">{song?.belongsRef}</span>
                     </> : <>
                         <Skeleton className="truncate w-[13ch] h-[1.5ch] bg-neutral-700" />
@@ -91,7 +118,7 @@ const PlayingSongController = () => {
                     preload
                     ref={playerRef}
                     onLoad={handleLoad}
-                    src="https://goldfirestudios.com/proj/howlerjs/sound.ogg"
+                    src={signedData?.songUrl || '/'}
                     playing={isPlaying}
                     loop={false} /* Doesn't work! */
                     volume={volume / 100}
@@ -101,7 +128,12 @@ const PlayingSongController = () => {
                 <IconButton icon="prev" />
 
                 {/* Play button */}
-                <PlayBtn state={{ state: isPlaying, set: setIsPlaying }} onClick={handleSwitch} className="mx-2.5" />
+                <PlayBtn
+                    state={{ state: isPlaying, set: setIsPlaying }}
+                    onClick={handleSwitch}
+                    className="mx-2.5"
+                    disabled={!song}
+                />
 
                 <IconButton icon="next" />
                 <IconButton icon="shuffle" />

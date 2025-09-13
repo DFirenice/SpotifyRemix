@@ -9,6 +9,7 @@ import { useUserStore } from "@/stores/useUserStore"
 import ImageWithFallback from "../ui/ImageWithFallback"
 import { getSignedCover } from "@/utils/getTokenizedUrl"
 import { useEffect, useState } from "react"
+import usePlayingSongStore from "@/stores/PlayingSong"
 
 /**
 *   Types of tiles:
@@ -19,6 +20,13 @@ import { useEffect, useState } from "react"
 
 const Tile = ({ tile }: { tile: TMediaEntity }) => {
     const isPinned = useUserStore(state => state.pinned.has(tile.id))
+    const { song: storeSong, queueSong, setIsPlaying, isPlaying } = usePlayingSongStore()
+
+    //
+    const handlePlaySong = () => {
+        if ((tile as TSong).id === storeSong?.id) return setIsPlaying(!isPlaying)
+        queueSong(tile as TSong)
+    }
     
     // Song tile
     if (detectMediaEntityType(tile) === "song") {
@@ -34,13 +42,29 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
         }, [song.cover_path])
 
         return (
-            <Link href={''} className="w-56 h-72 aspect-square">
+            <Link href={''} className="w-56 h-72 aspect-square group">
                 { isPinned && <Thumbtack /> }
-                <div className=" rounded-lg w-full h-56 relative">
+                <div className="rounded-lg w-full h-56 relative">
+                    <div
+                        className="
+                            absolute rounded-4xl group-hover:opacity-100 z-10
+                            opacity-0 transition-all w-full h-full bg-dp-1/87
+                            grid place-items-center
+                        "
+                        id="coverOverlay"
+                        onClick={handlePlaySong}
+                    >
+                        <div className="w-16 h-16">
+                            { song.id === storeSong?.id && isPlaying ?
+                                <Icon id="pause_simple" className="text-accent-default" size="fill" />
+                                : <Icon id="play_simple" className="text-accent-default" size="fill" />
+                            }
+                        </div>
+                    </div>
                     <ImageWithFallback
                         fallback="/public/noImage.webp" // Ｎｏｔｅ： Isn't working
                         src={coverSrc}
-                        className="object-cover rounded-4xl bg-dp-1"
+                        className="object-cover rounded-4xl bg-dp-1 z-0 pointer-events-none"
                         alt="Track cover"
                         fill
                     />

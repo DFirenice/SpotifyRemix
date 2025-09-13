@@ -49,26 +49,26 @@ const ContextMenu = ({ triggerElement, content }: TContextMenuProps) => {
                 { renderTrigger() }
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="
-                    w-56 bg-dp-0 rounded-md py-2.5 px-1.5
+                    w-56 bg-dp-0 py-2.5 px-1.5
                     border-1 border-fg-secondary/38 cursor-default z-10
                 ">
                 <DropdownMenuLabel className="text-fg-secondary text-xs my-1 px-1.75 uppercase tracking-wider">{ content?.menuLabel ?? null }</DropdownMenuLabel>
                 
-                { content.items.map(item => (
+                { content.items.map((item, i) => (
                     <>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
-                            <DropdownMenuItem className="cursor-pointer rounded-md gridzzZZZ">
+                        <DropdownMenuSeparator key={`${item.label}/${i}-Separator`} />
+                        <DropdownMenuGroup key={`${item.label}/${i}-dropdown`} >
+                            <DropdownMenuItem className="cursor-pointer rounded-md grid">
                                 {/* Film: Spaghetti code. Produced and developed by me... */}
                                 { 'link' in item ?
                                     <DropdownMenuLabel>
                                         <Link className="w-full h-full" href={item.link || ''}>
-                                            <IconButton size="small" className="hover:text-fg-secondary text-fg-primary w-full justify-start pl-1" icon={item.icon} text={item.label} />
+                                            <IconButton size="small" className="transition-none hover:text-fg-secondary text-fg-primary w-full justify-start pl-1" icon={item.icon} text={item.label} />
                                         </Link>
                                     </DropdownMenuLabel>
                                     : 'action' in item &&
                                         <DropdownMenuLabel onClick={item.action}>
-                                            <IconButton size="small" className="hover:text-fg-secondary text-fg-primary w-full justify-start pl-1" icon={item.icon} text={item.label} />
+                                            <IconButton size="small" className="transition-none hover:text-fg-secondary text-fg-primary w-full justify-start pl-1" icon={item.icon} text={item.label} />
                                         </DropdownMenuLabel>
                                 }
                             </DropdownMenuItem>
