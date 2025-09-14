@@ -22,6 +22,14 @@ type TVolumeControllerProps = {
 const VolumeController = ({ onMute, mutedState, volumeState }: TVolumeControllerProps) => {
     const [ open, setOpen ] = useState<boolean>(false)
 
+    // Saving new volume on mouse up
+    const handleStorageUpdate = () => {
+        if (typeof window !== "undefined") {
+            window.localStorage.setItem('sound_volume', String(volumeState[0]))
+        }
+        console.log('saved new sound volume: ', volumeState[0])
+    }
+
     // Disabling Shadcn's click behaviour and toggling mute
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
@@ -58,6 +66,7 @@ const VolumeController = ({ onMute, mutedState, volumeState }: TVolumeController
                             volumeState[1](e[0])
                             mutedState[1](false)
                         }}
+                        onClickCapture={handleStorageUpdate}
                     />
                 </PopoverContent>
             </Popover>

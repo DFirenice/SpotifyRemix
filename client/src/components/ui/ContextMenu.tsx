@@ -55,9 +55,9 @@ const ContextMenu = ({ triggerElement, content }: TContextMenuProps) => {
                 <DropdownMenuLabel className="text-fg-secondary text-xs my-1 px-1.75 uppercase tracking-wider">{ content?.menuLabel ?? null }</DropdownMenuLabel>
                 
                 { content.items.map((item, i) => (
-                    <>
-                        <DropdownMenuSeparator key={`${item.label}/${i}-Separator`} />
-                        <DropdownMenuGroup key={`${item.label}/${i}-dropdown`} >
+                    <React.Fragment key={`${item.label}_${i}`}>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuGroup >
                             <DropdownMenuItem className="cursor-pointer rounded-md grid">
                                 {/* Film: Spaghetti code. Produced and developed by me... */}
                                 { 'link' in item ?
@@ -73,7 +73,7 @@ const ContextMenu = ({ triggerElement, content }: TContextMenuProps) => {
                                 }
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
-                    </>
+                    </React.Fragment>
                 )) }
 
             </DropdownMenuContent>

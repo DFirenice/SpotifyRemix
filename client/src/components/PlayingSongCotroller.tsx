@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator"
 import VolumeController from "@/components/VolumeController"
 
 import usePlayingSongStore from "@/stores/PlayingSong"
-import { useProtectedApi } from "@/lib/axios"
+import useCachedSongsStore from "@/stores/CachedSongs"
 
 export type TSignedSongData = {
     coverUrl: string | null
@@ -23,47 +23,76 @@ const PlayingSongController = () => {
     const playerRef = useRef<ReactHowler>(null)
     const { song, isPlaying, setIsPlaying } = usePlayingSongStore()
     const [ signedData, setSignedData ] = useState<TSignedSongData | null>() // For Signed urls
+
+    // Cache store
+    const { getFromCache, addToCache } = useCachedSongsStore()
     
     const [ duration, setDuration ] = useState<number>(0),
           [ seek, setSeek ] = useState<number>(0),
           [ isMuted, setIsMuted ] = useState(false),
-          [ volume, setVolume ] = useState(30) // Make the initial value from localstorage
+          [ volume, setVolume ] = useState(30)
 
     const [ isSeeking, setSeeking ] = useState(false)
+
+    // Initializing preferences
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const v = window.localStorage.getItem('sound_volume')
+            if (!v) {
+                window.localStorage.setItem('sound_volume', '30')
+                setVolume(30)
+            }
+            setVolume(Number(v))
+        }
+    }, [])
 
     // Requesting signed cover and song
     useEffect(() => {
         const requestData = async () => {
+            setIsPlaying(true)
             try {
-                const { data } = await useProtectedApi.post(
-                    '/get-media/full-song',
-                    { cover_path: song?.cover_path, file_path: song?.file_path }
-                )
-
-                if (data?.coverUrl) {
+                // Check if has already been cached
+                const cachedUrls = await getFromCache(song?.id || '')
+                if (cachedUrls?.cache) {
                     setSignedData({
-                        coverUrl: data.coverUrl.signedUrl,
-                        songUrl: data.songUrl.signedUrl
+                        coverUrl: cachedUrls.cache.coverUrl,
+                        songUrl: cachedUrls.cache.songUrl
+                    })
+                    return
+                }
+
+                // If not, caching and returning from cache
+                if (!song) return
+                else {
+                    const cachedSong = await addToCache(song)
+                    setSignedData({
+                        coverUrl: cachedSong.cache!.coverUrl,
+                        songUrl: cachedSong.cache!.songUrl
                     })
                 }
             } catch (err) { console.error(err) }
         }
         requestData()
-    }, [song])
+    }, [ song ])
 
-    // 300ms update
+    // 250ms update
     useEffect(() => {
-        let interval: number
-    
-        if (isPlaying && !isSeeking) {
-          interval = window.setInterval(() => {
-            const howl = playerRef.current?.howler
-            if (howl) setSeek(howl.seek() as number)
-          }, 10)
+        let frameId: number
+
+        const updateSeek = () => {
+            if (isPlaying && !isSeeking) {
+                const howl = playerRef.current?.howler
+                if (howl) setSeek(howl.seek() as number)
+                frameId = requestAnimationFrame(updateSeek)
+            }
         }
-    
-        return () => clearInterval(interval)
-      }, [isPlaying, isSeeking])
+
+        if (isPlaying && !isSeeking) {
+            frameId = requestAnimationFrame(updateSeek)
+        }
+
+        return () => cancelAnimationFrame(frameId)
+    }, [ isPlaying, isSeeking ])
 
     const handleLoad = () => {
         const howl = playerRef?.current?.howler
@@ -83,7 +112,7 @@ const PlayingSongController = () => {
     // Switcher for PlayBtn
     const handleSwitch = () => { setIsPlaying(!isPlaying) }
     const handleMuteAudio = () => { setIsMuted(!isMuted) }
-        
+    
     return (
         <div className="
             bg-gradient-to-br from-fg-secondary/20 to-accent-gray/80 min-h-[8dvh] w-full px-4 py-2 flex flex-row gap-6
@@ -104,7 +133,6 @@ const PlayingSongController = () => {
                 <div className="ml-1.5 flex flex-col leading-5">
                     { song ?  <> <span className="overflow-ellipsis">{song.title}</span>
                         <span className="text-icon-default text-nowrap">{song.artist.username}</span>
-                        <span className="text-icon-default text-nowrap">{song?.belongsRef}</span>
                     </> : <>
                         <Skeleton className="truncate w-[13ch] h-[1.5ch] bg-neutral-700" />
                         <Skeleton className="truncate my-1 w-[18ch] h-[1.5ch] bg-neutral-700" />
@@ -120,9 +148,9 @@ const PlayingSongController = () => {
                     onLoad={handleLoad}
                     src={signedData?.songUrl || '/'}
                     playing={isPlaying}
-                    loop={false} /* Doesn't work! */
                     volume={volume / 100}
                     mute={isMuted}
+                    format={[song?.file_path.split('.').pop() || ""]} // Hot Fix for cached blob. (blobs do not contain format)
                 />
 
                 <IconButton icon="prev" />

@@ -3,12 +3,14 @@
 import { homeThemes } from "@/data/HomePage"
 import ThemesPanel from "@/components/ThemesPanel"
 import { useProtectedApi } from "@/lib/axios"
+import useCachedSongsStore from "@/stores/CachedSongs"
 import { useEffect, useState } from "react"
 import Tiles from "@/components/viewMode/Tiles"
 import { TSong } from "@/types/mediaEntities.types.ts"
 import { use } from "react"
 
 const App = ({ params }: { params: Promise<{ slug: string }> }) => {
+    const { addToCache } = useCachedSongsStore()
     const [ songs, setSongs ] = useState<TSong[]>([])
     const { slug } = use(params)
 
@@ -16,6 +18,7 @@ const App = ({ params }: { params: Promise<{ slug: string }> }) => {
         const fetchSongs = async () => {
             const { data, status } = await useProtectedApi.get('/songs')
             if (status === 200) setSongs(data.songs)
+            data.songs.forEach((song: TSong) => addToCache(song))
         }
         fetchSongs()
     }, [])

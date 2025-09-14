@@ -28,18 +28,15 @@ export default function AuthPage() {
             authMethod: 'singup' | 'login'
         ) => {
             actions.setSubmitting(true)
-            const res = await axios.post(
-                `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/auth/${authMethod}`,
-                values, { withCredentials: true }
-            )
-                .catch(err => {
-                    console.error(err)
-                }) as AxiosResponse
+            try {
+                await axios.post(
+                    `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/auth/${authMethod}`,
+                    values, { withCredentials: true }
+                )
 
-            if (res.status === 200 || res.status === 201) {
                 init()
                 router.push('/')
-            }
+            } catch(err) { console.error(err) }
 
             actions.setSubmitting(false)
         }

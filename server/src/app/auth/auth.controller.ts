@@ -10,7 +10,7 @@ export class AuthController {
     @Post('login')
     async login(@Body() loginPayload: LoginPayloadDto, @Res() res: Response) {
         const token = await this.AuthService.login(loginPayload)
-        const expirationDate = new Date(new Date().getTime() + 1) // Expires in 1 day
+        const expirationDate = new Date(Date.now() + 86400000) // Expires in 1 day
         
         res.cookie('access_token', token, {
             httpOnly: true,

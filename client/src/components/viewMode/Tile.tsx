@@ -1,3 +1,5 @@
+'use client'
+
 import Link from "next/link"
 import Icon from "@/components/ui/Icon"
 import Thumbtack from "@app-ui/Thumbtack"
@@ -6,10 +8,11 @@ import { detectMediaEntityType } from "@/utils/typeGuards"
 import type { TPlaylist, TSong, TFolder, TMediaEntity } from "@/types/mediaEntities.types.ts"
 import { accumulateAndFormatAuthors, accumulateAndFormatPlaylists } from "@/utils/entityFormatter"
 import { useUserStore } from "@/stores/useUserStore"
-import ImageWithFallback from "../ui/ImageWithFallback"
+import ImageWithFallback from "@app-ui/ImageWithFallback"
 import { getSignedCover } from "@/utils/getTokenizedUrl"
 import { useEffect, useState } from "react"
 import usePlayingSongStore from "@/stores/PlayingSong"
+import { Skeleton } from "@app-ui/skeleton"
 
 /**
 *   Types of tiles:
@@ -21,6 +24,7 @@ import usePlayingSongStore from "@/stores/PlayingSong"
 const Tile = ({ tile }: { tile: TMediaEntity }) => {
     const isPinned = useUserStore(state => state.pinned.has(tile.id))
     const { song: storeSong, queueSong, setIsPlaying, isPlaying } = usePlayingSongStore()
+    const [ isCoverLoaded, setIsCoverLoaded ] = useState<boolean>(false) // Displaying Skeleton before image loads
 
     //
     const handlePlaySong = () => {
@@ -42,9 +46,9 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
         }, [song.cover_path])
 
         return (
-            <Link href={''} className="w-56 h-72 aspect-square group">
+            <Link href={''} className="w-48 h-72 aspect-square">
                 { isPinned && <Thumbtack /> }
-                <div className="rounded-lg w-full h-56 relative">
+                <div className="group rounded-lg w-full h-48 relative">
                     <div
                         className="
                             absolute rounded-4xl group-hover:opacity-100 z-10
@@ -63,11 +67,13 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
                     </div>
                     <ImageWithFallback
                         fallback="/public/noImage.webp" // Ｎｏｔｅ： Isn't working
-                        src={coverSrc}
                         className="object-cover rounded-4xl bg-dp-1 z-0 pointer-events-none"
                         alt="Track cover"
+                        src={coverSrc}
                         fill
+                        onLoad={() => setIsCoverLoaded(true)}
                     />
+                    { !isCoverLoaded && <Skeleton className="w-full h-full rounded-4xl" /> }
                 </div>
                 <div className="text-center mt-1">
                     <span className="w-full truncate text-accent-default">{ song.title || 'Song is unavailable...' }</span>
@@ -80,9 +86,9 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
     else if (detectMediaEntityType(tile) === "playlist") {
         const playlist = tile as TPlaylist
         return (
-            <Link href={`/playlists/${playlist.id}`} className="w-56 h-72 relative">
+            <Link href={`/playlists/${playlist.id}`} className="w-48 h-72 relative">
                 { isPinned && <Thumbtack /> }
-                <div className="w-full h-56 overflow-hidden flex flex-col">
+                <div className="w-full h-48 overflow-hidden flex flex-col">
                     <div className="tile-folder-effect h-[0.6rem]">
                         <div className="bg-dp-1" /><div className="bg-dp-2" />
                     </div>
@@ -102,9 +108,9 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
     else if (detectMediaEntityType(tile) === "folder") {
         const folder = tile as TFolder
         return (
-            <Link href={''} className="w-56 h-72 relative">
+            <Link href={''} className="w-48 h-72 relative">
                 { isPinned && <Thumbtack /> }
-                <div className=" bg-dp-1 rounded-lg w-full h-56 relative overflow-hidden grid place-items-center">
+                <div className=" bg-dp-1 rounded-lg w-full h-48 relative overflow-hidden grid place-items-center">
                     <Icon id="folder" size="large" className="icon-active-outline"/>
                 </div>
                 <div className="flex justify-between mt-1">

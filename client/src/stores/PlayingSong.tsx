@@ -6,6 +6,7 @@ interface IPlayingSongState {
     isPlaying: boolean
     setIsPlaying: (newState: boolean) => void
     queueSong: (song: TSong) => void
+    getPlaylist: () => string | undefined
 }
 
 const usePlayingSongStore = create<IPlayingSongState>(( set, get ) => ({
@@ -13,7 +14,7 @@ const usePlayingSongStore = create<IPlayingSongState>(( set, get ) => ({
     isPlaying: false,
     setIsPlaying: (newState: boolean) => set({ isPlaying: newState }),
     queueSong: (song: TSong) => set({ song }),
-    getPlaylist: () => get().song?.belongsRef
+    getPlaylist: () => get().song?.belongsRef // Ｎｏｔｅ： Yet unavailable
 }))
 
 export default usePlayingSongStore
