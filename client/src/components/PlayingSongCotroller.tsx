@@ -151,6 +151,7 @@ const PlayingSongController = () => {
                     volume={volume / 100}
                     mute={isMuted}
                     format={[song?.file_path.split('.').pop() || ""]} // Hot Fix for cached blob. (blobs do not contain format)
+                    html5 // For progressive streaming, because Web Audio API is too dumb in terms of streaming blobs
                 />
 
                 <IconButton icon="prev" />
