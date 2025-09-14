@@ -1,3 +1,5 @@
+// Ｎｏｔｅ：　Required optimization to clean the oldest cache on reaching certain limit (ex.g. 30 songs)
+
 import { useProtectedApi } from "@/lib/axios";
 import { TSong } from "@/types/mediaEntities.types.ts";
 import { create } from "zustand";
@@ -52,7 +54,7 @@ const useCachedSongsStore = create<ICachedSongsStore>(( set, get ) => ({
         // Adding to cache
         const cachedUrls = await makeCache({ cover_path: song.cover_path as string, file_path: song.file_path })
         const songWithCache: TSongWithCache = { ...song, cache: cachedUrls }
-        set({ cache: [...cache, songWithCache] })
+        set(state => ({ cache: [...state.cache, songWithCache] }))
         return songWithCache
     },
     

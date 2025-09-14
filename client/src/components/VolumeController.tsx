@@ -27,7 +27,6 @@ const VolumeController = ({ onMute, mutedState, volumeState }: TVolumeController
         if (typeof window !== "undefined") {
             window.localStorage.setItem('sound_volume', String(volumeState[0]))
         }
-        console.log('saved new sound volume: ', volumeState[0])
     }
 
     // Disabling Shadcn's click behaviour and toggling mute
