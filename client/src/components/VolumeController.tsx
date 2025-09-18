@@ -50,12 +50,12 @@ const VolumeController = ({ onMute, mutedState, volumeState }: TVolumeController
                         onClick={handleClick}
                     >
                         <Icon id="volume" />
-                        { mutedState[0] && <Icon size="small" id="close" className="absolute bottom-[-3%] right-[-5%]" /> }
+                        { (mutedState[0] || volumeState[0] === 0) && <Icon size="small" id="close" className="absolute bottom-[-3%] right-[-5%]" /> }
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className={cn(
                     "w-[10dvw] min-w-[100px] bg-dp-0/10 border-accent-default/10",
-                    { "brightness-50": mutedState[0] },
+                    { "brightness-50": mutedState[0] || volumeState[0] === 0 },
                     "rounded-full py-1.5"
                 )}>
                     <Slider

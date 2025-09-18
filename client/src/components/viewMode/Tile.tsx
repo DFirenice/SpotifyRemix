@@ -9,9 +9,9 @@ import type { TPlaylist, TSong, TFolder, TMediaEntity } from "@/types/mediaEntit
 import { accumulateAndFormatAuthors, accumulateAndFormatPlaylists } from "@/utils/entityFormatter"
 import { useUserStore } from "@/stores/useUserStore"
 import ImageWithFallback from "@app-ui/ImageWithFallback"
-import { getSignedCover } from "@/utils/getTokenizedUrl"
 import { useEffect, useState } from "react"
 import usePlayingSongStore from "@/stores/PlayingSong"
+import useCachedSongsStore from "@/stores/CachedSongs"
 import { Skeleton } from "@app-ui/skeleton"
 
 /**
@@ -24,9 +24,10 @@ import { Skeleton } from "@app-ui/skeleton"
 const Tile = ({ tile }: { tile: TMediaEntity }) => {
     const isPinned = useUserStore(state => state.pinned.has(tile.id))
     const { song: storeSong, queueSong, setIsPlaying, isPlaying } = usePlayingSongStore()
-    const [ isCoverLoaded, setIsCoverLoaded ] = useState<boolean>(false) // Displaying Skeleton before image loads
 
-    //
+    const { getFromCache, addToCache } = useCachedSongsStore()
+
+    // Play / pause on cover
     const handlePlaySong = () => {
         if ((tile as TSong).id === storeSong?.id) return setIsPlaying(!isPlaying)
         queueSong(tile as TSong)
@@ -35,15 +36,16 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
     // Song tile
     if (detectMediaEntityType(tile) === "song") {
         const song = tile as TSong
-        const [coverSrc, setCoverSrc] = useState<string>('/')
+        const [ coverSrc, setCoverSrc ] = useState<string>('/')
 
         useEffect(() => {
-            let isMounted = true
-            getSignedCover(song.cover_path).then(url => {
-                if (isMounted && url) setCoverSrc(url)
-            })
-            return () => { isMounted = false }
-        }, [song.cover_path])
+            const getCover = async () => {
+                const cachedSong = await getFromCache(song.id)
+                if (cachedSong) setCoverSrc(cachedSong!.cache!.coverUrl)
+                else setCoverSrc((await addToCache(song)).cache!.coverUrl)
+            }
+            getCover()
+        }, [ song.cover_path ])
 
         return (
             <Link href={''} className="w-48 h-72 aspect-square">
@@ -51,9 +53,9 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
                 <div className="group rounded-lg w-full h-48 relative">
                     <div
                         className="
-                            absolute rounded-4xl group-hover:opacity-100 z-10
+                            absolute rounded-xl group-hover:opacity-100 z-10
                             opacity-0 transition-all w-full h-full bg-dp-1/87
-                            grid place-items-center
+                            grid place-items-center duration-75
                         "
                         id="coverOverlay"
                         onClick={handlePlaySong}
@@ -67,13 +69,12 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
                     </div>
                     <ImageWithFallback
                         fallback="/public/noImage.webp" // Ｎｏｔｅ： Isn't working
-                        className="object-cover rounded-4xl bg-dp-1 z-0 pointer-events-none"
+                        className="object-cover rounded-xl bg-dp-1 z-0 pointer-events-none"
                         alt="Track cover"
                         src={coverSrc}
                         fill
-                        onLoad={() => setIsCoverLoaded(true)}
                     />
-                    { !isCoverLoaded && <Skeleton className="w-full h-full rounded-4xl" /> }
+                    { !coverSrc && <Skeleton className="w-full h-full rounded-xl" /> }
                 </div>
                 <div className="text-center mt-1">
                     <span className="w-full truncate text-accent-default">{ song.title || 'Song is unavailable...' }</span>

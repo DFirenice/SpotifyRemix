@@ -10,6 +10,7 @@ import { ValidateTokenModule } from './app/validate-token/validate-token.module'
 import { SongsModule } from './app/songs/songs.module';
 import { SupabaseModule } from './supabase/supabase.module';
 import { GetMediaModule } from './app/get-media/get-media.module';
+import { UserModule } from './app/user/user.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { GetMediaModule } from './app/get-media/get-media.module';
     ValidateTokenModule,
     SongsModule,
     SupabaseModule,
-    GetMediaModule
+    GetMediaModule,
+    UserModule
   ],
   controllers: [],
   providers: [

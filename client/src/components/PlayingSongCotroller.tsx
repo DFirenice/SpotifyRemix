@@ -76,6 +76,7 @@ const PlayingSongController = () => {
     }, [ song ])
 
     // 250ms update
+    // Ｎｏｔｅ： Requires heavy optimization rework
     useEffect(() => {
         let frameId: number
 

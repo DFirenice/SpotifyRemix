@@ -8,9 +8,10 @@ import { useEffect, useState } from "react"
 import Tiles from "@/components/viewMode/Tiles"
 import { TSong } from "@/types/mediaEntities.types.ts"
 import { use } from "react"
+import Heading from "@/components/ui/Heading"
 
 const App = ({ params }: { params: Promise<{ slug: string }> }) => {
-    const { addToCache, cache } = useCachedSongsStore()
+    const { addToCache } = useCachedSongsStore()
     const [ songs, setSongs ] = useState<TSong[]>([])
     const { slug } = use(params)
 
@@ -23,14 +24,18 @@ const App = ({ params }: { params: Promise<{ slug: string }> }) => {
         fetchSongs()
     }, [])
 
-    console.log("Upd Cache: ", cache)
-
     return <div className="h-full bordered">
         <ThemesPanel themes={homeThemes} />
         <div className="page-gaps">
-            { (slug === 'all' || slug === 'music') && songs.length > 0 && (
-                <Tiles data={songs} includeFavorite={false} />
-            ) }
+            <div className="mb-4">
+                <span className="text-fg-secondary leading-none">Tracks</span>
+                <Heading size="medium" className="leading-tight">Made for you</Heading>
+            </div>
+            <section>
+                { (slug === 'all' || slug === 'music') && songs.length > 0 && (
+                    <Tiles data={songs} includeFavorite={false} />
+                ) }
+            </section>
         </div>
     </div>
 }

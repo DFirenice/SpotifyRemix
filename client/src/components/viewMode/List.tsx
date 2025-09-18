@@ -16,11 +16,15 @@ import { cn } from "@/lib/utils"
 import type { TPlaylist, TSong } from "@/types/mediaEntities.types.ts"
 import { detectMediaEntityType } from "@/utils/typeGuards"
 import { accumulateAndFormatTime } from "@/utils/entityFormatter"
+import type { TMediaEntity } from "@/types/mediaEntities.types.ts"
+import type { TSongWithCache } from "@/stores/CachedSongs"
+import { useProtectedApi } from "@/lib/axios"
 
-const List = ({ data }: { data: unknown[] }) => {
-    // Add: Sort initally by remembered value
+const List = ({ data }: { data: TMediaEntity[] }) => {
+    // Ｎｏｔｅ： Sort initally by remembered value
     const [ sortedSongs, setSortedSongs ] = useState(sortBy(data, 'name', false))
     const [ lastSort, setLastSort ] = useState<string | undefined>('name')
+    const [ isFavorite, setFavorite ] = useState<boolean>(true) // Ｎｏｔｅ： Should be a store
     const isReverseRef = useRef(false)
     
     // Sorts songs array by comparing property
@@ -35,10 +39,17 @@ const List = ({ data }: { data: unknown[] }) => {
         setLastSort(prop)
     }
 
+    // Adds to / removes from liked songs
+    const markFavorite = async (id: string, type: 'song' | 'playlist') => {
+        const { data } = await useProtectedApi.post('user/mark-favorite', { id, type })
+        if (data?.success) return setFavorite(state => !state)
+        console.error("An error occured in marking song favorite")
+    }
+
     const renderList = (data: unknown[]) => {
         return sortedSongs.map((obj: unknown, i) => {
             if (detectMediaEntityType(obj) === 'song') {
-                const song = obj as TSong
+                const song = obj as TSongWithCache
                 return (
                     <div key={song.id} className="
                         flex space-x-4 text-fg-secondary min-h-[7.5dvh]
@@ -49,20 +60,24 @@ const List = ({ data }: { data: unknown[] }) => {
                             <div className="relative h-[85%] aspect-square">
                                 <Image
                                     className="object-cover rounded-lg"
-                                    fill src={song.previewURL}
+                                    fill src={song.cache?.coverUrl || "/"}
                                     alt="Track preview"
                                 />
                             </div>
                             <div className="flex flex-col">
-                                <span className="text-accent-default font-bold tracking-wider">{song.name}</span>
-                                <span className="truncate w-[30ch]">Author: {song.author.username || 'Uknown'}</span>
+                                <span className="text-accent-default font-bold tracking-wider">{song.title}</span>
+                                <span className="truncate w-[30ch]">Author: {song.artist.username || 'Uknown'}</span>
                             </div>
                         </div>
-                        <div className="min-w-0 truncate py-2">{song.author.username}</div>
+                        <div className="min-w-0 truncate py-2">{song.artist.username}</div>
                         {/* Rewrite how icon behaves */}
                         <div className="min-w-0 truncate py-2 gap-x-2">
                             <span>{ formatTime(song.duration) }</span>
-                            <IconButton icon="like" className="**:fill-secondary **:stroke-secondary" />
+                            <IconButton
+                                icon="like"
+                                onClick={() => markFavorite(song.id, 'song')}
+                                className="**:fill-secondary **:stroke-secondary"
+                            />
                         </div>
                     </div>
                 )

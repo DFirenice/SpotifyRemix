@@ -14,7 +14,7 @@ const usePlayingSongStore = create<IPlayingSongState>(( set, get ) => ({
     isPlaying: false,
     setIsPlaying: (newState: boolean) => set({ isPlaying: newState }),
     queueSong: (song: TSong) => set({ song }),
-    getPlaylist: () => get().song?.belongsRef // Ｎｏｔｅ： Yet unavailable
+    getPlaylist: () => get().song?.belongsRef // Ｎｏｔｅ： Currently unavailable
 }))
 
 export default usePlayingSongStore

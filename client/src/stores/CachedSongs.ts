@@ -13,7 +13,7 @@ type TCacheUrls = {
 
 // type TSongId = Pick<TSong, "id">
 
-type TSongWithCache = TSong & TCacheUrls
+export type TSongWithCache = TSong & TCacheUrls
 
 interface ICachedSongsStore {
     cache: TSongWithCache[]
@@ -28,7 +28,7 @@ interface ICachedSongsStore {
 /** Utility that helps to generate blobs for caching */
 const makeCache = async (
     { cover_path, file_path }:
-    { cover_path: string, file_path: string }
+        { cover_path: string, file_path: string }
 ) => {
     try {
         const { data } = await useProtectedApi.post('/get-media/full-song', { cover_path, file_path })
@@ -40,13 +40,13 @@ const makeCache = async (
         const songUrl = URL.createObjectURL(songBlob)
 
         if (data) return { coverUrl, songUrl }
-    } catch(err) { console.error(err) }
+    } catch (err) { console.error(err) }
 }
 
-const useCachedSongsStore = create<ICachedSongsStore>(( set, get ) => ({
+const useCachedSongsStore = create<ICachedSongsStore>((set, get) => ({
     cache: [],
-    
-    addToCache: async (song: TSong) => {
+
+    addToCache: async (song: TSong): Promise<TSongWithCache> => {
         const cache = get().cache
         const hasCached = cache.find(s => s.id === song.id)
         if (hasCached) return hasCached // Song entity (object)
@@ -57,23 +57,24 @@ const useCachedSongsStore = create<ICachedSongsStore>(( set, get ) => ({
         set(state => ({ cache: [...state.cache, songWithCache] }))
         return songWithCache
     },
-    
-    getFromCache: async(id: string) => {
-        const song = get().cache.find(song => song.id === id) as TSongWithCache
-        if (!song) return undefined
-        let cachedUrls = song?.cache
 
-        if (!cachedUrls) {
-            cachedUrls = await makeCache({ cover_path: song.cover_path as string, file_path: song.file_path })
-             // Updating the cache property for the song
+    getFromCache: async (id: string) => {
+        const song = get().cache.find(song => song.id === id) as TSongWithCache | undefined
+        if (!song) return undefined
+
+        if (!song.cache) {
+            const cachedUrls = await makeCache({ cover_path: song.cover_path as string, file_path: song.file_path })
+            const songWithCache: TSongWithCache = { ...song, cache: cachedUrls }
+              // Updating the cache property for the song
             set(state => ({
                 cache: state.cache.map(s =>
-                    s.id === id ? { ...s, cache: cachedUrls } : s
+                    s.id === id ? songWithCache : s
                 )
             }))
+            return songWithCache
         }
 
-        return { cache: cachedUrls } as TCacheUrls
+        return song
     }
 }))
 
