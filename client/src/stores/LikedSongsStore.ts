@@ -8,6 +8,7 @@ export type TFavoriteEntityType = 'song' | 'playlist'
 export interface ILikedSongsStore {
     songs: TSong[]
     setSongs: (updSongs: TSong[]) => void
+    removeSong: (songId: string) => void
     /** Likes or unlikes the media entity. Type: playlist or song */
     toggleFavorite: (sondId: string, type?: TFavoriteEntityType) => Promise<void>
     isLiked: (songId: string) => boolean
@@ -16,6 +17,7 @@ export interface ILikedSongsStore {
 export const useLikedSongsStore = create<ILikedSongsStore>((set, get) => ({
     songs: [],
     setSongs: (updSongs: TSong[]) => set({ songs: updSongs }),
+    removeSong: (songId) => set(state => ({ songs: state.songs.filter(s => s.id !== songId) })),
 
     toggleFavorite: async (songId: string, type: TFavoriteEntityType = 'song') => {
         const { getFromCache } = useCachedSongsStore.getState()
