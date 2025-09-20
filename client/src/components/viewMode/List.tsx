@@ -18,13 +18,13 @@ import { detectMediaEntityType } from "@/utils/typeGuards"
 import { accumulateAndFormatTime } from "@/utils/entityFormatter"
 import type { TMediaEntity } from "@/types/mediaEntities.types.ts"
 import type { TSongWithCache } from "@/stores/CachedSongs"
-import { useProtectedApi } from "@/lib/axios"
+import { useLikedSongsStore, type TFavoriteEntityType } from "@/stores/LikedSongsStore"
 
 const List = ({ data }: { data: TMediaEntity[] }) => {
     // Ｎｏｔｅ： Sort initally by remembered value
     const [ sortedSongs, setSortedSongs ] = useState(sortBy(data, 'name', false))
     const [ lastSort, setLastSort ] = useState<string | undefined>('name')
-    const [ isFavorite, setFavorite ] = useState<boolean>(true) // Ｎｏｔｅ： Should be a store
+    const { toggleFavorite, isLiked } = useLikedSongsStore()
     const isReverseRef = useRef(false)
     
     // Sorts songs array by comparing property
@@ -40,11 +40,7 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
     }
 
     // Adds to / removes from liked songs
-    const markFavorite = async (id: string, type: 'song' | 'playlist') => {
-        const { data } = await useProtectedApi.post('user/mark-favorite', { id, type })
-        if (data?.success) return setFavorite(state => !state)
-        console.error("An error occured in marking song favorite")
-    }
+    const markFavorite = async (id: string, type: TFavoriteEntityType) => { await toggleFavorite(id, type) }
 
     const renderList = (data: unknown[]) => {
         return sortedSongs.map((obj: unknown, i) => {
@@ -76,7 +72,7 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
                             <IconButton
                                 icon="like"
                                 onClick={() => markFavorite(song.id, 'song')}
-                                className="**:fill-secondary **:stroke-secondary"
+                                className={cn({ "**:fill-secondary **:stroke-secondary": isLiked(song?.id ?? '/') })}
                             />
                         </div>
                     </div>
@@ -122,7 +118,7 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
                 <div className="text-fg-secondary flex gap-4">
                     <span className="shrink-0 py-2">#</span>
                     {/* Sort-by controls */}
-                    {  [['name', 'name'], ['author(s)', 'author.username'], ['duration', 'duration']].map((sortingCriteria) => (
+                    {  [['name', 'title'], ['artist', 'artist.username'], ['duration', 'duration']].map((sortingCriteria) => (
                         <a key={`list_sorting_criteria_${sortingCriteria[0]}`} className={
                             cn(
                                 "select-none capitalize flex-1 min-w-0 truncate cursor-pointer py-2",

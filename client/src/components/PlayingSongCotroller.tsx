@@ -13,6 +13,8 @@ import VolumeController from "@/components/VolumeController"
 
 import usePlayingSongStore from "@/stores/PlayingSong"
 import useCachedSongsStore from "@/stores/CachedSongs"
+import { useLikedSongsStore } from "@/stores/LikedSongsStore"
+import { cn } from "@/lib/utils"
 
 export type TSignedSongData = {
     coverUrl: string | null
@@ -26,6 +28,7 @@ const PlayingSongController = () => {
 
     // Cache store
     const { getFromCache, addToCache } = useCachedSongsStore()
+    const { toggleFavorite, isLiked } = useLikedSongsStore()
     
     const [ duration, setDuration ] = useState<number>(0),
           [ seek, setSeek ] = useState<number>(0),
@@ -114,6 +117,9 @@ const PlayingSongController = () => {
     const handleSwitch = () => { setIsPlaying(!isPlaying) }
     const handleMuteAudio = () => { setIsMuted(!isMuted) }
     
+    // Toggles between liked / unliked
+    const handleMarkFavorite = async () => await toggleFavorite(song!.id)
+    
     return (
         <div className="
             bg-gradient-to-br from-fg-secondary/20 to-accent-gray/80 min-h-[8dvh] w-full px-4 py-2 flex flex-row gap-6
@@ -191,7 +197,11 @@ const PlayingSongController = () => {
             </div>
             {/* Other controls */}
             <div className="gap-1">
-                <IconButton icon="like" />
+                <IconButton
+                    icon="like"
+                    onClick={handleMarkFavorite} 
+                    className={cn({ "**:fill-secondary **:stroke-secondary": isLiked(song?.id ?? '/') })}
+                />
                 <IconButton icon="add_to_playlist" />
                 <IconButton icon="lyrics" />
                 <IconButton icon="device" />

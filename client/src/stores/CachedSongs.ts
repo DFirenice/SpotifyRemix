@@ -22,7 +22,7 @@ interface ICachedSongsStore {
     addToCache: (song: TSong) => Promise<TSongWithCache>
     /** Returns cached song or undefined
      * @param songId */
-    getFromCache: (id: string) => Promise<TCacheUrls | undefined>
+    getFromCache: (id: string) => Promise<TSongWithCache | undefined>
 }
 
 /** Utility that helps to generate blobs for caching */
