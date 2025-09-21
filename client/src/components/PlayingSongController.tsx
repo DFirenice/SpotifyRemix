@@ -121,19 +121,13 @@ const PlayingSongController = () => {
     // Switcher for PlayBtn
     const handleSwitch = () => { setIsPlaying(!isPlaying) }
     const handleMuteAudio = () => { setIsMuted(!isMuted) }
-    
-    // Toggles between liked / unliked
-    const handleMarkFavorite = async () => {
-        if (song) { await toggleFavorite(song.id) }
-        else console.error('Unable to like a song')
-    }
 
     return (
         <div className={cn(
             "bg-gradient-to-br from-fg-secondary/20 to-accent-gray/80 min-h-[8dvh] w-full px-4 py-2 flex flex-row gap-6",
             "overflow-y-auto rounded-xl border-2 border-dp-1 justify-between",
             "*:flex *:flex-row *:items-center",
-            { "pointer-events-none opacity-50": !song || !song?.cache }
+            { "pointer-events-none opacity-50": !song }
         )}>
             {/* Track preview */}
             <div>

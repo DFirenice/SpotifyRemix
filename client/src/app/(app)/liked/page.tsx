@@ -57,7 +57,7 @@ const LikedSongsPage = () => {
     return (
         <div className="page-container">
             <ViewControlPanel viewMode={viewMode} setViewMode={setViewMode} />
-            { songs.length > 0 && <ViewContainer viewMode={viewMode} data={songs} /> }
+            <ViewContainer viewMode={viewMode} data={songs} />
         </div>
     )
 }

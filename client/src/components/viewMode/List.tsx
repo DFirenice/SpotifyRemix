@@ -2,10 +2,11 @@
 
 import Image from "next/image"
 import { Separator } from "@/components/ui/separator"
+import { LikeButton } from "@app-ui/LikeButton"
 import Icon from "@/components/ui/Icon"
 import Link from "next/link"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 
 import { formatTime } from "@/utils/timeFortmatter"
 import { accumulateAndFormatAuthors } from "@/utils/entityFormatter"
@@ -17,17 +18,21 @@ import { detectMediaEntityType } from "@/utils/typeGuards"
 import { accumulateAndFormatTime } from "@/utils/entityFormatter"
 import type { TMediaEntity } from "@/types/mediaEntities.types.ts"
 import type { TSongWithCache } from "@/stores/CachedSongs"
-import { LikeButton } from "../ui/LikeButton"
 
 const List = ({ data }: { data: TMediaEntity[] }) => {
     // Ｎｏｔｅ： Sort initally by remembered value
-    const [ sortedSongs, setSortedSongs ] = useState(sortBy(data, 'name', false))
-    const [ lastSort, setLastSort ] = useState<string | undefined>('name')
+    const [sortedSongs, setSortedSongs] = useState(sortBy(data, 'name', false))
+    const [lastSort, setLastSort] = useState<string | undefined>('name')
     const isReverseRef = useRef(false)
+
+    // Keeping in sync with prop updates
+    useEffect(() => {
+        setSortedSongs(sortBy(data, lastSort ?? 'name', isReverseRef.current))
+    }, [data])
     
     // Sorts songs array by comparing property
     const handleSort = (prop: keyof TSong | string) => {
-        if (lastSort == prop) {
+        if (lastSort === prop) {
             isReverseRef.current = !isReverseRef.current
             setSortedSongs(sortBy(sortedSongs, prop, isReverseRef.current))
         } else {
@@ -42,7 +47,7 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
             if (detectMediaEntityType(obj) === 'song') {
                 const song = obj as TSongWithCache
                 return (
-                    <div key={song.id} className="
+                    <div key={`${song.id}_${new Date()}`} className="
                         flex space-x-4 text-fg-secondary min-h-[7.5dvh]
                         *:inline-flex *:not-[span]:flex-1 *:items-center
                     ">
@@ -63,7 +68,7 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
                         <div className="min-w-0 truncate py-2">{song.artist.username}</div>
                         {/* Rewrite how icon behaves */}
                         <div className="min-w-0 truncate py-2 gap-x-2">
-                            <span>{ formatTime(song.duration) }</span>
+                            <span>{formatTime(song.duration)}</span>
                             <LikeButton entityId={song?.id} type="song" />
                         </div>
                     </div>
@@ -85,9 +90,9 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
                                 <span className="truncate w-[30ch]">Playlist: {playlist.name || 'Name uknown'}</span>
                             </div>
                         </div>
-                        <div className="min-w-0 truncate py-2">{ accumulateAndFormatAuthors(playlist.songs, 2) }</div>
+                        <div className="min-w-0 truncate py-2">{accumulateAndFormatAuthors(playlist.songs, 2)}</div>
                         <div className="min-w-0 truncate py-2 gap-x-2">
-                            <span>{ accumulateAndFormatTime(playlist.songs, false) }</span>
+                            <span>{accumulateAndFormatTime(playlist.songs, false)}</span>
                         </div>
                     </Link>
                 )
@@ -100,7 +105,7 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
             )
         })
     }
-    
+
     return (
         <div className="w-full px-4 h-full">
             {/* Sort bar */}
@@ -109,23 +114,23 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
                 <div className="text-fg-secondary flex gap-4">
                     <span className="shrink-0 py-2">#</span>
                     {/* Sort-by controls */}
-                    {  [['name', 'title'], ['artist', 'artist.username'], ['duration', 'duration']].map((sortingCriteria) => (
+                    {[['name', 'title'], ['artist', 'artist.username'], ['duration', 'duration']].map((sortingCriteria) => (
                         <a key={`list_sorting_criteria_${sortingCriteria[0]}`} className={
                             cn(
                                 "select-none capitalize flex-1 min-w-0 truncate cursor-pointer py-2",
                                 { 'text-accent-default font-bold': sortingCriteria[1] == lastSort }
                             )}
-                            onClick={() => handleSort(sortingCriteria[1] )}
+                            onClick={() => handleSort(sortingCriteria[1])}
                         >
-                            { sortingCriteria[0] }
+                            {sortingCriteria[0]}
                         </a>
-                    )) }
+                    ))}
                 </div>
             </div>
             <Separator />
             <div className="container mt-4 h-full">
                 {/* # | SongImg & Title | Album (Playlist) | Duration */}
-                { renderList(sortedSongs) }
+                {renderList(sortedSongs)}
             </div>
         </div>
     )

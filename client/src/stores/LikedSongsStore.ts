@@ -16,26 +16,23 @@ export interface ILikedSongsStore {
 
 export const useLikedSongsStore = create<ILikedSongsStore>((set, get) => ({
     songs: [],
-    setSongs: (updSongs: TSong[]) => set({ songs: updSongs }),
-    removeSong: (songId) => set(state => ({ songs: state.songs.filter(s => s.id !== songId) })),
+    // Ｎｏｔｅ： Fix to disallow duping
+    setSongs: (updSongs: TSong[]) => set({ songs: [...updSongs] }),
+    removeSong: (songId) => set(state => ({ songs: [...state.songs.filter(s => s.id !== songId)] })),
 
     toggleFavorite: async (songId: string, type: TFavoriteEntityType = 'song') => {
         const { getFromCache } = useCachedSongsStore.getState()
-        let markedSong: TSong | undefined
-        
         try {
             const { data } = await useProtectedApi.post('/user/mark-favorite', { id: songId, type })
-
-            if (data.message === `${type.charAt(0).toUpperCase() + type.slice(1)} marked as liked`) {
-                markedSong = await getFromCache(songId)
-                markedSong && set(state => ({ songs: [ ...state.songs, markedSong! ] }))
-            }
-
-            else if (data.message === `${type.charAt(0).toUpperCase() + type.slice(1)} removed from liked`) {
+            if (data.message.includes('marked as liked')) {
+                const markedSong = await getFromCache(songId)
+                if (markedSong && !get().songs.some(s => s.id === songId)) {
+                    set(state => ({ songs: [...state.songs, markedSong] }))
+                }
+            } else if (data.message.includes('removed from liked')) {
                 get().removeSong(songId)
             }
-        }
-        catch (err) { console.log("An error occured liking a song: ", err) }
+        } catch (err) { console.log("An error occured liking a song: ", err) }
     },
 
     isLiked: (id: string) => {
