@@ -8,7 +8,7 @@ import { useProtectedApi } from "@/lib/axios"
 import Navigation from '@/components/Navigation'
 import Drawer from "@/components/Drawer"
 import Aside from "@/components/Aside"
-import PlayingSongController from "@/components/PlayingSongCotroller"
+import PlayingSongController from "@/components/PlayingSongController"
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter()

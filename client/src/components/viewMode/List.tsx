@@ -1,7 +1,6 @@
 'use client'
 
 import Image from "next/image"
-import IconButton from "@/components/ui/IconButton"
 import { Separator } from "@/components/ui/separator"
 import Icon from "@/components/ui/Icon"
 import Link from "next/link"
@@ -18,13 +17,12 @@ import { detectMediaEntityType } from "@/utils/typeGuards"
 import { accumulateAndFormatTime } from "@/utils/entityFormatter"
 import type { TMediaEntity } from "@/types/mediaEntities.types.ts"
 import type { TSongWithCache } from "@/stores/CachedSongs"
-import { useLikedSongsStore, type TFavoriteEntityType } from "@/stores/LikedSongsStore"
+import { LikeButton } from "../ui/LikeButton"
 
 const List = ({ data }: { data: TMediaEntity[] }) => {
     // Ｎｏｔｅ： Sort initally by remembered value
     const [ sortedSongs, setSortedSongs ] = useState(sortBy(data, 'name', false))
     const [ lastSort, setLastSort ] = useState<string | undefined>('name')
-    const { toggleFavorite, isLiked } = useLikedSongsStore()
     const isReverseRef = useRef(false)
     
     // Sorts songs array by comparing property
@@ -38,9 +36,6 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
         }
         setLastSort(prop)
     }
-
-    // Adds to / removes from liked songs
-    const markFavorite = async (id: string, type: TFavoriteEntityType) => { await toggleFavorite(id, type) }
 
     const renderList = (data: unknown[]) => {
         return sortedSongs.map((obj: unknown, i) => {
@@ -69,11 +64,7 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
                         {/* Rewrite how icon behaves */}
                         <div className="min-w-0 truncate py-2 gap-x-2">
                             <span>{ formatTime(song.duration) }</span>
-                            <IconButton
-                                icon="like"
-                                onClick={() => markFavorite(song.id, 'song')}
-                                className={cn({ "**:fill-secondary **:stroke-secondary": isLiked(song?.id ?? '/') })}
-                            />
+                            <LikeButton entityId={song?.id} type="song" />
                         </div>
                     </div>
                 )
@@ -103,8 +94,8 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
             }
 
             return (
-                <div className="h-full w-full px-4 grid place-items-center">
-                    <span className="text-fg-secondary">Unable to load the content.</span>
+                <div key={`Unable to load the entity ${new Date()}`} className="h-full w-full px-4 grid place-items-center">
+                    <span className="text-fg-secondary">No songs found</span>
                 </div>
             )
         })

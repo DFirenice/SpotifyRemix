@@ -18,7 +18,7 @@ export class UserService {
             .eq('user_id', id)
 
         if (!data) throw new HttpException("No liked songs found", 204)
-        const ids = data.map(s => s.liked[0])
+        const ids = data[0].liked
 
         return ids
     }

@@ -8,11 +8,11 @@ import { detectMediaEntityType } from "@/utils/typeGuards"
 import type { TPlaylist, TSong, TFolder, TMediaEntity } from "@/types/mediaEntities.types.ts"
 import { accumulateAndFormatAuthors, accumulateAndFormatPlaylists } from "@/utils/entityFormatter"
 import { useUserStore } from "@/stores/useUserStore"
-import ImageWithFallback from "@app-ui/ImageWithFallback"
 import { useEffect, useState } from "react"
 import usePlayingSongStore from "@/stores/PlayingSong"
 import useCachedSongsStore from "@/stores/CachedSongs"
 import { Skeleton } from "@app-ui/skeleton"
+import Image from "next/image"
 
 /**
 *   Types of tiles:
@@ -22,7 +22,7 @@ import { Skeleton } from "@app-ui/skeleton"
 * */
 
 const Tile = ({ tile }: { tile: TMediaEntity }) => {
-    const isPinned = useUserStore(state => state.pinned.has(tile.id))
+    const isPinned = useUserStore(state => state.pinned.has(tile?.id))
     const { song: storeSong, queueSong, setIsPlaying, isPlaying } = usePlayingSongStore()
 
     const { getFromCache, addToCache } = useCachedSongsStore()
@@ -33,20 +33,23 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
         queueSong(tile as TSong)
     }
     
-    // Song tile
-    if (detectMediaEntityType(tile) === "song") {
-        const song = tile as TSong
-        const [ coverSrc, setCoverSrc ] = useState<string>('/')
-
-        useEffect(() => {
+    // Hooks for tiles
+    const [ coverSrc, setCoverSrc ] = useState<string>()
+    useEffect(() => {
+        if (detectMediaEntityType(tile) === "song") {
+            const song = tile as TSong
             const getCover = async () => {
                 const cachedSong = await getFromCache(song.id)
                 if (cachedSong) setCoverSrc(cachedSong!.cache!.coverUrl)
                 else setCoverSrc((await addToCache(song)).cache!.coverUrl)
             }
             getCover()
-        }, [ song.cover_path ])
-
+        }
+    }, [ tile, getFromCache, addToCache ])
+    
+    // Song tile
+    if (detectMediaEntityType(tile) === "song") {
+        const song = tile as TSong
         return (
             <Link href={''} className="w-48 h-72 aspect-square">
                 { isPinned && <Thumbtack /> }
@@ -67,11 +70,10 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
                             }
                         </div>
                     </div>
-                    <ImageWithFallback
-                        fallback="/public/noImage.webp" // Ｎｏｔｅ： Isn't working
+                    <Image
                         className="object-cover rounded-xl bg-dp-1 z-0 pointer-events-none"
                         alt="Track cover"
-                        src={coverSrc}
+                        src={coverSrc ?? '/images/placeholder.png'}
                         fill
                     />
                     { !coverSrc && <Skeleton className="w-full h-full rounded-xl" /> }

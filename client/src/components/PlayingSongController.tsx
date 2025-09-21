@@ -15,6 +15,7 @@ import usePlayingSongStore from "@/stores/PlayingSong"
 import useCachedSongsStore from "@/stores/CachedSongs"
 import { useLikedSongsStore } from "@/stores/LikedSongsStore"
 import { cn } from "@/lib/utils"
+import { LikeButton } from "./ui/LikeButton"
 
 export type TSignedSongData = {
     coverUrl: string | null
@@ -23,7 +24,11 @@ export type TSignedSongData = {
 
 const PlayingSongController = () => {
     const playerRef = useRef<ReactHowler>(null)
-    const { song, isPlaying, setIsPlaying } = usePlayingSongStore()
+    
+    const song = usePlayingSongStore(state => state.song)
+    const isPlaying = usePlayingSongStore(state => state.isPlaying)
+    const { setIsPlaying } = usePlayingSongStore()
+
     const [ signedData, setSignedData ] = useState<TSignedSongData | null>() // For Signed urls
 
     // Cache store
@@ -118,14 +123,18 @@ const PlayingSongController = () => {
     const handleMuteAudio = () => { setIsMuted(!isMuted) }
     
     // Toggles between liked / unliked
-    const handleMarkFavorite = async () => await toggleFavorite(song!.id)
-    
+    const handleMarkFavorite = async () => {
+        if (song) { await toggleFavorite(song.id) }
+        else console.error('Unable to like a song')
+    }
+
     return (
-        <div className="
-            bg-gradient-to-br from-fg-secondary/20 to-accent-gray/80 min-h-[8dvh] w-full px-4 py-2 flex flex-row gap-6
-            overflow-y-auto rounded-xl border-2 border-dp-1 justify-between
-            *:flex *:flex-row *:items-center
-        ">
+        <div className={cn(
+            "bg-gradient-to-br from-fg-secondary/20 to-accent-gray/80 min-h-[8dvh] w-full px-4 py-2 flex flex-row gap-6",
+            "overflow-y-auto rounded-xl border-2 border-dp-1 justify-between",
+            "*:flex *:flex-row *:items-center",
+            { "pointer-events-none opacity-50": !song || !song?.cache }
+        )}>
             {/* Track preview */}
             <div>
                 <div className="relative h-[85%] aspect-square">
@@ -197,11 +206,7 @@ const PlayingSongController = () => {
             </div>
             {/* Other controls */}
             <div className="gap-1">
-                <IconButton
-                    icon="like"
-                    onClick={handleMarkFavorite} 
-                    className={cn({ "**:fill-secondary **:stroke-secondary": isLiked(song?.id ?? '/') })}
-                />
+                <LikeButton entityId={song?.id} type="song" />
                 <IconButton icon="add_to_playlist" />
                 <IconButton icon="lyrics" />
                 <IconButton icon="device" />
