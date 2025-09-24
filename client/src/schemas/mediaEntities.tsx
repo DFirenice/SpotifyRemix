@@ -8,34 +8,37 @@ export const UserSchema = z.object({
   avatarUrl: z.string(),
 })
 
+export const ArtistSchema = UserSchema.pick({
+  _id: true,
+  username: true,
+  avatarUrl: true
+})
+export const TagsSchema = z.array(z.string()).or(z.null())
+
 // Ref to: mediaEntities.types
 export const SongSchema = z.object({
   created_at: z.string(),
   updated_at: z.string(),
   title: z.string(),
-  artist: UserSchema.pick({
-    _id: true,
-    username: true,
-    avatarUrl: true
-  }),
+  artist: ArtistSchema,
   album: z.string().or(z.null()),
   duration: z.number(),
   cover_path: z.string().or(z.null()),    // Reference
   file_path: z.string(),                  // Reference
-  tags: z.array(z.string()).or(z.null()), // string[]
+  tags: TagsSchema,
   id: z.string()
 })
 
-// Ｎｏｔｅ： Unsynced
 export const PlaylistSchema = z.object({
-  id: z.string(), // Used as reference to where song belongs
+  user_id: z.string(), // Used as reference to where song belongs
+  artist: ArtistSchema,
   name: z.string(),
-  previewURL: z.string(),
   size: z.number(),
-  songs: SongSchema.array(),
+  songs: z.array(SongSchema),
+  cover_path: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
-  tags: z.string().array()
+  tags: TagsSchema
 })
 
 // Ｎｏｔｅ： Unsynced

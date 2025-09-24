@@ -14,7 +14,7 @@ export class UserController {
         const songs = await this.service.getLikedSongs(userId)
         return { songs }
     }
-
+    
     @Post('mark-favorite')
     async markFavorite(@User('userId') userId, @Body() body: MarkFavoriteBodyDto) {
         const res = await this.service.markFavorite({ ...body, userId })

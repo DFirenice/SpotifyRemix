@@ -11,6 +11,7 @@ import { SongsModule } from './app/songs/songs.module';
 import { SupabaseModule } from './supabase/supabase.module';
 import { GetMediaModule } from './app/get-media/get-media.module';
 import { UserModule } from './app/user/user.module';
+import { PlaylistsModule } from './app/playlists/playlists.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { UserModule } from './app/user/user.module';
     SongsModule,
     SupabaseModule,
     GetMediaModule,
-    UserModule
+    UserModule,
+    PlaylistsModule
   ],
   controllers: [],
   providers: [

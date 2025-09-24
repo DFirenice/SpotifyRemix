@@ -4,9 +4,10 @@ import { accumulateAndFormatAuthors } from "@/utils/entityFormatter"
 import Thumbtack from "@app-ui/Thumbtack"
 
 import { useUserStore } from "@/stores/useUserStore"
+import { useLikedSongsStore } from "@/stores/LikedSongsStore"
 
 const FavoriteSongsTile = () => {
-    const collection = useUserStore(state => state.favoriteSongs)
+    const collection = useLikedSongsStore(state => state.songs)
     const isPinned = useUserStore(state => state.pinned.has('fav'))
     
     return (
@@ -24,7 +25,7 @@ const FavoriteSongsTile = () => {
                 <span className="w-full truncate text-accent-default">Liked Songs</span>
                 <span className="font-mono text-secondary font-light">{ collection.length }</span> {/* Playlist size */}
             </div>
-            <p className="text-sm text-fg-secondary my-1">Authors: { accumulateAndFormatAuthors(collection, 2) }</p>
+            <p className="text-sm text-fg-secondary my-1">Artists: { accumulateAndFormatAuthors(collection, 2) }</p>
         </Link>
     )
 }

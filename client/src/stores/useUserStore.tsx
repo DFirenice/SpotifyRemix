@@ -1,14 +1,10 @@
-import type { TSong } from '@/types/mediaEntities.types.ts'
 import type { TUser } from '@/types/userTypes'
 import { create } from 'zustand'
-import axios from 'axios'
 
-import mockSongs from '@/data/temp/songs'
 import { useProtectedApi } from '@/lib/axios'
 
 interface IUser {
     user: TUser | null
-    favoriteSongs: TSong[]
     pinned: Set<string>
     initialized: boolean
     init: () => void
@@ -16,7 +12,6 @@ interface IUser {
 
 export const useUserStore = create<IUser>((set, get) => ({
     user: null,
-    favoriteSongs: mockSongs.toSpliced(2, 3),
     pinned: new Set(['fav', 'playlist-001', 'playlist-002']), // Playlists id
     togglePin: (id: string) => set((state) => {
         const newPinned = new Set(state.pinned)

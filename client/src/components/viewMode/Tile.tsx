@@ -72,8 +72,8 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
                     </div>
                     <Image
                         className="object-cover rounded-xl bg-dp-1 z-0 pointer-events-none"
-                        alt="Track cover"
                         src={coverSrc ?? '/images/placeholder.png'}
+                        alt="Track cover"
                         fill
                     />
                     { !coverSrc && <Skeleton className="w-full h-full rounded-xl" /> }

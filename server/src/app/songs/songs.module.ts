@@ -4,6 +4,7 @@ import { SongsService } from './songs.service';
 import { SupabaseService } from 'src/supabase/supabase.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/schemas/user.schema';
+import { Resolvers } from 'src/utils/resolvers';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { User, UserSchema } from 'src/schemas/user.schema';
       }])
   ],
   controllers: [SongsController],
-  providers: [SongsService, SupabaseService]
+  providers: [SongsService, SupabaseService, Resolvers]
 })
 export class SongsModule {}

@@ -13,9 +13,10 @@ import { accumulateAndFormatAuthors } from "@/utils/entityFormatter"
 import { sortBy } from "@/utils/songsSorter"
 import { cn } from "@/lib/utils"
 
-import type { TPlaylist, TSong } from "@/types/mediaEntities.types.ts"
+import usePlayingSongStore from "@/stores/PlayingSong"
 import { detectMediaEntityType } from "@/utils/typeGuards"
 import { accumulateAndFormatTime } from "@/utils/entityFormatter"
+import type { TPlaylist, TSong } from "@/types/mediaEntities.types.ts"
 import type { TMediaEntity } from "@/types/mediaEntities.types.ts"
 import type { TSongWithCache } from "@/stores/CachedSongs"
 
@@ -42,18 +43,35 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
         setLastSort(prop)
     }
 
+    // Play / pause on cover
+    const { song: storeSong, queueSong, setIsPlaying, isPlaying } = usePlayingSongStore()
+    const handlePlaySong = (obj: TSong) => {
+        if (obj.id === storeSong?.id) return setIsPlaying(!isPlaying)
+        queueSong(obj)
+    }
+
     const renderList = (data: unknown[]) => {
         return sortedSongs.map((obj: unknown, i) => {
             if (detectMediaEntityType(obj) === 'song') {
                 const song = obj as TSongWithCache
                 return (
-                    <div key={`${song.id}_${new Date()}`} className="
+                    <div key={song.id} className="
                         flex space-x-4 text-fg-secondary min-h-[7.5dvh]
                         *:inline-flex *:not-[span]:flex-1 *:items-center
                     ">
                         <span className="shrink-0 py-2 font-bold">{i + 1}</span>
-                        <div className="gap-4 min-w-0 truncate py-2">
+                        <div className="group gap-4 min-w-0 truncate py-2 cursor-pointer" onClick={() => handlePlaySong(obj as TSong)}>
                             <div className="relative h-[85%] aspect-square">
+                                <div className="
+                                    grid place-items-center w-full h-full
+                                    duration-75 bg-dp-1/87 absolute z-10
+                                    opacity-0 group-hover:opacity-100
+                                ">
+                                    { song.id === storeSong?.id && isPlaying ?
+                                        <Icon id="pause_simple" className="text-accent-default" size="large" />
+                                        : <Icon id="play_simple" className="text-accent-default" size="large" />
+                                    }
+                                </div>
                                 <Image
                                     className="object-cover rounded-lg"
                                     fill src={song.cache?.coverUrl || "/"}
@@ -62,7 +80,7 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
                             </div>
                             <div className="flex flex-col">
                                 <span className="text-accent-default font-bold tracking-wider">{song.title}</span>
-                                <span className="truncate w-[30ch]">Author: {song.artist.username || 'Uknown'}</span>
+                                <span className="truncate w-[30ch]">by: {song.artist.username || 'Uknown'}</span>
                             </div>
                         </div>
                         <div className="min-w-0 truncate py-2">{song.artist.username}</div>

@@ -13,15 +13,15 @@ export const accumulateAndFormatAuthors = (songs: TSong[], reducer: number) => {
     let final = []
 
     if (reducer > s) songs[1] ? reducer = 2 : reducer = s // Init.: min 2
-    for (let i = 0; i < reducer; i++) final.push(songs[i].author.username)
+    for (let i = 0; i < reducer; i++) final.push(songs[i].artist.username)
     if (s > reducer) final.push(`and ${s - reducer} more`)
 
     return final.join(", ")
 }
 
-export const accumulateAuthors = (songs: TSong[]): { username: string, id: string }[] => {
-    const authors = songs.map(song => song.author)
-    return authors
+export const accumulateAuthors = (songs: TSong[]): TSong['artist'][] => {
+    const artists = songs.map(song => song.artist)
+    return artists
 }
 
 export const accumulateAndFormatPlaylists = (playlists: TPlaylist[], reducer: number) => {
