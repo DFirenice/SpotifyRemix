@@ -10,6 +10,7 @@ export class GetMediaController {
     
     @Post('cover')
     async getSignedCover(@Body() { path }: { path: string }) {
+        if (!path) throw new NotFoundException()
         const signedUrl = await this.Service.getSignedCover(path)
         if (signedUrl) return signedUrl
         throw new NotFoundException()
@@ -17,6 +18,7 @@ export class GetMediaController {
 
     @Post('song')
     async getSignedSong(@Body() { path }: { path: string }) {
+        if (!path) throw new NotFoundException()
         const signedUrl = await this.Service.getSignedSong(path)
         if (signedUrl) return signedUrl
         throw new NotFoundException()

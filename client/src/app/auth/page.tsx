@@ -8,7 +8,7 @@ import { SignInSchema, TAuthSchema } from "@/schemas/auth.yup";
 import { Button } from "@app-ui/button";
 import { Formik, Form, ErrorMessage, FormikHelpers } from 'formik'
 import Link from "next/link";
-import axios, { AxiosResponse } from 'axios'
+import axios, { isAxiosError } from 'axios'
 import { useUserStore } from "@/stores/useUserStore";
 import { useRouter } from "next/navigation";
 
@@ -36,7 +36,11 @@ export default function AuthPage() {
 
                 init()
                 router.push('/')
-            } catch(err) { console.error(err) }
+            } catch(err) {
+                isAxiosError(err)
+                    ? actions.setFieldError('password', err?.message || '* Invalid email or password')
+                    : actions.setFieldError('password', 'An error occured, try again later...')
+            }
 
             actions.setSubmitting(false)
         }

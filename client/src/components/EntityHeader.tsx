@@ -26,7 +26,7 @@ const PlaylistInfo = ({ playlist }: { playlist: TPlaylist } ) => {
     return (
         <>
             <span>By <a className="text-accent-default underline">Creator</a></span>
-            <span>{ getYear(playlist.createdAt) }</span>
+            <span>{ getYear(playlist.created_at) }</span>
             <span>{ playlist.size} songs</span>
             <span>{ accumulateAndFormatTime(playlist.songs, false) }</span>
         </>
@@ -36,8 +36,8 @@ const PlaylistInfo = ({ playlist }: { playlist: TPlaylist } ) => {
 const SongInfo = ({ song }: { song: TSong }) => {
     return (
         <>
-            <span>By <a className="text-accent-default underline">{ song.author.username }</a></span>
-            <span>{ getYear(song.uploadedAt) }</span>
+            <span>By <a className="text-accent-default underline">{ song.artist.username }</a></span>
+            <span>{ getYear(song.created_at) }</span>
             <span>{ formatTime(song.duration, false) }</span>
         </>
     )
@@ -57,7 +57,7 @@ const EntityHeader = ({ entity, excludeTags = false }: { entity: TSong | TPlayli
 
     return (
         <div className="space-y-4">
-            <Heading level={2} size="large">{ entity.name }</Heading>
+            <Heading level={2} size="large">{ (entity as TPlaylist | TFolder)?.name || (entity as TSong)?.title }</Heading>
             {/* Playlist data */}
             <div className="
                             flex items-center text-sm text-muted-foreground
@@ -102,7 +102,7 @@ const EntityHeader = ({ entity, excludeTags = false }: { entity: TSong | TPlayli
                 </DropdownMenu>
             </div>
             {/* Tags */}
-            { !excludeTags && (
+            { !excludeTags && entity?.tags && (
                 <div className="space-x-2">
                     { [...entity.tags.map(tag => <Tag text={tag} secondary />)].slice(0, 3) }
                 </div>

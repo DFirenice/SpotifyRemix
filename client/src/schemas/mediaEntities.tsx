@@ -30,14 +30,14 @@ export const SongSchema = z.object({
 })
 
 export const PlaylistSchema = z.object({
-  user_id: z.string(), // Used as reference to where song belongs
-  artist: ArtistSchema,
+  id: z.string(),
+  author: ArtistSchema,
   name: z.string(),
   size: z.number(),
   songs: z.array(SongSchema),
-  cover_path: z.string(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
+  cover_path: z.string().or(z.null()),
+  created_at: z.string(),
+  updated_at: z.string(),
   tags: TagsSchema
 })
 
@@ -47,6 +47,6 @@ export const FolderSchema = z.object({
   name: z.string(),
   playlists: z.array(PlaylistSchema),
   size: z.number(),
-  createdAt: z.string(),
-  updatedAt: z.string()
+  created_at: z.string(),
+  updated_at: z.string(),
 })

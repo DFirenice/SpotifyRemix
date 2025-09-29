@@ -15,7 +15,7 @@ const ArtistSchema = UserSchema.pick({
 })
 
 export const Playlist = z.object({
-    user_id: z.string(),
+    id: z.string(),
     created_at: z.string(),
     updated_at: z.string(),
     cover_path: z.string().or(z.null()),
@@ -23,8 +23,8 @@ export const Playlist = z.object({
     tags: z.array(z.string()).or(z.null()),
     name: z.string().or(z.null()),
     size: z.number().positive(),
-    artist: ArtistSchema
+    author: ArtistSchema
 })
 
 export class PlaylistDto extends createZodDto(Playlist) {}
-export class UnrefinedPlaylistDto extends createZodDto(Playlist.omit({ size: true, artist: true })) {}
+export class UnrefinedPlaylistDto extends createZodDto(Playlist.omit({ size: true, author: true })) {}

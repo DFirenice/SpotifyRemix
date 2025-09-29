@@ -15,6 +15,7 @@ export class PlaylistsService {
     }
     
     async getPlaylists () {
+        // Ｎｏｔｅ： Add query and range
         const { data, error } = await this.supabase.from('playlists_metadata')
             .select('*')
         

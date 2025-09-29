@@ -14,17 +14,28 @@ export class Resolvers {
         return await Promise.all(
             data.map(async (mediaEntity: SongDto | UnrefinedPlaylistDto)=> {
                 const user = await this.UserModel.findById(
-                    (mediaEntity as SongDto)?.artist || (mediaEntity as PlaylistDto)?.user_id
+                    (mediaEntity as SongDto)?.artist || (mediaEntity as PlaylistDto)?.author
                 ).lean()
                 if (!user) throw new HttpException("Artist not found", 404)
 
                 // Whether it is a song or a playlist, will override or add deconstructed 'artist' property
-                return {
-                    ...mediaEntity,
-                    artist: {
-                        _id: user._id,
-                        username: user.username,
-                        avatarUrl: user.avatarUrl
+                if ((mediaEntity as SongDto)?.artist) {
+                    return {
+                        ...mediaEntity,
+                        artist: {
+                            _id: user._id,
+                            username: user.username,
+                            avatarUrl: user.avatarUrl
+                        }
+                    }
+                } else if ((mediaEntity as PlaylistDto)?.author) {
+                    return {
+                        ...mediaEntity,
+                        author: {
+                            _id: user._id,
+                            username: user.username,
+                            avatarUrl: user.avatarUrl
+                        }
                     }
                 }
             })

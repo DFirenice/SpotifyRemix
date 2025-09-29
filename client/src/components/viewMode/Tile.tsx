@@ -51,7 +51,7 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
     if (detectMediaEntityType(tile) === "song") {
         const song = tile as TSong
         return (
-            <Link href={''} className="w-48 h-72 aspect-square">
+            <Link href={''} className="w-48 min-h-64 aspect-square">
                 { isPinned && <Thumbtack /> }
                 <div className="group rounded-lg w-full h-48 relative">
                     <div
