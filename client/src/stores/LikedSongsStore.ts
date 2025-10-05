@@ -39,3 +39,10 @@ export const useLikedSongsStore = create<ILikedSongsStore>((set, get) => ({
         return !id ? false : !!get().songs.find(s => s?.id === id)
     }
 }))
+
+;(async () => {
+    try {
+        const { data } = await useProtectedApi.get('user/liked/full-songs')
+        useLikedSongsStore.setState({ songs: data.songs })
+    } catch (err) { console.error('Failed to load liked songs:', err) }
+})()

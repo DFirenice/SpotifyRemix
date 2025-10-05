@@ -23,6 +23,9 @@ export type TPlaylistWithCache = TPlaylist & TCachedCover
 interface ICachedSongsStore {
     cache: TSongWithCache[]
     cachedPlaylists: TPlaylistWithCache[]
+    /** Returns found playlists from cache
+     * @param playlist raw entity */
+    getCachedPlaylist: (id: string) => Promise<TPlaylist | undefined>
     /** Caches and returns playlist with cached cover (TPlaylistWithCache)
      * @param playlist raw entity */
     cachePlaylist: (playlist: TPlaylist) => Promise<TPlaylistWithCache>
@@ -78,6 +81,17 @@ const useCachedSongsStore = create<ICachedSongsStore>((set, get) => ({
         const playlistWithCache: TPlaylistWithCache = { ...playlist, cached_cover }
         set(state => ({ cachedPlaylists: [ ...state.cachedPlaylists, playlistWithCache ] }))
         return playlistWithCache
+    },
+
+
+    getCachedPlaylist: async (id: string): Promise<TPlaylistWithCache | undefined> => {
+        const playlist = get().cachedPlaylists.find(p => p.id === id)
+        if (playlist) return playlist as TPlaylistWithCache
+        else {
+            const { data: pData } = await useProtectedApi.get(`/playlists/${id}`)
+            if (!pData) return undefined
+            return await get().cachePlaylist(pData)
+        }
     },
 
     addToCache: async (song: TSong): Promise<TSongWithCache> => {

@@ -117,7 +117,7 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
             }
 
             return (
-                <div key={`Unable to load the entity ${new Date()}`} className="h-full w-full px-4 grid place-items-center">
+                <div key={`Unable to load the entity withing the list. Entity: ${data + i}`} className="h-full w-full px-4 grid place-items-center">
                     <span className="text-fg-secondary">No songs found</span>
                 </div>
             )

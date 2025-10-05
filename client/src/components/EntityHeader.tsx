@@ -5,6 +5,7 @@ import PlayBtn from "@app-ui/PlayBtn"
 import Icon from "@app-ui/Icon"
 import Tag from "@app-ui/Tag"
 import Heading from "@/components/ui/Heading"
+import Link from "next/link"
 
 import type { TFolder, TPlaylist, TSong } from "@/types/mediaEntities.types.ts"
 import { getYear } from "@/utils/dateFormatter"
@@ -25,7 +26,7 @@ import {
 const PlaylistInfo = ({ playlist }: { playlist: TPlaylist } ) => {
     return (
         <>
-            <span>By <a className="text-accent-default underline">Creator</a></span>
+            <span>By <Link href="" className="text-accent-default underline">{ playlist.author.username }</Link></span>
             <span>{ getYear(playlist.created_at) }</span>
             <span>{ playlist.size} songs</span>
             <span>{ accumulateAndFormatTime(playlist.songs, false) }</span>
@@ -60,9 +61,9 @@ const EntityHeader = ({ entity, excludeTags = false }: { entity: TSong | TPlayli
             <Heading level={2} size="large">{ (entity as TPlaylist | TFolder)?.name || (entity as TSong)?.title }</Heading>
             {/* Playlist data */}
             <div className="
-                            flex items-center text-sm text-muted-foreground
-                            [&>*:not(:first-child)]:before:content-['•'] [&>*:not(:first-child)]:before:mx-2
-                        ">
+                flex items-center text-sm text-muted-foreground
+                [&>*:not(:first-child)]:before:content-['•'] [&>*:not(:first-child)]:before:mx-2
+            ">
                 { renderEntityInfo }
             </div>
             {/* Controls */}

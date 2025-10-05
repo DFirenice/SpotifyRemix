@@ -29,7 +29,6 @@ const App = ({ params }: { params: Promise<{ slug: string }> }) => {
             const { data: pData, status: pStatus } = await useProtectedApi.get('/playlists')
             if (pStatus === 200) {
                 setPlaylists(pData.playlists)
-                console.log(pData.playlists)
                 await Promise.all(pData.playlists.map((playlist: TPlaylist) => cachePlaylist(playlist)))
             }
         }
@@ -52,7 +51,7 @@ const App = ({ params }: { params: Promise<{ slug: string }> }) => {
 
             {/* Playlists */}
             <div className="mb-4">
-                <span className="text-fg-secondary leading-none">Your Mixes</span>
+                <span className="text-fg-secondary leading-none capitalize">Mixes you may like</span>
             </div>
             <section>
                 { (slug === 'all' || slug === 'music') && playlists.length > 0 && (

@@ -14,6 +14,12 @@ export class UserController {
         const songs = await this.service.getLikedSongs(userId)
         return { songs }
     }
+
+    @Get('liked/full-songs')
+    async getResolvedLikedSongs(@User('userId') userId) {
+        const songs = await this.service.getLikedSongs(userId, { complete: true })
+        return { songs }
+    }
     
     @Post('mark-favorite')
     async markFavorite(@User('userId') userId, @Body() body: MarkFavoriteBodyDto) {

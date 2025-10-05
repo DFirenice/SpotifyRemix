@@ -35,7 +35,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <Drawer className="grid-area-aside flex flex-col gap-y-1" />
             {/* Content */}
             <section className="flex flex-col gap-1 overflow-hidden">
-                {children}
+                { children }
                 <PlayingSongController />
             </section>
             {/* Opening menus */}
