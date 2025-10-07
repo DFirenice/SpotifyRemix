@@ -34,12 +34,15 @@ export const PlaylistSchema = z.object({
   author: ArtistSchema,
   name: z.string(),
   size: z.number(),
-  songs: z.array(SongSchema),
+  songs: z.array(z.string()),
   cover_path: z.string().or(z.null()),
   created_at: z.string(),
   updated_at: z.string(),
   tags: TagsSchema
 })
+export const PlaylistsWithResolvedSongs = PlaylistSchema
+.omit({ songs: true })
+.extend({ songs: z.array(SongSchema) })
 
 // Ｎｏｔｅ： Unsynced
 export const FolderSchema = z.object({

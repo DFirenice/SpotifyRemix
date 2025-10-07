@@ -2,7 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseService } from 'src/supabase/supabase.service';
 import { Resolvers } from 'src/utils/resolvers';
-import { PlaylistDto, UnrefinedPlaylistDto } from '../auth/dtos/playlists.dto';
+import { UnrefinedPlaylistDto } from '../auth/dtos/playlists.dto';
 
 @Injectable()
 export class PlaylistsService {

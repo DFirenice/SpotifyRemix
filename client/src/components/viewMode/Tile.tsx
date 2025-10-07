@@ -26,6 +26,7 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
     const { song: storeSong, queueSong, setIsPlaying, isPlaying } = usePlayingSongStore()
 
     const { getFromCache, addToCache } = useCachedSongsStore()
+    const cachedSongs = useCachedSongsStore(state => state.cache)
 
     // Play / pause on cover
     const handlePlaySong = () => {
@@ -88,6 +89,7 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
     // Playlist tile
     else if (detectMediaEntityType(tile) === "playlist") {
         const playlist = tile as TPlaylist
+        const playlistSongs = cachedSongs.filter(s => playlist.songs.includes(s.id))
         return (
             <Link href={`/playlists/${playlist.id}`} className="w-48 h-72 relative">
                 { isPinned && <Thumbtack /> }
@@ -103,7 +105,7 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
                     <span className="w-full truncate text-accent-default">{ playlist.name || 'Playlist is unavailable...' }</span>
                     <span className="font-mono text-fg-secondary font-light">{ playlist.size }</span> {/* Playlist size */}
                 </div>
-                <p className="text-sm text-fg-secondary my-1">Authors: { accumulateAndFormatAuthors(playlist.songs, 2) }</p>
+                <p className="text-sm text-fg-secondary my-1">Authors: { accumulateAndFormatAuthors(playlistSongs, 2) }</p>
             </Link>
         )
     }

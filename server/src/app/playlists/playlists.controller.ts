@@ -30,13 +30,14 @@ export class PlaylistsController {
         }))
 
         if (parsedPlaylists.length > 0) {
-            const clientReadyPlaylists = await Promise.all(
-                parsedPlaylists.map(async p => {
-                    const resolvedSongs = await this.SongsService.getSpecific(p.songs)
-                    return { ...p, songs: resolvedSongs }
-                })
-            )
-            return { playlists: clientReadyPlaylists }
+            // const clientReadyPlaylists = await Promise.all(
+            //     parsedPlaylists.map(async p => {
+            //         const resolvedSongs = await this.SongsService.getSpecific(p.songs)
+            //         return { ...p, songs: resolvedSongs }
+            //     })
+            // )
+            // clientReadyPlaylists
+            return { playlists }
         }
         return { playlists: undefined }
     }

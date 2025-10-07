@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { useUserStore } from "@/stores/useUserStore"
 import { useProtectedApi } from "@/lib/axios"
+import { initLikedSongs } from "@/stores/LikedSongsStore"
 
 import Navigation from '@/components/Navigation'
 import Drawer from "@/components/Drawer"
@@ -17,7 +18,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const validateToken = async () => {
             const res = await useProtectedApi.get('/validate-token')
-            if (res?.data?.success && res?.data?.isValid) init()
+            if (res?.data?.success && res?.data?.isValid) {
+                init()
+                initLikedSongs()
+            }
         }
 
         if (!initialized || !user) {

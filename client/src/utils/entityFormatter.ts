@@ -20,8 +20,8 @@ export const accumulateAndFormatAuthors = (songs: TSong[], reducer: number) => {
 }
 
 export const accumulateAuthors = (songs: TSong[]): TSong['artist'][] => {
-    const artists = songs.map(song => song.artist)
-    return artists
+    const artists = songs.map(song => song?.artist)
+    return artists.filter(Boolean)
 }
 
 export const accumulateAndFormatPlaylists = (playlists: TPlaylist[], reducer: number) => {

@@ -16,23 +16,34 @@ import { AvatarImage } from "@radix-ui/react-avatar"
 import { Skeleton } from "@/components/ui/skeleton"
 import { use, useEffect, useState } from "react"
 import { TPlaylist, TSong } from "@/types/mediaEntities.types.ts"
+import { useProtectedApi } from "@/lib/axios"
 
 const Playlist = ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = use(params) // Playlist id
 
     const getCachedPlaylist = useCachedSongsStore(state => state.getCachedPlaylist)
+    const fetchAndCacheSongs = useCachedSongsStore(state => state.fetchAndCacheSongs)
     const getFromCache = useCachedSongsStore(state => state.getFromCache)
 
     const [ songsFromCache, setSongs ] = useState<TSong[]>([])
     const [ playlist, setPlaylist ] = useState<TPlaylist | undefined>(undefined)
 
     useEffect(() => {
+        const updatePlaylistState = async (updPlaylist: any) => {
+            setPlaylist(updPlaylist)
+            // Invoking method that additionally parses and caches yet unchached songs
+            const songIds = updPlaylist.songs.map((s: TSong) => s.id)
+            const cachedSongs = await fetchAndCacheSongs(songIds)
+            if (cachedSongs) setSongs(cachedSongs as TSong[])
+        }
+        
         ;(async () => {
             const updPlaylist = await getCachedPlaylist(slug)
-            if (updPlaylist) {
-                setPlaylist(updPlaylist)
-                setSongs(updPlaylist.songs)
+            if (!updPlaylist) {
+                const { data: pData } = await useProtectedApi.get(`/playlists/${slug}`)
+                if (pData?.id) await updatePlaylistState(pData)
             }
+            updPlaylist && await updatePlaylistState(updPlaylist)
         })()
     }, [slug])
     
@@ -40,7 +51,7 @@ const Playlist = ({ params }: { params: Promise<{ slug: string }> }) => {
         const loadSongs = async () => {
             if (playlist) {
                 const songs = await Promise.all(
-                    playlist.songs.map(async s => await getFromCache(s.id))
+                    playlist.songs.map(async s => await getFromCache(s))
                 )
                 setSongs(songs as TSong[])
             }
@@ -64,7 +75,7 @@ const Playlist = ({ params }: { params: Promise<{ slug: string }> }) => {
                         </div>
                         <SearchOpenable />
                     </div>
-                    <List data={songsFromCache} /> { /* Ｎｏｔｅ： Uncached, direct */ }
+                    <List data={songsFromCache} />
                 </div>
 
                 <div className="inline-flex flex-col gap-8">
@@ -98,7 +109,7 @@ const Playlist = ({ params }: { params: Promise<{ slug: string }> }) => {
                     {/* Authors */}
                     <div className="flex flex-col gap-4 h-full overflow-y-auto">
                         {/* Ｎｏｔｅ： Fix to have authors' avatars and working profile links */}
-                        { accumulateAuthors(playlist.songs).map(author => (
+                        { songsFromCache.length !== 0 && accumulateAuthors(songsFromCache).map(author => (
                             <Link href="" className="flex flex-row items-center gap-4" key={author._id}>
                                 <Avatar className="rounded-full overflow-hidden size-14">
                                     <AvatarImage src={author.avatarUrl} alt={author.username} />

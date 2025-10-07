@@ -14,6 +14,7 @@ import { sortBy } from "@/utils/songsSorter"
 import { cn } from "@/lib/utils"
 
 import usePlayingSongStore from "@/stores/PlayingSong"
+import useCachedSongsStore from "@/stores/CachedSongs"
 import { detectMediaEntityType } from "@/utils/typeGuards"
 import { accumulateAndFormatTime } from "@/utils/entityFormatter"
 import type { TPlaylist, TSong } from "@/types/mediaEntities.types.ts"
@@ -25,6 +26,8 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
     const [sortedSongs, setSortedSongs] = useState(sortBy(data, 'name', false))
     const [lastSort, setLastSort] = useState<string | undefined>('name')
     const isReverseRef = useRef(false)
+    
+    const cachedSongs = useCachedSongsStore(state => state.cache)
 
     // Keeping in sync with prop updates
     useEffect(() => {
@@ -93,6 +96,7 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
                 )
             } else if (detectMediaEntityType(obj) === 'playlist') {
                 const playlist = obj as TPlaylist
+                const playlistSongs = cachedSongs.filter(s => playlist.songs.includes(s.id))
                 return (
                     <Link href={`playlists/${playlist.id}`} key={playlist.id} className="
                         flex space-x-4 text-fg-secondary min-h-[7.5dvh]
@@ -108,16 +112,16 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
                                 <span className="truncate w-[30ch]">Playlist: {playlist.name || 'Name uknown'}</span>
                             </div>
                         </div>
-                        <div className="min-w-0 truncate py-2">{accumulateAndFormatAuthors(playlist.songs, 2)}</div>
+                        <div className="min-w-0 truncate py-2">{accumulateAndFormatAuthors(playlistSongs, 2)}</div>
                         <div className="min-w-0 truncate py-2 gap-x-2">
-                            <span>{accumulateAndFormatTime(playlist.songs, false)}</span>
+                            <span>{accumulateAndFormatTime(playlistSongs, false)}</span>
                         </div>
                     </Link>
                 )
             }
 
             return (
-                <div key={`Unable to load the entity withing the list. Entity: ${data + i}`} className="h-full w-full px-4 grid place-items-center">
+                <div key={`Unable to load the entity withing the list. Entity: ${data}_${i}`} className="h-full w-full px-4 grid place-items-center">
                     <span className="text-fg-secondary">No songs found</span>
                 </div>
             )

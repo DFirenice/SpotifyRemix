@@ -40,9 +40,9 @@ export const useLikedSongsStore = create<ILikedSongsStore>((set, get) => ({
     }
 }))
 
-;(async () => {
+export const initLikedSongs = async () => {
     try {
         const { data } = await useProtectedApi.get('user/liked/full-songs')
         useLikedSongsStore.setState({ songs: data.songs })
     } catch (err) { console.error('Failed to load liked songs:', err) }
-})()
+}

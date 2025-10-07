@@ -29,7 +29,7 @@ const PlaylistInfo = ({ playlist }: { playlist: TPlaylist } ) => {
             <span>By <Link href="" className="text-accent-default underline">{ playlist.author.username }</Link></span>
             <span>{ getYear(playlist.created_at) }</span>
             <span>{ playlist.size} songs</span>
-            <span>{ accumulateAndFormatTime(playlist.songs, false) }</span>
+            {/* <span>{ accumulateAndFormatTime(playlist.songs, false) }</span> */}
         </>
     )
 }

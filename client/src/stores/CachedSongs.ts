@@ -11,7 +11,7 @@ type TCacheUrls = {
     } | undefined
 }
 
-type TCachedCover = {
+export type TCachedCover = {
     cached_cover: string
 }
 
@@ -35,6 +35,8 @@ interface ICachedSongsStore {
     /** Returns cached song or undefined
      * @param songId */
     getFromCache: (id: string) => Promise<TSongWithCache | undefined>
+
+    fetchAndCacheSongs: (ids: string[]) => Promise<TSongWithCache[] | undefined>
 }
 
 /** Utility for parsing cover only
@@ -84,8 +86,10 @@ const useCachedSongsStore = create<ICachedSongsStore>((set, get) => ({
     },
 
 
+    // Automatically fetches if none is stored
     getCachedPlaylist: async (id: string): Promise<TPlaylistWithCache | undefined> => {
         const playlist = get().cachedPlaylists.find(p => p.id === id)
+        console.log(playlist)
         if (playlist) return playlist as TPlaylistWithCache
         else {
             const { data: pData } = await useProtectedApi.get(`/playlists/${id}`)
@@ -109,8 +113,8 @@ const useCachedSongsStore = create<ICachedSongsStore>((set, get) => ({
     getFromCache: async (id: string) => {
         const song = get().cache.find(song => song.id === id) as TSongWithCache | undefined
         if (!song) return undefined
-
-        if (!song.cache) {
+        
+        if (song && !song.cache) {
             const cachedUrls = await makeCache({ cover_path: song.cover_path as string, file_path: song.file_path })
             const songWithCache: TSongWithCache = { ...song, cache: cachedUrls }
               // Updating the cache property for the song
@@ -123,6 +127,18 @@ const useCachedSongsStore = create<ICachedSongsStore>((set, get) => ({
         }
 
         return song
+    },
+
+    fetchAndCacheSongs: async (ids: string[]): Promise<TSongWithCache[] | undefined> => {
+        // const missing = ... missing, besides already cached ids
+        const { data } = await useProtectedApi.post('/songs', { songs: ids })
+        console.log('recieved: ', { songs: ids })
+        if (!data?.songs) return undefined
+        
+        const cached = await Promise.all(
+            data.songs.map(async (s: TSong) => await get().addToCache(s))
+        )
+        return cached
     }
 }))
 
