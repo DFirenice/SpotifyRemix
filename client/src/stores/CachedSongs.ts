@@ -25,7 +25,7 @@ interface ICachedSongsStore {
     cachedPlaylists: TPlaylistWithCache[]
     /** Returns found playlists from cache
      * @param playlist raw entity */
-    getCachedPlaylist: (id: string) => Promise<TPlaylist | undefined>
+    getCachedPlaylist: (id: string) => Promise<TPlaylistWithCache | undefined>
     /** Caches and returns playlist with cached cover (TPlaylistWithCache)
      * @param playlist raw entity */
     cachePlaylist: (playlist: TPlaylist) => Promise<TPlaylistWithCache>
@@ -46,7 +46,7 @@ interface ICachedSongsStore {
 const parseCover = async (cover_path: string): Promise<string | undefined> => {
     try {
         const { data } = await useProtectedApi.post('/get-media/cover', { path: cover_path })
-        const coverBlob = await fetch(data.coverUrl.signedUrl).then(res => res.blob())
+        const coverBlob = await fetch(data.signedUrl).then(res => res.blob())
         if (data) return URL.createObjectURL(coverBlob)
     } catch (err) { console.error(err) }
 }
@@ -89,7 +89,6 @@ const useCachedSongsStore = create<ICachedSongsStore>((set, get) => ({
     // Automatically fetches if none is stored
     getCachedPlaylist: async (id: string): Promise<TPlaylistWithCache | undefined> => {
         const playlist = get().cachedPlaylists.find(p => p.id === id)
-        console.log(playlist)
         if (playlist) return playlist as TPlaylistWithCache
         else {
             const { data: pData } = await useProtectedApi.get(`/playlists/${id}`)

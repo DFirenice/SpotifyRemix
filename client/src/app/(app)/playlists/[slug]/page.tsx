@@ -1,4 +1,4 @@
-    'use client'
+'use client'
 
 import EntityHeader from "@/components/EntityHeader"
 import List from "@/components/viewMode/List"
@@ -8,15 +8,18 @@ import ReturnLink from "@app-ui/ReturnLink"
 import Image from "next/image"
 import Tag from "@/components/ui/Tag"
 import Link from "next/link"
-import useCachedSongsStore from "@/stores/CachedSongs"
+import useCachedSongsStore, { TPlaylistWithCache } from "@/stores/CachedSongs"
 import Icon from "@/components/ui/Icon"
 import { accumulateAuthors } from "@/utils/entityFormatter"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { AvatarImage } from "@radix-ui/react-avatar"
 import { Skeleton } from "@/components/ui/skeleton"
 import { use, useEffect, useState } from "react"
-import { TPlaylist, TSong } from "@/types/mediaEntities.types.ts"
+import { TSong } from "@/types/mediaEntities.types.ts"
 import { useProtectedApi } from "@/lib/axios"
+import { useLikedSongsStore } from "@/stores/LikedSongsStore"
+import { limitBrightness } from "@/utils/brightness-adapter"
+import ColorThief from 'colorthief'
 
 const Playlist = ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = use(params) // Playlist id
@@ -24,9 +27,11 @@ const Playlist = ({ params }: { params: Promise<{ slug: string }> }) => {
     const getCachedPlaylist = useCachedSongsStore(state => state.getCachedPlaylist)
     const fetchAndCacheSongs = useCachedSongsStore(state => state.fetchAndCacheSongs)
     const getFromCache = useCachedSongsStore(state => state.getFromCache)
+    const likedSongs = useLikedSongsStore(state => state.songs)
 
     const [ songsFromCache, setSongs ] = useState<TSong[]>([])
-    const [ playlist, setPlaylist ] = useState<TPlaylist | undefined>(undefined)
+    const [ playlist, setPlaylist ] = useState<TPlaylistWithCache | undefined>(undefined)
+    const [ bgGradient, setBgGradient ] = useState<string>('#232323')
 
     useEffect(() => {
         const updatePlaylistState = async (updPlaylist: any) => {
@@ -51,22 +56,44 @@ const Playlist = ({ params }: { params: Promise<{ slug: string }> }) => {
         const loadSongs = async () => {
             if (playlist) {
                 const songs = await Promise.all(
-                    playlist.songs.map(async s => await getFromCache(s))
+                    // TSong type*
+                    playlist.songs.map(async (s: any) => await getFromCache(s.id))
                 )
                 setSongs(songs as TSong[])
             }
         }
 
-        if (playlist?.songs?.length) loadSongs()
-    }, [playlist, getFromCache])
+        if (playlist?.songs?.length || playlist?.songs?.length === 0) loadSongs()
+    }, [playlist, getFromCache, likedSongs])
+
+    useEffect(() => {
+        if (!playlist?.cached_cover) return
+
+        const img = new window.Image()
+        img.crossOrigin = 'anonymous'
+        img.src = playlist.cached_cover
+
+        img.onload = () => {
+            try {
+                const cf = new ColorThief()
+                const dominantRGB = limitBrightness(cf.getColor(img))
+                setBgGradient(`rgb(${dominantRGB.join(',')})`)
+                console.log('Dominant RGB:', dominantRGB)
+            } catch (err) { setBgGradient('#232323') }
+        }
+
+        return () => {
+            img.onload = null
+        }
+    }, [playlist?.cached_cover])
     
     if (playlist) {
         return (
             // Ｎｏｔｅ： Change gradient color to a color of the playlist
-            <div className="
-                bordered rounded-lg pt-12 px-12 h-full flex flex-row gap-12
-                bg-gradient bg-gradient-to-b from-blue-950 to-transparent
-            ">
+            <div
+                className="bordered rounded-lg pt-12 px-12 h-full flex flex-row gap-12 transition-all duration-300"
+                style={{ background: `linear-gradient(to bottom, ${bgGradient}, transparent)` }}
+            >
                 <div className="*:space-y-4 w-full">
                     <div className="flex flex-row items-end justify-between w-full">
                         <div>
@@ -85,7 +112,7 @@ const Playlist = ({ params }: { params: Promise<{ slug: string }> }) => {
                             playlist.cover_path ?
                                 (<Image
                                     className="rounded-2xl"
-                                    src={playlist.cover_path ?? '/'}
+                                    src={playlist.cached_cover ?? '/'}
                                     alt={playlist.name}
                                     objectFit="cover"
                                     fill

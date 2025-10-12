@@ -10,7 +10,7 @@ import { accumulateAndFormatAuthors, accumulateAndFormatPlaylists } from "@/util
 import { useUserStore } from "@/stores/useUserStore"
 import { useEffect, useState } from "react"
 import usePlayingSongStore from "@/stores/PlayingSong"
-import useCachedSongsStore from "@/stores/CachedSongs"
+import useCachedSongsStore, { TPlaylistWithCache } from "@/stores/CachedSongs"
 import { Skeleton } from "@app-ui/skeleton"
 import Image from "next/image"
 
@@ -25,7 +25,7 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
     const isPinned = useUserStore(state => state.pinned.has(tile?.id))
     const { song: storeSong, queueSong, setIsPlaying, isPlaying } = usePlayingSongStore()
 
-    const { getFromCache, addToCache } = useCachedSongsStore()
+    const { getFromCache, addToCache, getCachedPlaylist, cachePlaylist } = useCachedSongsStore()
     const cachedSongs = useCachedSongsStore(state => state.cache)
 
     // Play / pause on cover
@@ -43,6 +43,15 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
                 const cachedSong = await getFromCache(song.id)
                 if (cachedSong) setCoverSrc(cachedSong!.cache!.coverUrl)
                 else setCoverSrc((await addToCache(song)).cache!.coverUrl)
+            }
+            getCover()
+        }
+        if (detectMediaEntityType(tile) === "playlist") {
+            const pl = tile as TPlaylist
+            const getCover = async () => {
+                const cachedPl = await getCachedPlaylist(pl.id) as TPlaylistWithCache
+                if (cachedPl) setCoverSrc(cachedPl.cached_cover)
+                else setCoverSrc((await cachePlaylist(cachedPl)).cached_cover)
             }
             getCover()
         }
@@ -93,9 +102,17 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
         return (
             <Link href={`/playlists/${playlist.id}`} className="w-48 h-72 relative">
                 { isPinned && <Thumbtack /> }
-                <div className="w-full h-48 overflow-hidden flex flex-col">
+                <div className="relative w-full h-48 overflow-hidden flex flex-col">
                     <div className="tile-folder-effect h-[0.6rem]">
-                        <div className="bg-dp-1" /><div className="bg-dp-2" />
+                        { coverSrc ? <Image
+                            className="object-cover rounded-xl bg-dp-1 z-0 pointer-events-none"
+                            src={coverSrc ?? '/images/placeholder.png'}
+                            alt="Track cover"
+                            fill
+                        /> : <>
+                            <div className="bg-dp-1" />
+                            <div className="bg-dp-2" />
+                        </> }
                     </div>
                     <div className="bg-dp-1 rounded-xl flex-1 grid place-items-center">
                         <Icon id="note_head" size="fill" className="w-1/3 **:bg-dp-1" />
@@ -103,7 +120,7 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
                 </div>
                 <div className="flex justify-between mt-1">
                     <span className="w-full truncate text-accent-default">{ playlist.name || 'Playlist is unavailable...' }</span>
-                    <span className="font-mono text-fg-secondary font-light">{ playlist.size }</span> {/* Playlist size */}
+                    <span className="font-mono text-fg-secondary font-light">{ playlist.size }</span>
                 </div>
                 <p className="text-sm text-fg-secondary my-1">Authors: { accumulateAndFormatAuthors(playlistSongs, 2) }</p>
             </Link>
