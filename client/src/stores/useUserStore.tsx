@@ -7,12 +7,12 @@ interface IUser {
     user: TUser | null
     pinned: Set<string>
     initialized: boolean
-    init: () => void
+    initProfile: () => void
 }
 
 export const useUserStore = create<IUser>((set, get) => ({
     user: null,
-    pinned: new Set(['fav', 'playlist-001', 'playlist-002']), // Playlists id
+    pinned: new Set(['fav']), // Playlist ids. Favorite is pinned by the default
     togglePin: (id: string) => set((state) => {
         const newPinned = new Set(state.pinned)
         if (newPinned.has(id)) newPinned.delete(id)
@@ -21,7 +21,7 @@ export const useUserStore = create<IUser>((set, get) => ({
     }),
     // User (App) initialization
     initialized: false,
-    init: async () => {
+    initProfile: async () => {
         if (useUserStore.getState().initialized) return
 
         try {

@@ -23,13 +23,13 @@ import {
     DropdownMenuContent
 } from "@app-ui/dropdown-menu"
 
-const PlaylistInfo = ({ playlist }: { playlist: TPlaylist } ) => {
+const PlaylistInfo = ({ playlist, songs }: { playlist: TPlaylist, songs: TSong[] } ) => {
     return (
         <>
             <span>By <Link href="" className="text-accent-default underline">{ playlist.author.username }</Link></span>
             <span>{ getYear(playlist.created_at) }</span>
             <span>{ playlist.size} songs</span>
-            {/* <span>{ accumulateAndFormatTime(playlist.songs, false) }</span> */}
+            { songs.filter(Boolean).length > 0 && <span>{ accumulateAndFormatTime(songs, false) }</span> }
         </>
     )
 }
@@ -44,12 +44,12 @@ const SongInfo = ({ song }: { song: TSong }) => {
     )
 }
 
-const EntityHeader = ({ entity, excludeTags = false }: { entity: TSong | TPlaylist, excludeTags?: boolean } ) => {
+const EntityHeader = ({ entity, excludeTags = false, songs }: { entity: TSong | TPlaylist, excludeTags?: boolean, songs: TSong[] } ) => {
     const type = detectMediaEntityType(entity)
 
     const entityInfoMap = {
         "song": (e: TSong) => <SongInfo song={e} />,
-        "playlist": (e: TPlaylist) => <PlaylistInfo playlist={e} />,
+        "playlist": (e: TPlaylist) => <PlaylistInfo playlist={e} songs={songs} />,
         "folder": (e: TFolder) => null
     }
 
@@ -71,7 +71,7 @@ const EntityHeader = ({ entity, excludeTags = false }: { entity: TSong | TPlayli
                 <PlayBtn />
                 <Button variant="ghost" className="p-0 gap-0">
                     <Icon id="save" />
-                    <span className="pr-2 text-fg-secondary">622k</span>
+                    <span className="pr-2 text-fg-secondary">0</span>
                 </Button>
 
                 <Button variant="ghost" size="icon"> <Icon id="add_to_playlist" /> </Button>

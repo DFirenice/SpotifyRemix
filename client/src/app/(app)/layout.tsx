@@ -13,13 +13,13 @@ import PlayingSongController from "@/components/PlayingSongController"
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter()
-    const { init, initialized, user } = useUserStore()
+    const { initProfile, initialized, user } = useUserStore()
 
     useEffect(() => {
         const validateToken = async () => {
             const res = await useProtectedApi.get('/validate-token')
             if (res?.data?.success && res?.data?.isValid) {
-                init()
+                initProfile()
                 initLikedSongs()
             }
         }

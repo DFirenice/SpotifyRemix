@@ -23,6 +23,7 @@ import ColorThief from 'colorthief'
 
 const Playlist = ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = use(params) // Playlist id
+    const defaultBgGradient = '#232323'
 
     const getCachedPlaylist = useCachedSongsStore(state => state.getCachedPlaylist)
     const fetchAndCacheSongs = useCachedSongsStore(state => state.fetchAndCacheSongs)
@@ -31,13 +32,13 @@ const Playlist = ({ params }: { params: Promise<{ slug: string }> }) => {
 
     const [ songsFromCache, setSongs ] = useState<TSong[]>([])
     const [ playlist, setPlaylist ] = useState<TPlaylistWithCache | undefined>(undefined)
-    const [ bgGradient, setBgGradient ] = useState<string>('#232323')
+    const [ bgGradient, setBgGradient ] = useState<string>(defaultBgGradient) // defaut to gray
 
     useEffect(() => {
         const updatePlaylistState = async (updPlaylist: any) => {
             setPlaylist(updPlaylist)
             // Invoking method that additionally parses and caches yet unchached songs
-            const songIds = updPlaylist.songs.map((s: TSong) => s.id)
+            const songIds = updPlaylist.songs.map((s: TSong) => s)
             const cachedSongs = await fetchAndCacheSongs(songIds)
             if (cachedSongs) setSongs(cachedSongs as TSong[])
         }
@@ -78,8 +79,7 @@ const Playlist = ({ params }: { params: Promise<{ slug: string }> }) => {
                 const cf = new ColorThief()
                 const dominantRGB = limitBrightness(cf.getColor(img))
                 setBgGradient(`rgb(${dominantRGB.join(',')})`)
-                console.log('Dominant RGB:', dominantRGB)
-            } catch (err) { setBgGradient('#232323') }
+            } catch (err) { setBgGradient(defaultBgGradient) }
         }
 
         return () => {
@@ -89,16 +89,15 @@ const Playlist = ({ params }: { params: Promise<{ slug: string }> }) => {
     
     if (playlist) {
         return (
-            // Ｎｏｔｅ： Change gradient color to a color of the playlist
             <div
-                className="bordered rounded-lg pt-12 px-12 h-full flex flex-row gap-12 transition-all duration-300"
-                style={{ background: `linear-gradient(to bottom, ${bgGradient}, transparent)` }}
+                className="bordered rounded-lg pt-12 px-12 h-full flex flex-row gap-12 overflow-y-scroll"
+                style={{ background: `linear-gradient(to bottom, ${bgGradient} 0%, transparent 100dvh)` }}
             >
                 <div className="*:space-y-4 w-full">
                     <div className="flex flex-row items-end justify-between w-full">
                         <div>
                             <ReturnLink to="/playlists" />
-                            <EntityHeader entity={playlist} excludeTags />
+                            <EntityHeader entity={playlist} songs={songsFromCache} excludeTags />
                         </div>
                         <SearchOpenable />
                     </div>
@@ -134,7 +133,7 @@ const Playlist = ({ params }: { params: Promise<{ slug: string }> }) => {
                         { playlist?.tags && playlist.tags.map((tag, _) => <Tag key={`${tag}_${_}`} text={tag} secondary /> ) }
                     </div>
                     {/* Authors */}
-                    <div className="flex flex-col gap-4 h-full overflow-y-auto">
+                    <div className="flex flex-col gap-4 overflow-y-auto">
                         {/* Ｎｏｔｅ： Fix to have authors' avatars and working profile links */}
                         { songsFromCache.length !== 0 && accumulateAuthors(songsFromCache).map(author => (
                             <Link href="" className="flex flex-row items-center gap-4" key={author._id}>

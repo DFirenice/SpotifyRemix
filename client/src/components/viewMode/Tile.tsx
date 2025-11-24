@@ -57,12 +57,20 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
         }
     }, [ tile, getFromCache, addToCache ])
     
+    const TileContainer = ({ link, children }: { link: string, children: React.ReactNode }) => {
+        return (
+            <Link href={link} className="w-48 min-h-64 relative">
+                { isPinned && <Thumbtack /> }
+                { children }
+            </Link>
+        )
+    }
+    
     // Song tile
     if (detectMediaEntityType(tile) === "song") {
         const song = tile as TSong
         return (
-            <Link href={''} className="w-48 min-h-64 aspect-square">
-                { isPinned && <Thumbtack /> }
+            <TileContainer link={''}>
                 <div className="group rounded-lg w-full h-48 relative">
                     <div
                         className="
@@ -92,7 +100,7 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
                     <span className="w-full truncate text-accent-default">{ song.title || 'Song is unavailable...' }</span>
                     <p className="text-sm text-fg-secondary my-1">{ song.artist.username }</p>
                 </div>
-            </Link>
+            </TileContainer>
         )
     }
     // Playlist tile
@@ -100,8 +108,7 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
         const playlist = tile as TPlaylist
         const playlistSongs = cachedSongs.filter(s => playlist.songs.includes(s.id))
         return (
-            <Link href={`/playlists/${playlist.id}`} className="w-48 h-72 relative">
-                { isPinned && <Thumbtack /> }
+            <TileContainer link={`/playlists/${playlist.id}`}>
                 <div className="relative w-full h-48 overflow-hidden flex flex-col">
                     <div className="tile-folder-effect h-[0.6rem]">
                         { coverSrc ? <Image
@@ -123,15 +130,14 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
                     <span className="font-mono text-fg-secondary font-light">{ playlist.size }</span>
                 </div>
                 <p className="text-sm text-fg-secondary my-1">Authors: { accumulateAndFormatAuthors(playlistSongs, 2) }</p>
-            </Link>
+            </TileContainer>
         )
     }
     // Folder tile
     else if (detectMediaEntityType(tile) === "folder") {
         const folder = tile as TFolder
         return (
-            <Link href={''} className="w-48 h-72 relative">
-                { isPinned && <Thumbtack /> }
+            <TileContainer link={''}>
                 <div className=" bg-dp-1 rounded-lg w-full h-48 relative overflow-hidden grid place-items-center">
                     <Icon id="folder" size="large" className="icon-active-outline"/>
                 </div>
@@ -140,7 +146,7 @@ const Tile = ({ tile }: { tile: TMediaEntity }) => {
                     <span className="font-mono text-fg-secondary font-light">{ folder.size }</span> {/* # of Playlists */}
                 </div>
                 <p className="text-sm text-fg-secondary my-1">Playlists: { accumulateAndFormatPlaylists(folder.playlists, 2) }</p>
-            </Link>
+            </TileContainer>
         )
     }
 

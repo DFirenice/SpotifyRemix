@@ -66,7 +66,7 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
                         <div className="group gap-4 min-w-0 truncate py-2 cursor-pointer" onClick={() => handlePlaySong(obj as TSong)}>
                             <div className="relative h-[85%] aspect-square">
                                 <div className="
-                                    grid place-items-center w-full h-full
+                                    grid place-items-center w-full h-full overflow-hidden rounded-md
                                     duration-75 bg-dp-1/87 absolute z-10
                                     opacity-0 group-hover:opacity-100
                                 ">
@@ -129,7 +129,7 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
     }
 
     return (
-        <div className="w-full px-4 h-full">
+        <div className="w-full px-4">
             {/* Sort bar */}
             {/* # | Title | Album | Duration */}
             <div className="container">
@@ -150,9 +150,9 @@ const List = ({ data }: { data: TMediaEntity[] }) => {
                 </div>
             </div>
             <Separator />
-            <div className="container mt-4 h-full">
+            <div className="container mt-4">
                 {/* # | SongImg & Title | Album (Playlist) | Duration */}
-                {renderList(sortedSongs)}
+                { renderList(sortedSongs) }
             </div>
         </div>
     )
